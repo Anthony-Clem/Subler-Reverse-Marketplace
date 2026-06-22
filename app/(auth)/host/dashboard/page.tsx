@@ -26,10 +26,15 @@ import { Button } from "@/components/ui/button";
 
 export default function HostDashboardPage() {
   const { data: user, isLoading: userLoading } = useUserProfile();
-  const { data: requests, isLoading: requestsLoading, error: requestsError } = useOpenRequests();
+  const {
+    data: requests,
+    isLoading: requestsLoading,
+    error: requestsError,
+  } = useOpenRequests();
   const createProposal = useCreateProposal();
 
-  const [activeProposalRequest, setActiveProposalRequest] = useState<RentalRequest | null>(null);
+  const [activeProposalRequest, setActiveProposalRequest] =
+    useState<RentalRequest | null>(null);
   const [sublerLink, setSublerLink] = useState("");
   const [pitch, setPitch] = useState("");
   const [linkError, setLinkError] = useState("");
@@ -76,11 +81,15 @@ export default function HostDashboardPage() {
           hostname.endsWith(".subler.com");
 
         if (!isValidHost) {
-          setLinkError("URL must be a valid Subler listing (app.getsubler.com or subler.com)");
+          setLinkError(
+            "URL must be a valid Subler listing (app.getsubler.com or subler.com)",
+          );
           isValid = false;
         }
       } catch {
-        setLinkError("Please enter a valid absolute URL (starting with https://)");
+        setLinkError(
+          "Please enter a valid absolute URL (starting with https://)",
+        );
         isValid = false;
       }
     }
@@ -113,7 +122,8 @@ export default function HostDashboardPage() {
       toast.success("Proposal sent successfully!");
       setActiveProposalRequest(null);
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Failed to submit proposal";
+      const message =
+        err instanceof Error ? err.message : "Failed to submit proposal";
       toast.error(message);
     }
   };
@@ -136,7 +146,9 @@ export default function HostDashboardPage() {
     return (
       <div className="flex flex-col items-center justify-center min-h-[400px]">
         <Loader2 className="h-8 w-8 text-primary animate-spin" />
-        <p className="text-body-sm text-muted-foreground mt-3">Verifying credentials...</p>
+        <p className="text-body-sm text-muted-foreground mt-3">
+          Verifying credentials...
+        </p>
       </div>
     );
   }
@@ -148,13 +160,16 @@ export default function HostDashboardPage() {
         <div className="h-12 w-12 rounded-full bg-neutral-50 flex items-center justify-center text-slate-400 mx-auto mb-6">
           <Clock className="h-6 w-6" />
         </div>
-        <h2 className="text-lg font-bold text-[#0e1442] mb-2">Host Access Restricted</h2>
+        <h2 className="text-lg font-bold text-[#0e1442] mb-2">
+          Host Access Restricted
+        </h2>
         <p className="text-body-sm text-slate-500 leading-relaxed mb-6">
-          You must apply and be approved as a host by an administrator to view open renter requests and submit proposals.
+          You must apply and be approved as a host by an administrator to view
+          open renter requests and submit proposals.
         </p>
         <Link
           href="/host/upgrade"
-          className="inline-flex h-10 items-center justify-center px-6 rounded-lg bg-[#ffb13d] text-[#0e1442] text-body-sm font-bold hover:bg-[#ffb13d]/90 transition-all active:scale-[0.98] cursor-pointer shadow-xs"
+          className="inline-flex h-10 items-center justify-center px-6 rounded-lg bg-accent-peach-500 text-[#0e1442] text-body-sm font-bold hover:bg-accent-peach-500/90 transition-all active:scale-[0.98] cursor-pointer shadow-xs"
         >
           Request Host Role <ArrowUpRight className="ml-1.5 h-4 w-4" />
         </Link>
@@ -169,8 +184,10 @@ export default function HostDashboardPage() {
   const filteredRequests =
     requests?.filter((r) => {
       if (r.userId === user.id) return false; // Exclude own requests
-      if (selectedEventType !== "all" && r.eventType !== selectedEventType) return false;
-      if (selectedSpaceType !== "all" && r.spaceType !== selectedSpaceType) return false;
+      if (selectedEventType !== "all" && r.eventType !== selectedEventType)
+        return false;
+      if (selectedSpaceType !== "all" && r.spaceType !== selectedSpaceType)
+        return false;
       return true;
     }) || [];
 
@@ -181,7 +198,8 @@ export default function HostDashboardPage() {
         <div>
           <h1 className="text-h1 text-[#0e1442] font-bold">Browse Requests</h1>
           <p className="text-body-sm text-slate-500 mt-1">
-            Browse open facility requirements and pitch your Subler listing links.
+            Browse open facility requirements and pitch your Subler listing
+            links.
           </p>
         </div>
         <div className="flex items-center gap-1.5 text-caption font-bold text-emerald-700 px-2.5 py-0.5 rounded-md bg-emerald-50 border border-emerald-200 self-start md:self-auto">
@@ -191,62 +209,72 @@ export default function HostDashboardPage() {
       </div>
 
       {/* Filter Panel */}
-      {!requestsLoading && !requestsError && requests && requests.length > 0 && (
-        <div className="bg-white border border-neutral-200/60 rounded-2xl p-4 shadow-xs flex flex-wrap items-center gap-4">
-          <div className="flex items-center gap-2 text-caption font-bold uppercase tracking-wider text-slate-400 mr-2">
-            <Filter className="h-4 w-4 text-primary" /> Filter Feed
-          </div>
+      {!requestsLoading &&
+        !requestsError &&
+        requests &&
+        requests.length > 0 && (
+          <div className="bg-white border border-neutral-200/60 rounded-2xl p-4 shadow-xs flex flex-wrap items-center gap-4">
+            <div className="flex items-center gap-2 text-caption font-bold uppercase tracking-wider text-slate-400 mr-2">
+              <Filter className="h-4 w-4 text-primary" /> Filter Feed
+            </div>
 
-          {/* Event Type Filter */}
-          <div className="flex items-center gap-2">
-            <span className="text-caption font-semibold text-muted-foreground">Activity:</span>
-            <select
-              value={selectedEventType}
-              onChange={(e) => setSelectedEventType(e.target.value)}
-              className="h-8.5 rounded-lg border border-border text-caption font-semibold px-2 focus:ring-1 focus:ring-primary focus:border-primary bg-white text-foreground"
-            >
-              <option value="all">All Activities</option>
-              <option value="athletic">Athletic / Fitness</option>
-              <option value="conference">Conference / Seminar</option>
-              <option value="film_production">Film / Production</option>
-              <option value="event">Event / Celebration</option>
-              <option value="rehearsal">Rehearsal / Performing</option>
-              <option value="meeting">Meeting / Workshop</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
+            {/* Event Type Filter */}
+            <div className="flex items-center gap-2">
+              <span className="text-caption font-semibold text-muted-foreground">
+                Activity:
+              </span>
+              <select
+                value={selectedEventType}
+                onChange={(e) => setSelectedEventType(e.target.value)}
+                className="h-8.5 rounded-lg border border-border text-caption font-semibold px-2 focus:ring-1 focus:ring-primary focus:border-primary bg-white text-foreground"
+              >
+                <option value="all">All Activities</option>
+                <option value="athletic">Athletic / Fitness</option>
+                <option value="conference">Conference / Seminar</option>
+                <option value="film_production">Film / Production</option>
+                <option value="event">Event / Celebration</option>
+                <option value="rehearsal">Rehearsal / Performing</option>
+                <option value="meeting">Meeting / Workshop</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
 
-          {/* Space Type Filter */}
-          <div className="flex items-center gap-2">
-            <span className="text-caption font-semibold text-muted-foreground">Space Layout:</span>
-            <select
-              value={selectedSpaceType}
-              onChange={(e) => setSelectedSpaceType(e.target.value)}
-              className="h-8.5 rounded-lg border border-border text-caption font-semibold px-2 focus:ring-1 focus:ring-primary focus:border-primary bg-white text-foreground"
-            >
-              <option value="all">All Space Layouts</option>
-              <option value="studio">Creative Studio</option>
-              <option value="warehouse">Warehouse</option>
-              <option value="event_hall">Event Hall</option>
-              <option value="outdoor">Outdoor Space</option>
-              <option value="gym">Gym / Court</option>
-              <option value="classroom">Classroom / Lab</option>
-              <option value="office">Office / Coworking</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
+            {/* Space Type Filter */}
+            <div className="flex items-center gap-2">
+              <span className="text-caption font-semibold text-muted-foreground">
+                Space Layout:
+              </span>
+              <select
+                value={selectedSpaceType}
+                onChange={(e) => setSelectedSpaceType(e.target.value)}
+                className="h-8.5 rounded-lg border border-border text-caption font-semibold px-2 focus:ring-1 focus:ring-primary focus:border-primary bg-white text-foreground"
+              >
+                <option value="all">All Space Layouts</option>
+                <option value="studio">Creative Studio</option>
+                <option value="warehouse">Warehouse</option>
+                <option value="event_hall">Event Hall</option>
+                <option value="outdoor">Outdoor Space</option>
+                <option value="gym">Gym / Court</option>
+                <option value="classroom">Classroom / Lab</option>
+                <option value="office">Office / Coworking</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
 
-          <span className="text-caption text-muted-foreground ml-auto font-semibold">
-            {filteredRequests.length} requests available
-          </span>
-        </div>
-      )}
+            <span className="text-caption text-muted-foreground ml-auto font-semibold">
+              {filteredRequests.length} requests available
+            </span>
+          </div>
+        )}
 
       {/* Loading state for requests */}
       {requestsLoading && (
         <div className="space-y-6">
           {[1, 2].map((i) => (
-            <div key={i} className="bg-card border border-border rounded-xl p-6 h-52 animate-pulse" />
+            <div
+              key={i}
+              className="bg-card border border-border rounded-xl p-6 h-52 animate-pulse"
+            />
           ))}
         </div>
       )}
@@ -255,38 +283,51 @@ export default function HostDashboardPage() {
       {requestsError && !requestsLoading && (
         <div className="p-6 rounded-xl bg-red-500/5 border border-red-500/10 text-center">
           <AlertCircle className="h-8 w-8 text-red-600 mx-auto mb-2" />
-          <p className="text-body text-red-600 font-semibold">Failed to load rental requests</p>
-          <p className="text-body-sm text-muted-foreground mt-1">Please try reloading the browser page.</p>
+          <p className="text-body text-red-600 font-semibold">
+            Failed to load rental requests
+          </p>
+          <p className="text-body-sm text-muted-foreground mt-1">
+            Please try reloading the browser page.
+          </p>
         </div>
       )}
 
       {/* Empty Feed State */}
-      {!requestsLoading && !requestsError && (!requests || requests.length === 0) && (
-        <div className="bg-card border border-border rounded-xl p-12 text-center shadow-sm">
-          <div className="h-16 w-16 rounded-lg bg-primary/5 border border-primary/5 flex items-center justify-center text-primary mx-auto mb-6">
-            <Search className="h-8 w-8" />
+      {!requestsLoading &&
+        !requestsError &&
+        (!requests || requests.length === 0) && (
+          <div className="bg-card border border-border rounded-xl p-12 text-center shadow-sm">
+            <div className="h-16 w-16 rounded-lg bg-primary/5 border border-primary/5 flex items-center justify-center text-primary mx-auto mb-6">
+              <Search className="h-8 w-8" />
+            </div>
+            <h3 className="text-h3 text-foreground mb-2">No open requests</h3>
+            <p className="text-body-sm text-muted-foreground max-w-sm mx-auto">
+              Renters have not posted any space requirements yet. Check back
+              later for open requests.
+            </p>
           </div>
-          <h3 className="text-h3 text-foreground mb-2">No open requests</h3>
-          <p className="text-body-sm text-muted-foreground max-w-sm mx-auto">
-            Renters have not posted any space requirements yet. Check back later for open requests.
-          </p>
-        </div>
-      )}
+        )}
 
       {/* Empty Filtered Feed State */}
-      {!requestsLoading && !requestsError && requests && requests.length > 0 && filteredRequests.length === 0 && (
-        <div className="bg-card border border-border rounded-xl p-12 text-center shadow-sm">
-          <p className="text-body-sm text-muted-foreground">
-            No open renter requirements match your filters.
-          </p>
-        </div>
-      )}
+      {!requestsLoading &&
+        !requestsError &&
+        requests &&
+        requests.length > 0 &&
+        filteredRequests.length === 0 && (
+          <div className="bg-card border border-border rounded-xl p-12 text-center shadow-sm">
+            <p className="text-body-sm text-muted-foreground">
+              No open renter requirements match your filters.
+            </p>
+          </div>
+        )}
 
       {/* Requests Feed List */}
       {!requestsLoading && !requestsError && filteredRequests.length > 0 && (
         <div className="space-y-6">
           {filteredRequests.map((request) => {
-            const hasSentProposal = request.proposals?.some((p) => p.hostId === user?.id);
+            const hasSentProposal = request.proposals?.some(
+              (p) => p.hostId === user?.id,
+            );
 
             return (
               <div
@@ -311,17 +352,21 @@ export default function HostDashboardPage() {
                       )}
                     </div>
                     <h3 className="font-display text-lg font-bold text-[#0e1442] capitalize tracking-tight">
-                      {request.eventType.replace("_", " ")} / {request.spaceType === "other" ? "Space" : request.spaceType}
+                      {request.eventType.replace("_", " ")} /{" "}
+                      {request.spaceType === "other"
+                        ? "Space"
+                        : request.spaceType}
                     </h3>
                     <p className="text-caption text-slate-400 mt-1">
-                      Posted by {request.user?.email || "Verified Renter"} • {getFormatDate(request.createdAt)}
+                      Posted by {request.user?.email || "Verified Renter"} •{" "}
+                      {getFormatDate(request.createdAt)}
                     </p>
                   </div>
 
                   {!hasSentProposal && (
                     <button
                       onClick={() => handleOpenProposalModal(request)}
-                      className="inline-flex h-10 items-center justify-center px-4 rounded-lg bg-[#ffb13d] text-[#0e1442] text-body-sm font-bold hover:bg-[#ffb13d]/90 transition-all active:scale-[0.98] cursor-pointer flex gap-1.5 shadow-xs"
+                      className="inline-flex h-10 items-center justify-center px-4 rounded-lg bg-accent-peach-500 text-[#0e1442] text-body-sm font-bold hover:bg-accent-peach-500/90 transition-all active:scale-[0.98] cursor-pointer flex gap-1.5 shadow-xs"
                     >
                       <Send className="h-3.5 w-3.5" /> Pitch Space
                     </button>
@@ -333,21 +378,31 @@ export default function HostDashboardPage() {
                   <div className="flex items-center gap-2">
                     <DollarSign className="h-4.5 w-4.5 text-primary/75" />
                     <div>
-                      <p className="text-[10px] text-muted-foreground font-semibold">Budget</p>
-                      <p className="font-semibold text-foreground">${request.budget}/hr max</p>
+                      <p className="text-[10px] text-muted-foreground font-semibold">
+                        Budget
+                      </p>
+                      <p className="font-semibold text-foreground">
+                        ${request.budget}/hr max
+                      </p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
                     <Users className="h-4.5 w-4.5 text-primary/75" />
                     <div>
-                      <p className="text-[10px] text-muted-foreground font-semibold">Capacity</p>
-                      <p className="font-semibold text-foreground">{request.headcount} people</p>
+                      <p className="text-[10px] text-muted-foreground font-semibold">
+                        Capacity
+                      </p>
+                      <p className="font-semibold text-foreground">
+                        {request.headcount} people
+                      </p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
                     <MapPin className="h-4.5 w-4.5 text-primary/75" />
                     <div>
-                      <p className="text-[10px] text-muted-foreground font-semibold">Location Pref.</p>
+                      <p className="text-[10px] text-muted-foreground font-semibold">
+                        Location Pref.
+                      </p>
                       <p className="font-semibold text-foreground truncate max-w-[140px]">
                         {request.locationPreference}
                       </p>
@@ -356,7 +411,9 @@ export default function HostDashboardPage() {
                   <div className="flex items-center gap-2">
                     <Calendar className="h-4.5 w-4.5 text-primary/75" />
                     <div>
-                      <p className="text-[10px] text-muted-foreground font-semibold">Start Date</p>
+                      <p className="text-[10px] text-muted-foreground font-semibold">
+                        Start Date
+                      </p>
                       <p className="font-semibold text-foreground truncate max-w-[140px]">
                         {getFormatDate(request.startDate)}
                       </p>
@@ -367,7 +424,9 @@ export default function HostDashboardPage() {
                 {/* Amenities */}
                 {request.amenities && (
                   <div className="space-y-1.5">
-                    <h4 className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">Required Amenities</h4>
+                    <h4 className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">
+                      Required Amenities
+                    </h4>
                     <div className="flex flex-wrap gap-1.5">
                       {request.amenities.split(", ").map((item: string) => (
                         <span
@@ -404,7 +463,8 @@ export default function HostDashboardPage() {
                   Send Proposal Pitch
                 </h3>
                 <p className="text-[11px] text-slate-400 mt-0.5 capitalize">
-                  To: {activeProposalRequest.eventType.replace("_", " ")} / {activeProposalRequest.spaceType}
+                  To: {activeProposalRequest.eventType.replace("_", " ")} /{" "}
+                  {activeProposalRequest.spaceType}
                 </p>
               </div>
               <button
@@ -420,7 +480,9 @@ export default function HostDashboardPage() {
               <div className="space-y-1.5">
                 <label className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center justify-between">
                   <span>Subler Listing URL</span>
-                  <span className="text-[10px] text-primary lowercase">Must be app.getsubler.com</span>
+                  <span className="text-[10px] text-primary lowercase">
+                    Must be app.getsubler.com
+                  </span>
                 </label>
                 <Input
                   type="text"
@@ -441,7 +503,9 @@ export default function HostDashboardPage() {
               <div className="space-y-1.5">
                 <label className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center justify-between">
                   <span>Your Pitch Message</span>
-                  <span className={`text-[10px] font-semibold ${pitch.length > 500 ? "text-red-500" : "text-muted-foreground"}`}>
+                  <span
+                    className={`text-[10px] font-semibold ${pitch.length > 500 ? "text-red-500" : "text-muted-foreground"}`}
+                  >
                     {pitch.length} / 500 chars
                   </span>
                 </label>
@@ -459,7 +523,8 @@ export default function HostDashboardPage() {
                   </p>
                 )}
                 <p className="text-[10px] text-muted-foreground leading-relaxed">
-                  Provide a brief, compelling pitch. Minimum 10 characters, maximum 500 characters.
+                  Provide a brief, compelling pitch. Minimum 10 characters,
+                  maximum 500 characters.
                 </p>
               </div>
 
@@ -476,11 +541,12 @@ export default function HostDashboardPage() {
                 <Button
                   type="submit"
                   disabled={createProposal.isPending}
-                  className="inline-flex h-9 items-center justify-center px-5 rounded-lg bg-[#ffb13d] text-[#0e1442] hover:bg-[#ffb13d]/90 text-body-sm font-bold transition-all cursor-pointer shadow-xs flex items-center gap-1.5 border-transparent active:scale-[0.98]"
+                  className="inline-flex h-9 items-center justify-center px-5 rounded-lg bg-accent-peach-500 text-[#0e1442] hover:bg-accent-peach-500/90 text-body-sm font-bold transition-all cursor-pointer shadow-xs flex items-center gap-1.5 border-transparent active:scale-[0.98]"
                 >
                   {createProposal.isPending ? (
                     <>
-                      <Loader2 className="h-3.5 w-3.5 animate-spin" /> Sending...
+                      <Loader2 className="h-3.5 w-3.5 animate-spin" />{" "}
+                      Sending...
                     </>
                   ) : (
                     <>

@@ -37,8 +37,8 @@ import { DateTimePicker } from "@/components/ui/date-time-picker";
 type Step = 1 | 2 | 3 | 4;
 
 interface FormState {
-  eventType: typeof eventTypes[number] | "";
-  spaceType: typeof spaceTypes[number] | "";
+  eventType: (typeof eventTypes)[number] | "";
+  spaceType: (typeof spaceTypes)[number] | "";
   startDate: string;
   endDate: string;
   budget: string;
@@ -81,28 +81,105 @@ export default function NewRequestPage() {
   });
 
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
-  const [validationErrors, setValidationErrors] = useState<Partial<Record<keyof FormState, string>>>({});
+  const [validationErrors, setValidationErrors] = useState<
+    Partial<Record<keyof FormState, string>>
+  >({});
 
   // Lists of options with metadata for premium selectors
   const eventOptions = [
-    { value: "athletic", label: "Athletic / Fitness", desc: "Yoga classes, gymnastics, dance practice", icon: Activity },
-    { value: "conference", label: "Conference / Seminar", desc: "Keynotes, large corporate presentations", icon: Building },
-    { value: "film_production", label: "Film / Production", desc: "Video shoot, photo studio, interview setups", icon: Video },
-    { value: "event", label: "Event / Celebration", desc: "Parties, tech meetups, networking mixers", icon: Sparkles },
-    { value: "rehearsal", label: "Rehearsal / Performing", desc: "Theater practice, band sessions, arts", icon: Music },
-    { value: "meeting", label: "Meeting / Workshop", desc: "Team offsites, study groups, presentations", icon: Users },
-    { value: "other", label: "Other Activity", desc: "Custom requirements", icon: HelpCircle },
+    {
+      value: "athletic",
+      label: "Athletic / Fitness",
+      desc: "Yoga classes, gymnastics, dance practice",
+      icon: Activity,
+    },
+    {
+      value: "conference",
+      label: "Conference / Seminar",
+      desc: "Keynotes, large corporate presentations",
+      icon: Building,
+    },
+    {
+      value: "film_production",
+      label: "Film / Production",
+      desc: "Video shoot, photo studio, interview setups",
+      icon: Video,
+    },
+    {
+      value: "event",
+      label: "Event / Celebration",
+      desc: "Parties, tech meetups, networking mixers",
+      icon: Sparkles,
+    },
+    {
+      value: "rehearsal",
+      label: "Rehearsal / Performing",
+      desc: "Theater practice, band sessions, arts",
+      icon: Music,
+    },
+    {
+      value: "meeting",
+      label: "Meeting / Workshop",
+      desc: "Team offsites, study groups, presentations",
+      icon: Users,
+    },
+    {
+      value: "other",
+      label: "Other Activity",
+      desc: "Custom requirements",
+      icon: HelpCircle,
+    },
   ] as const;
 
   const spaceOptions = [
-    { value: "studio", label: "Creative Studio", desc: "Hardwood floors, dance space, photography", icon: Flame },
-    { value: "warehouse", label: "Warehouse", desc: "Raw, industrial, large open storage/production", icon: Home },
-    { value: "event_hall", label: "Event Hall", desc: "Staging, bar setup, reception capacities", icon: Building },
-    { value: "outdoor", label: "Outdoor Space", desc: "Rooftops, gardens, parking lots", icon: Compass },
-    { value: "gym", label: "Gym / Court", desc: "Basketball courts, tracks, training facilities", icon: Dumbbell },
-    { value: "classroom", label: "Classroom / Lab", desc: "Desks, whiteboards, presentation screens", icon: BookOpen },
-    { value: "office", label: "Office / Coworking", desc: "Boardrooms, desks, focus areas", icon: Briefcase },
-    { value: "other", label: "Other Space Type", desc: "Custom venues", icon: HelpCircle },
+    {
+      value: "studio",
+      label: "Creative Studio",
+      desc: "Hardwood floors, dance space, photography",
+      icon: Flame,
+    },
+    {
+      value: "warehouse",
+      label: "Warehouse",
+      desc: "Raw, industrial, large open storage/production",
+      icon: Home,
+    },
+    {
+      value: "event_hall",
+      label: "Event Hall",
+      desc: "Staging, bar setup, reception capacities",
+      icon: Building,
+    },
+    {
+      value: "outdoor",
+      label: "Outdoor Space",
+      desc: "Rooftops, gardens, parking lots",
+      icon: Compass,
+    },
+    {
+      value: "gym",
+      label: "Gym / Court",
+      desc: "Basketball courts, tracks, training facilities",
+      icon: Dumbbell,
+    },
+    {
+      value: "classroom",
+      label: "Classroom / Lab",
+      desc: "Desks, whiteboards, presentation screens",
+      icon: BookOpen,
+    },
+    {
+      value: "office",
+      label: "Office / Coworking",
+      desc: "Boardrooms, desks, focus areas",
+      icon: Briefcase,
+    },
+    {
+      value: "other",
+      label: "Other Space Type",
+      desc: "Custom venues",
+      icon: HelpCircle,
+    },
   ] as const;
 
   const toggleAmenity = (amenity: string) => {
@@ -121,12 +198,15 @@ export default function NewRequestPage() {
     const errors: Partial<Record<keyof FormState, string>> = {};
 
     if (currentStep === 1) {
-      if (!formData.eventType) errors.eventType = "Please select an event category";
-      if (!formData.spaceType) errors.spaceType = "Please select a space layout";
+      if (!formData.eventType)
+        errors.eventType = "Please select an event category";
+      if (!formData.spaceType)
+        errors.spaceType = "Please select a space layout";
     }
 
     if (currentStep === 2) {
-      if (!formData.startDate) errors.startDate = "Start date and time is required";
+      if (!formData.startDate)
+        errors.startDate = "Start date and time is required";
       if (!formData.endDate) errors.endDate = "End date and time is required";
       if (formData.startDate && formData.endDate) {
         const start = new Date(formData.startDate).getTime();
@@ -144,8 +224,12 @@ export default function NewRequestPage() {
       if (!formData.budget || parseFloat(formData.budget) <= 0) {
         errors.budget = "Please enter a valid hourly rate budget";
       }
-      if (!formData.locationPreference || formData.locationPreference.trim().length < 3) {
-        errors.locationPreference = "Please describe location preference (min. 3 characters)";
+      if (
+        !formData.locationPreference ||
+        formData.locationPreference.trim().length < 3
+      ) {
+        errors.locationPreference =
+          "Please describe location preference (min. 3 characters)";
       }
       if (selectedAmenities.length === 0) {
         errors.amenities = "Please select at least one required amenity";
@@ -187,7 +271,8 @@ export default function NewRequestPage() {
       toast.success("Space request published successfully!");
       router.push("/dashboard");
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Failed to publish request";
+      const message =
+        err instanceof Error ? err.message : "Failed to publish request";
       toast.error(message);
     }
   };
@@ -220,7 +305,8 @@ export default function NewRequestPage() {
         </Link>
         <h1 className="text-h1 text-foreground">Post space requirements</h1>
         <p className="text-body-sm text-muted-foreground mt-0.5">
-          Submit your event needs. Matches and pitches will be sent directly by verified hosts.
+          Submit your event needs. Matches and pitches will be sent directly by
+          verified hosts.
         </p>
       </div>
 
@@ -239,8 +325,8 @@ export default function NewRequestPage() {
                     isCompleted
                       ? "bg-primary border-primary text-white"
                       : isActive
-                      ? "bg-white border-primary text-primary ring-4 ring-primary/10 shadow-sm"
-                      : "bg-white border-neutral-300 text-muted-foreground"
+                        ? "bg-white border-primary text-primary ring-4 ring-primary/10 shadow-sm"
+                        : "bg-white border-neutral-300 text-muted-foreground"
                   }`}
                 >
                   {isCompleted ? <Check className="h-4 w-4" /> : i}
@@ -273,7 +359,8 @@ export default function NewRequestPage() {
                   What activity are you planning?
                 </h3>
                 <p className="text-caption text-muted-foreground mt-0.5">
-                  Select the category that best matches your booking requirements.
+                  Select the category that best matches your booking
+                  requirements.
                 </p>
               </div>
 
@@ -286,7 +373,10 @@ export default function NewRequestPage() {
                       type="button"
                       onClick={() => {
                         setFormData({ ...formData, eventType: opt.value });
-                        setValidationErrors({ ...validationErrors, eventType: undefined });
+                        setValidationErrors({
+                          ...validationErrors,
+                          eventType: undefined,
+                        });
                       }}
                       className={`flex items-start text-left gap-3.5 p-4 rounded-lg border-2 transition-all cursor-pointer ${
                         Selected
@@ -304,7 +394,9 @@ export default function NewRequestPage() {
                         <opt.icon className="h-5 w-5" />
                       </div>
                       <div>
-                        <h4 className="font-semibold text-body-sm text-foreground">{opt.label}</h4>
+                        <h4 className="font-semibold text-body-sm text-foreground">
+                          {opt.label}
+                        </h4>
                         <p className="text-caption text-muted-foreground leading-relaxed mt-0.5">
                           {opt.desc}
                         </p>
@@ -327,7 +419,8 @@ export default function NewRequestPage() {
                   What type of space is needed?
                 </h3>
                 <p className="text-caption text-muted-foreground mt-0.5">
-                  Choose the ideal layout and facility category for this booking.
+                  Choose the ideal layout and facility category for this
+                  booking.
                 </p>
               </div>
 
@@ -340,7 +433,10 @@ export default function NewRequestPage() {
                       type="button"
                       onClick={() => {
                         setFormData({ ...formData, spaceType: opt.value });
-                        setValidationErrors({ ...validationErrors, spaceType: undefined });
+                        setValidationErrors({
+                          ...validationErrors,
+                          spaceType: undefined,
+                        });
                       }}
                       className={`flex items-start text-left gap-3.5 p-4 rounded-lg border-2 transition-all cursor-pointer ${
                         Selected
@@ -358,7 +454,9 @@ export default function NewRequestPage() {
                         <opt.icon className="h-5 w-5" />
                       </div>
                       <div>
-                        <h4 className="font-semibold text-body-sm text-foreground">{opt.label}</h4>
+                        <h4 className="font-semibold text-body-sm text-foreground">
+                          {opt.label}
+                        </h4>
                         <p className="text-caption text-muted-foreground leading-relaxed mt-0.5">
                           {opt.desc}
                         </p>
@@ -387,16 +485,21 @@ export default function NewRequestPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label className="text-caption font-semibold text-foreground flex items-center gap-1.5">
-                  <Calendar className="h-4 w-4 text-primary" /> Start Date & Time
+                  <Calendar className="h-4 w-4 text-primary" /> Start Date &
+                  Time
                 </label>
                 <DateTimePicker
                   value={formData.startDate}
                   onChange={(val) => {
                     const newStart = new Date(val);
-                    const newEnd = formData.endDate ? new Date(formData.endDate) : null;
+                    const newEnd = formData.endDate
+                      ? new Date(formData.endDate)
+                      : null;
                     if (!newEnd || newEnd.getTime() <= newStart.getTime()) {
                       // Default end date to 2 hours after start date
-                      const adjustedEnd = new Date(newStart.getTime() + 2 * 60 * 60 * 1000);
+                      const adjustedEnd = new Date(
+                        newStart.getTime() + 2 * 60 * 60 * 1000,
+                      );
                       setFormData({
                         ...formData,
                         startDate: val,
@@ -405,13 +508,18 @@ export default function NewRequestPage() {
                     } else {
                       setFormData({ ...formData, startDate: val });
                     }
-                    setValidationErrors({ ...validationErrors, startDate: undefined, endDate: undefined });
+                    setValidationErrors({
+                      ...validationErrors,
+                      startDate: undefined,
+                      endDate: undefined,
+                    });
                   }}
                   placeholder="Select start date and time"
                 />
                 {validationErrors.startDate && (
                   <p className="text-caption text-red-600 flex items-center gap-1">
-                    <Info className="h-3.5 w-3.5" /> {validationErrors.startDate}
+                    <Info className="h-3.5 w-3.5" />{" "}
+                    {validationErrors.startDate}
                   </p>
                 )}
               </div>
@@ -424,15 +532,24 @@ export default function NewRequestPage() {
                   value={formData.endDate}
                   onChange={(val) => {
                     const newEnd = new Date(val);
-                    const start = formData.startDate ? new Date(formData.startDate) : null;
+                    const start = formData.startDate
+                      ? new Date(formData.startDate)
+                      : null;
                     if (start && newEnd.getTime() <= start.getTime()) {
                       toast.error("End date must occur after the start date");
                       return;
                     }
                     setFormData({ ...formData, endDate: val });
-                    setValidationErrors({ ...validationErrors, endDate: undefined });
+                    setValidationErrors({
+                      ...validationErrors,
+                      endDate: undefined,
+                    });
                   }}
-                  minDate={formData.startDate ? new Date(formData.startDate) : undefined}
+                  minDate={
+                    formData.startDate
+                      ? new Date(formData.startDate)
+                      : undefined
+                  }
                   placeholder="Select end date and time"
                 />
                 {validationErrors.endDate && (
@@ -455,7 +572,10 @@ export default function NewRequestPage() {
                   value={formData.headcount}
                   onChange={(e) => {
                     setFormData({ ...formData, headcount: e.target.value });
-                    setValidationErrors({ ...validationErrors, headcount: undefined });
+                    setValidationErrors({
+                      ...validationErrors,
+                      headcount: undefined,
+                    });
                   }}
                   className="h-11 rounded-lg pr-20 bg-white text-foreground"
                 />
@@ -482,7 +602,8 @@ export default function NewRequestPage() {
             {/* Budget */}
             <div className="space-y-2 max-w-sm">
               <label className="text-caption font-semibold text-foreground flex items-center gap-1.5">
-                <DollarSign className="h-4 w-4 text-primary" /> Maximum Hourly Budget (USD)
+                <DollarSign className="h-4 w-4 text-primary" /> Maximum Hourly
+                Budget (USD)
               </label>
               <div className="relative">
                 <Input
@@ -491,7 +612,10 @@ export default function NewRequestPage() {
                   value={formData.budget}
                   onChange={(e) => {
                     setFormData({ ...formData, budget: e.target.value });
-                    setValidationErrors({ ...validationErrors, budget: undefined });
+                    setValidationErrors({
+                      ...validationErrors,
+                      budget: undefined,
+                    });
                   }}
                   className="h-11 rounded-lg pl-9 pr-14 bg-white text-foreground"
                 />
@@ -512,21 +636,29 @@ export default function NewRequestPage() {
             {/* Location Preference */}
             <div className="space-y-2 pt-2">
               <label className="text-caption font-semibold text-foreground flex items-center gap-1.5">
-                <MapPin className="h-4 w-4 text-primary" /> Preferred Location / Neighborhoods
+                <MapPin className="h-4 w-4 text-primary" /> Preferred Location /
+                Neighborhoods
               </label>
               <Input
                 type="text"
                 placeholder="e.g. Williamsburg, Brooklyn or SOMA, SF"
                 value={formData.locationPreference}
                 onChange={(e) => {
-                  setFormData({ ...formData, locationPreference: e.target.value });
-                  setValidationErrors({ ...validationErrors, locationPreference: undefined });
+                  setFormData({
+                    ...formData,
+                    locationPreference: e.target.value,
+                  });
+                  setValidationErrors({
+                    ...validationErrors,
+                    locationPreference: undefined,
+                  });
                 }}
                 className="h-11 rounded-lg bg-white text-foreground"
               />
               {validationErrors.locationPreference && (
                 <p className="text-caption text-red-600 flex items-center gap-1">
-                  <Info className="h-3.5 w-3.5" /> {validationErrors.locationPreference}
+                  <Info className="h-3.5 w-3.5" />{" "}
+                  {validationErrors.locationPreference}
                 </p>
               )}
             </div>
@@ -535,10 +667,12 @@ export default function NewRequestPage() {
             <div className="space-y-3 pt-2">
               <div>
                 <label className="text-caption font-semibold text-foreground flex items-center gap-1.5">
-                  <Sparkles className="h-4 w-4 text-primary" /> Required Amenities & Features
+                  <Sparkles className="h-4 w-4 text-primary" /> Required
+                  Amenities & Features
                 </label>
                 <p className="text-[11px] text-muted-foreground mt-0.5">
-                  Select all required features for your booking. At least one amenity must be selected.
+                  Select all required features for your booking. At least one
+                  amenity must be selected.
                 </p>
               </div>
 
@@ -580,34 +714,52 @@ export default function NewRequestPage() {
             {/* Summary details */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 text-body-sm">
               <div className="space-y-1">
-                <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">Activity / Space</p>
+                <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">
+                  Activity / Space
+                </p>
                 <p className="font-semibold text-foreground pt-1 capitalize">
-                  {formData.eventType.replace("_", " ")} / {formData.spaceType === "other" ? "Space" : formData.spaceType}
+                  {formData.eventType.replace("_", " ")} /{" "}
+                  {formData.spaceType === "other"
+                    ? "Space"
+                    : formData.spaceType}
                 </p>
               </div>
 
               <div className="space-y-1">
-                <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">Budget / Headcount</p>
+                <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">
+                  Budget / Headcount
+                </p>
                 <p className="font-semibold text-foreground pt-1">
                   ${formData.budget}/hr max • {formData.headcount} capacity
                 </p>
               </div>
 
               <div className="space-y-1">
-                <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">Event Schedule</p>
+                <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">
+                  Event Schedule
+                </p>
                 <p className="font-semibold text-foreground pt-1">
                   {getFormatDate(formData.startDate)} <br />
-                  <span className="text-caption text-muted-foreground">to</span> {getFormatDate(formData.endDate)}
+                  <span className="text-caption text-muted-foreground">
+                    to
+                  </span>{" "}
+                  {getFormatDate(formData.endDate)}
                 </p>
               </div>
 
               <div className="space-y-1">
-                <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">Location Preference</p>
-                <p className="font-semibold text-foreground pt-1">{formData.locationPreference}</p>
+                <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">
+                  Location Preference
+                </p>
+                <p className="font-semibold text-foreground pt-1">
+                  {formData.locationPreference}
+                </p>
               </div>
 
               <div className="space-y-1 md:col-span-2">
-                <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">Amenities Specified</p>
+                <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">
+                  Amenities Specified
+                </p>
                 <div className="flex flex-wrap gap-1.5 pt-1.5">
                   {selectedAmenities.map((item) => (
                     <span
@@ -630,7 +782,9 @@ export default function NewRequestPage() {
                 placeholder="Include additional context such as noise levels, rules, setup requests, or details about your activity..."
                 rows={4}
                 value={formData.notes}
-                onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, notes: e.target.value })
+                }
                 className="w-full border border-border focus:ring-1 focus:ring-primary focus:border-primary rounded-lg p-3.5 text-body-sm bg-white text-foreground"
               />
             </div>
@@ -657,7 +811,7 @@ export default function NewRequestPage() {
             <button
               type="button"
               onClick={handleNext}
-              className="inline-flex h-10 items-center justify-center px-6 rounded-lg bg-[#1e2d8c] text-white hover:bg-[#1e2d8c]/95 text-body-sm font-semibold transition-all cursor-pointer flex gap-1"
+              className="inline-flex h-10 items-center justify-center px-6 rounded-lg bg-[#1e2d8c] text-white hover:bg-[#1e2d8c]/95 text-body-sm font-semibold transition-all cursor-pointer gap-1"
             >
               Continue <ArrowRight className="h-4 w-4" />
             </button>
@@ -666,7 +820,7 @@ export default function NewRequestPage() {
               type="button"
               onClick={handlePublish}
               disabled={createRequest.isPending}
-              className="inline-flex h-10 items-center justify-center px-6 rounded-lg bg-[#ffb13d] text-[#0e1442] hover:bg-[#ffb13d]/90 text-body-sm font-bold transition-all active:scale-[0.98] cursor-pointer flex gap-1.5"
+              className="inline-flex h-10 items-center justify-center px-6 rounded-lg bg-accent-peach-500 text-[#0e1442] hover:bg-accent-peach-500/90 text-body-sm font-bold transition-all active:scale-[0.98] cursor-pointer gap-1.5"
             >
               {createRequest.isPending ? (
                 <>

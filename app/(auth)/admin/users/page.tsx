@@ -1,27 +1,26 @@
 "use client";
 
-import React, { useState } from "react";
-import Link from "next/link";
 import {
-  useAdminUsers,
-  useUpdateUserRole,
-  useDeleteUser,
   AdminUser,
+  useAdminUsers,
+  useDeleteUser,
+  useUpdateUserRole,
 } from "@/hooks/use-admin";
-import { useSession } from "next-auth/react";
-import { toast } from "sonner";
 import {
+  AlertCircle,
   ArrowLeft,
-  Mail,
-  Shield,
   CheckCircle,
-  XCircle,
   Clock,
   Loader2,
-  AlertCircle,
-  Trash2,
+  Shield,
   ShieldAlert,
+  Trash2,
+  XCircle,
 } from "lucide-react";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
+import { useState } from "react";
+import { toast } from "sonner";
 
 interface ConfirmModalState {
   type: "role" | "delete";
@@ -66,7 +65,8 @@ export default function AdminUsersPage() {
       toast.success(`Updated ${user.email}'s role to ${newRole}`);
       setConfirmModal(null);
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Failed to update user role";
+      const message =
+        err instanceof Error ? err.message : "Failed to update user role";
       toast.error(message);
     }
   };
@@ -77,7 +77,8 @@ export default function AdminUsersPage() {
       toast.success(`Successfully deleted user ${user.email}`);
       setConfirmModal(null);
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Failed to delete user";
+      const message =
+        err instanceof Error ? err.message : "Failed to delete user";
       toast.error(message);
     }
   };
@@ -143,7 +144,9 @@ export default function AdminUsersPage() {
           <ArrowLeft className="h-4 w-4 group-hover:-translate-x-0.5 transition-transform" />
           Back to Overview
         </Link>
-        <h1 className="text-h1 text-[#0e1442] font-semibold font-display">Registered Users</h1>
+        <h1 className="text-h1 text-[#0e1442] font-semibold font-display">
+          Registered Users
+        </h1>
         <p className="text-xs text-slate-500 mt-0.5">
           View all renters, hosts, and administrators registered on the Subler
           Reverse platform.
@@ -202,14 +205,20 @@ export default function AdminUsersPage() {
                         <div className="h-8 w-8 rounded-lg bg-[#1e2d8c]/5 text-[#1e2d8c] flex items-center justify-center font-bold text-xs border border-[#1e2d8c]/10 shrink-0">
                           {user.email[0].toUpperCase()}
                         </div>
-                        <div className="font-semibold text-[#0e1442] truncate max-w-[200px]" title={user.email}>
+                        <div
+                          className="font-semibold text-[#0e1442] truncate max-w-50"
+                          title={user.email}
+                        >
                           {user.email}
                         </div>
                       </td>
 
                       {/* Email / Clerk ID */}
                       <td className="px-6 py-4">
-                        <div className="text-[10px] text-slate-400 font-mono truncate max-w-[150px]" title={user.id}>
+                        <div
+                          className="text-[10px] text-slate-400 font-mono truncate max-w-37.5"
+                          title={user.id}
+                        >
                           {user.id}
                         </div>
                       </td>
@@ -236,7 +245,7 @@ export default function AdminUsersPage() {
                         ) : (
                           <div className="flex items-center justify-end gap-2">
                             {/* Toggle Role Button */}
-                             {user.role === "admin" ? (
+                            {user.role === "admin" ? (
                               <button
                                 onClick={() =>
                                   setConfirmModal({
@@ -320,19 +329,14 @@ export default function AdminUsersPage() {
               {confirmModal.type === "delete" ? (
                 <p>
                   Are you sure you want to delete the account for{" "}
-                  <strong>
-                    {confirmModal.user.email}
-                  </strong>
-                  ? This action is permanent and will remove all their requests
-                  and proposals from the platform.
+                  <strong>{confirmModal.user.email}</strong>? This action is
+                  permanent and will remove all their requests and proposals
+                  from the platform.
                 </p>
               ) : (
                 <p>
                   Are you sure you want to change the role of{" "}
-                  <strong>
-                    {confirmModal.user.email}
-                  </strong>{" "}
-                  to{" "}
+                  <strong>{confirmModal.user.email}</strong> to{" "}
                   <strong className="capitalize">
                     {confirmModal.targetRole}
                   </strong>
@@ -355,7 +359,7 @@ export default function AdminUsersPage() {
                 <button
                   onClick={() => handleDeleteSubmit(confirmModal.user)}
                   disabled={isMutating}
-                  className="inline-flex h-9 items-center justify-center px-4.5 rounded-lg bg-red-600 text-white hover:bg-red-700 text-xs font-semibold transition-all cursor-pointer shadow-xs flex items-center gap-1.5"
+                  className="inline-flex h-9 items-center justify-center px-4.5 rounded-lg bg-red-600 text-white hover:bg-red-700 text-xs font-semibold transition-all cursor-pointer shadow-xs gap-1.5"
                 >
                   {isMutating ? (
                     <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -373,7 +377,7 @@ export default function AdminUsersPage() {
                     )
                   }
                   disabled={isMutating}
-                  className="inline-flex h-9 items-center justify-center px-4.5 rounded-lg bg-[#1e2d8c] text-white hover:bg-[#1e2d8c]/95 text-xs font-semibold transition-all cursor-pointer shadow-xs flex items-center gap-1.5"
+                  className="inline-flex h-9 items-center justify-center px-4.5 rounded-lg bg-[#1e2d8c] text-white hover:bg-[#1e2d8c]/95 text-xs font-semibold transition-all cursor-pointer shadow-xs gap-1.5"
                 >
                   {isMutating ? (
                     <Loader2 className="h-3.5 w-3.5 animate-spin" />

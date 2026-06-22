@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { ArrowLeft, Loader2, KeyRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import Image from "next/image";
 
 function LoginForm() {
   const searchParams = useSearchParams();
@@ -44,7 +45,9 @@ function LoginForm() {
       toast.success("Verification code sent to your email!");
     } catch (err: any) {
       console.error("OTP Send error:", err);
-      toast.error(err.message || "An unexpected error occurred. Please try again.");
+      toast.error(
+        err.message || "An unexpected error occurred. Please try again.",
+      );
     } finally {
       setLoading(false);
     }
@@ -91,13 +94,18 @@ function LoginForm() {
             Verify Your Email
           </h2>
           <p className="text-xs text-slate-500 leading-relaxed">
-            We sent a 6-digit code to <strong className="text-[#0e1442]">{email}</strong>. Enter it below to sign in.
+            We sent a 6-digit code to{" "}
+            <strong className="text-[#0e1442]">{email}</strong>. Enter it below
+            to sign in.
           </p>
         </div>
 
         <form onSubmit={handleVerifyOtp} className="space-y-4">
           <div className="space-y-2">
-            <label htmlFor="code" className="block text-xs font-bold text-slate-400 uppercase tracking-wider">
+            <label
+              htmlFor="code"
+              className="block text-xs font-bold text-slate-400 uppercase tracking-wider"
+            >
               Verification Code
             </label>
             <Input
@@ -108,7 +116,9 @@ function LoginForm() {
               maxLength={6}
               placeholder="123456"
               value={otpCode}
-              onChange={(e) => setOtpCode(e.target.value.replace(/[^0-9]/g, ""))}
+              onChange={(e) =>
+                setOtpCode(e.target.value.replace(/[^0-9]/g, ""))
+              }
               disabled={loading}
               required
               className="h-11 rounded-lg border border-slate-200 focus:border-[#1e2d8c] px-3.5 text-center font-mono text-lg tracking-widest focus-visible:ring-[#1e2d8c]/10 bg-white text-[#0e1442] outline-none"
@@ -131,7 +141,7 @@ function LoginForm() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-2/3 bg-[#ffb13d] hover:bg-[#ffb13d]/90 text-[#0e1442] font-semibold transition-all rounded-lg h-10 shadow-xs text-xs active:scale-[0.98] cursor-pointer"
+              className="w-2/3 bg-accent-peach-500 hover:bg-accent-peach-500/90 text-[#0e1442] font-semibold transition-all rounded-lg h-10 shadow-xs text-xs active:scale-[0.98] cursor-pointer"
             >
               {loading ? (
                 <>
@@ -161,7 +171,10 @@ function LoginForm() {
 
       <form onSubmit={handleSendOtp} className="space-y-4">
         <div className="space-y-2">
-          <label htmlFor="email" className="block text-xs font-bold text-slate-400 uppercase tracking-wider">
+          <label
+            htmlFor="email"
+            className="block text-xs font-bold text-slate-400 uppercase tracking-wider"
+          >
             Email Address
           </label>
           <Input
@@ -179,7 +192,7 @@ function LoginForm() {
         <Button
           type="submit"
           disabled={loading}
-          className="w-full bg-[#ffb13d] hover:bg-[#ffb13d]/90 text-[#0e1442] font-semibold transition-all rounded-lg h-10 shadow-xs text-xs active:scale-[0.98] cursor-pointer pt-0.5"
+          className="w-full bg-accent-peach-500 hover:bg-accent-peach-500/90 text-[#0e1442] font-semibold transition-all rounded-lg h-10 shadow-xs text-xs active:scale-[0.98] cursor-pointer pt-0.5"
         >
           {loading ? (
             <>
@@ -217,7 +230,9 @@ export default function LoginPage() {
           className="h-5.5 w-auto object-contain shrink-0"
         />
         <div className="flex items-baseline gap-1">
-          <span className="text-slate-300 font-light text-xs select-none">|</span>
+          <span className="text-slate-300 font-light text-xs select-none">
+            |
+          </span>
           <span className="text-[10px] text-slate-400 font-medium whitespace-nowrap leading-none tracking-tight">
             Reverse Marketplace
           </span>
@@ -226,11 +241,13 @@ export default function LoginPage() {
 
       {/* Center - Form Card */}
       <div className="w-full max-w-md flex flex-col items-center justify-center">
-        <Suspense fallback={
-          <div className="w-full max-w-md bg-white border border-slate-200/60 rounded-2xl p-8 shadow-xs flex items-center justify-center">
-            <Loader2 className="h-6 w-6 animate-spin text-slate-400" />
-          </div>
-        }>
+        <Suspense
+          fallback={
+            <div className="w-full max-w-md bg-white border border-slate-200/60 rounded-2xl p-8 shadow-xs flex items-center justify-center">
+              <Loader2 className="h-6 w-6 animate-spin text-slate-400" />
+            </div>
+          }
+        >
           <LoginForm />
         </Suspense>
       </div>
@@ -238,8 +255,8 @@ export default function LoginPage() {
       {/* Bottom info */}
       <div className="mt-8 text-center text-[10px] text-slate-400 max-w-xs leading-relaxed select-none">
         <p>
-          By continuing, you agree to Subler&apos;s terms of service and
-          privacy policy. All transaction processes are finalized on Subler.
+          By continuing, you agree to Subler&apos;s terms of service and privacy
+          policy. All transaction processes are finalized on Subler.
         </p>
       </div>
     </div>

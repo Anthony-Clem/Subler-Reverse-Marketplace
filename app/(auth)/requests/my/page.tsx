@@ -49,23 +49,28 @@ export default function MyRequestsPage() {
 
   const handleProposalAction = async (
     proposalId: string,
-    action: "accepted" | "rejected"
+    action: "accepted" | "rejected",
   ) => {
     try {
       await updateProposalStatus.mutateAsync({
         id: proposalId,
         status: action,
       });
-      toast.success(`Proposal ${action === "accepted" ? "accepted" : "declined"} successfully`);
+      toast.success(
+        `Proposal ${action === "accepted" ? "accepted" : "declined"} successfully`,
+      );
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Failed to update proposal";
+      const message =
+        err instanceof Error ? err.message : "Failed to update proposal";
       toast.error(message);
     }
   };
 
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
-  const [editingRequest, setEditingRequest] = useState<RentalRequest | null>(null);
+  const [editingRequest, setEditingRequest] = useState<RentalRequest | null>(
+    null,
+  );
   const [editFormData, setEditFormData] = useState<{
     eventType: string;
     spaceType: string;
@@ -80,7 +85,7 @@ export default function MyRequestsPage() {
 
   const handleEditClick = (request: RentalRequest) => {
     setEditingRequest(request);
-    
+
     const formatToDatetimeLocal = (isoString: string) => {
       try {
         const d = new Date(isoString);
@@ -106,7 +111,7 @@ export default function MyRequestsPage() {
 
   const handleStatusChange = async (
     requestId: string,
-    newStatus: "open" | "closed" | "fulfilled"
+    newStatus: "open" | "closed" | "fulfilled",
   ) => {
     try {
       await updateRequest.mutateAsync({
@@ -115,7 +120,8 @@ export default function MyRequestsPage() {
       });
       toast.success(`Request status updated to ${newStatus}`);
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Failed to update status";
+      const message =
+        err instanceof Error ? err.message : "Failed to update status";
       toast.error(message);
     }
   };
@@ -128,7 +134,8 @@ export default function MyRequestsPage() {
       toast.success("Rental request deleted successfully");
       setDeleteConfirmId(null);
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Failed to delete request";
+      const message =
+        err instanceof Error ? err.message : "Failed to delete request";
       toast.error(message);
     }
   };
@@ -145,7 +152,10 @@ export default function MyRequestsPage() {
       toast.error("Please select start and end dates");
       return;
     }
-    if (new Date(editFormData.endDate).getTime() <= new Date(editFormData.startDate).getTime()) {
+    if (
+      new Date(editFormData.endDate).getTime() <=
+      new Date(editFormData.startDate).getTime()
+    ) {
       toast.error("End date must occur after the start date");
       return;
     }
@@ -180,7 +190,8 @@ export default function MyRequestsPage() {
       toast.success("Rental request updated successfully");
       setEditingRequest(null);
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Failed to update request";
+      const message =
+        err instanceof Error ? err.message : "Failed to update request";
       toast.error(message);
     }
   };
@@ -258,7 +269,7 @@ export default function MyRequestsPage() {
         </div>
         <Link
           href="/requests/new"
-          className="inline-flex h-10 items-center justify-center px-4 rounded-lg bg-[#ffb13d] text-[#0e1442] text-body-sm font-bold hover:bg-[#ffb13d]/90 transition-all active:scale-[0.98] cursor-pointer self-start sm:self-auto"
+          className="inline-flex h-10 items-center justify-center px-4 rounded-lg bg-accent-peach-500 text-[#0e1442] text-body-sm font-bold hover:bg-accent-peach-500/90 transition-all active:scale-[0.98] cursor-pointer self-start sm:self-auto"
         >
           <Plus className="mr-1.5 h-4 w-4" /> Post a Request
         </Link>
@@ -320,13 +331,16 @@ export default function MyRequestsPage() {
           <div className="h-12 w-12 rounded-full bg-neutral-50 flex items-center justify-center text-slate-400 mx-auto mb-6">
             <ClipboardList className="h-6 w-6" />
           </div>
-          <h3 className="text-lg font-bold text-[#0e1442] mb-2">No requests created yet</h3>
+          <h3 className="text-lg font-bold text-[#0e1442] mb-2">
+            No requests created yet
+          </h3>
           <p className="text-body-sm text-slate-500 max-w-sm mx-auto mb-6 leading-relaxed">
-            Submit your space requirements so verified hosts can pitch their spaces to you.
+            Submit your space requirements so verified hosts can pitch their
+            spaces to you.
           </p>
           <Link
             href="/requests/new"
-            className="inline-flex h-10 items-center justify-center px-6 rounded-lg bg-[#ffb13d] text-[#0e1442] text-body-sm font-bold hover:bg-[#ffb13d]/90 transition-all active:scale-[0.98] cursor-pointer"
+            className="inline-flex h-10 items-center justify-center px-6 rounded-lg bg-accent-peach-500 text-[#0e1442] text-body-sm font-bold hover:bg-accent-peach-500/90 transition-all active:scale-[0.98] cursor-pointer"
           >
             Post a Request
           </Link>
@@ -334,13 +348,17 @@ export default function MyRequestsPage() {
       )}
 
       {/* Empty Filter State */}
-      {!isLoading && !error && requests && requests.length > 0 && filteredRequests.length === 0 && (
-        <div className="bg-card border border-border rounded-xl p-12 text-center shadow-sm">
-          <p className="text-body-sm text-muted-foreground">
-            No requests match the selected status filter.
-          </p>
-        </div>
-      )}
+      {!isLoading &&
+        !error &&
+        requests &&
+        requests.length > 0 &&
+        filteredRequests.length === 0 && (
+          <div className="bg-card border border-border rounded-xl p-12 text-center shadow-sm">
+            <p className="text-body-sm text-muted-foreground">
+              No requests match the selected status filter.
+            </p>
+          </div>
+        )}
 
       {/* Requests list */}
       {!isLoading && !error && filteredRequests.length > 0 && (
@@ -363,7 +381,10 @@ export default function MyRequestsPage() {
                     {getStatusBadge(request.status)}
                   </div>
                   <h3 className="text-h3 text-foreground font-semibold capitalize">
-                    {request.eventType.replace("_", " ")} / {request.spaceType === "other" ? "Space" : request.spaceType}
+                    {request.eventType.replace("_", " ")} /{" "}
+                    {request.spaceType === "other"
+                      ? "Space"
+                      : request.spaceType}
                   </h3>
                 </div>
 
@@ -371,14 +392,14 @@ export default function MyRequestsPage() {
                   <span className="text-caption text-muted-foreground whitespace-nowrap hidden sm:inline">
                     Posted {getFormatDate(request.createdAt)}
                   </span>
-                  
+
                   {/* Status Dropdown */}
                   <select
                     value={request.status}
                     onChange={(e) =>
                       handleStatusChange(
                         request.id,
-                        e.target.value as "open" | "closed" | "fulfilled"
+                        e.target.value as "open" | "closed" | "fulfilled",
                       )
                     }
                     disabled={updateRequest.isPending}
@@ -416,22 +437,32 @@ export default function MyRequestsPage() {
                 <div className="flex items-center gap-2">
                   <DollarSign className="h-4.5 w-4.5 text-primary/75" />
                   <div>
-                    <p className="text-[10px] text-muted-foreground font-semibold">Budget</p>
-                    <p className="font-semibold text-foreground">${request.budget}/hr</p>
+                    <p className="text-[10px] text-muted-foreground font-semibold">
+                      Budget
+                    </p>
+                    <p className="font-semibold text-foreground">
+                      ${request.budget}/hr
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <Users className="h-4.5 w-4.5 text-primary/75" />
                   <div>
-                    <p className="text-[10px] text-muted-foreground font-semibold">Headcount</p>
-                    <p className="font-semibold text-foreground">{request.headcount} people</p>
+                    <p className="text-[10px] text-muted-foreground font-semibold">
+                      Headcount
+                    </p>
+                    <p className="font-semibold text-foreground">
+                      {request.headcount} people
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <MapPin className="h-4.5 w-4.5 text-primary/75" />
                   <div>
-                    <p className="text-[10px] text-muted-foreground font-semibold">Location</p>
-                    <p className="font-semibold text-foreground truncate max-w-[140px]">
+                    <p className="text-[10px] text-muted-foreground font-semibold">
+                      Location
+                    </p>
+                    <p className="font-semibold text-foreground truncate max-w-35">
                       {request.locationPreference}
                     </p>
                   </div>
@@ -439,8 +470,10 @@ export default function MyRequestsPage() {
                 <div className="flex items-center gap-2">
                   <Calendar className="h-4.5 w-4.5 text-primary/75" />
                   <div>
-                    <p className="text-[10px] text-muted-foreground font-semibold">Dates</p>
-                    <p className="font-semibold text-foreground truncate max-w-[140px]">
+                    <p className="text-[10px] text-muted-foreground font-semibold">
+                      Dates
+                    </p>
+                    <p className="font-semibold text-foreground truncate max-w-35">
                       {getFormatDate(request.startDate)}
                     </p>
                   </div>
@@ -515,14 +548,18 @@ export default function MyRequestsPage() {
                           {proposal.status === "pending" && (
                             <>
                               <button
-                                onClick={() => handleProposalAction(proposal.id, "rejected")}
+                                onClick={() =>
+                                  handleProposalAction(proposal.id, "rejected")
+                                }
                                 disabled={updateProposalStatus.isPending}
                                 className="inline-flex h-9 items-center justify-center px-3.5 rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 hover:text-slate-700 text-body-sm font-semibold transition-colors cursor-pointer disabled:opacity-50"
                               >
                                 Decline
                               </button>
                               <button
-                                onClick={() => handleProposalAction(proposal.id, "accepted")}
+                                onClick={() =>
+                                  handleProposalAction(proposal.id, "accepted")
+                                }
                                 disabled={updateProposalStatus.isPending}
                                 className="inline-flex h-9 items-center justify-center px-4 rounded-lg bg-primary text-white hover:bg-primary/95 text-body-sm font-semibold transition-all cursor-pointer shadow-xs disabled:opacity-50 active:scale-[0.98]"
                               >
@@ -535,9 +572,10 @@ export default function MyRequestsPage() {
                             href={proposal.sublerLink}
                             target="_blank"
                             rel="noreferrer"
-                            className="inline-flex h-9 items-center justify-center gap-1.5 px-4 rounded-lg bg-[#ffb13d] text-[#0e1442] hover:bg-[#ffb13d]/90 text-body-sm font-semibold transition-all cursor-pointer shadow-xs active:scale-[0.98]"
+                            className="inline-flex h-9 items-center justify-center gap-1.5 px-4 rounded-lg bg-accent-peach-500 text-[#0e1442] hover:bg-accent-peach-500/90 text-body-sm font-semibold transition-all cursor-pointer shadow-xs active:scale-[0.98]"
                           >
-                            View on Subler <ArrowUpRight className="h-3.5 w-3.5" />
+                            View on Subler{" "}
+                            <ArrowUpRight className="h-3.5 w-3.5" />
                           </a>
                         </div>
                       </div>
@@ -568,9 +606,11 @@ export default function MyRequestsPage() {
               <p>
                 Are you sure you want to delete your request for{" "}
                 <strong className="capitalize">
-                  {targetDeleteRequest.eventType.replace("_", " ")} / {targetDeleteRequest.spaceType}
+                  {targetDeleteRequest.eventType.replace("_", " ")} /{" "}
+                  {targetDeleteRequest.spaceType}
                 </strong>
-                ? This action is permanent and will remove all incoming proposals for this request.
+                ? This action is permanent and will remove all incoming
+                proposals for this request.
               </p>
             </div>
 
@@ -585,7 +625,7 @@ export default function MyRequestsPage() {
               <button
                 onClick={handleDeleteSubmit}
                 disabled={deleteRequest.isPending}
-                className="inline-flex h-9 items-center justify-center px-4.5 rounded-lg bg-red-600 text-white hover:bg-red-700 text-body-sm font-semibold transition-all cursor-pointer shadow-sm flex items-center gap-1.5"
+                className="inline-flex h-9 items-center justify-center px-4.5 rounded-lg bg-red-600 text-white hover:bg-red-700 text-body-sm font-semibold transition-all cursor-pointer shadow-sm gap-1.5"
               >
                 {deleteRequest.isPending ? (
                   <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -625,7 +665,12 @@ export default function MyRequestsPage() {
                   </label>
                   <select
                     value={editFormData.eventType}
-                    onChange={(e) => setEditFormData({ ...editFormData, eventType: e.target.value })}
+                    onChange={(e) =>
+                      setEditFormData({
+                        ...editFormData,
+                        eventType: e.target.value,
+                      })
+                    }
                     className="w-full h-10 rounded-lg border border-border px-3 bg-white text-foreground text-body-sm focus:ring-1 focus:ring-primary focus:border-primary transition-all"
                   >
                     <option value="athletic">Athletic / Fitness</option>
@@ -645,7 +690,12 @@ export default function MyRequestsPage() {
                   </label>
                   <select
                     value={editFormData.spaceType}
-                    onChange={(e) => setEditFormData({ ...editFormData, spaceType: e.target.value })}
+                    onChange={(e) =>
+                      setEditFormData({
+                        ...editFormData,
+                        spaceType: e.target.value,
+                      })
+                    }
                     className="w-full h-10 rounded-lg border border-border px-3 bg-white text-foreground text-body-sm focus:ring-1 focus:ring-primary focus:border-primary transition-all"
                   >
                     <option value="studio">Creative Studio</option>
@@ -670,9 +720,13 @@ export default function MyRequestsPage() {
                     value={editFormData.startDate}
                     onChange={(val) => {
                       const newStart = new Date(val);
-                      const newEnd = editFormData.endDate ? new Date(editFormData.endDate) : null;
+                      const newEnd = editFormData.endDate
+                        ? new Date(editFormData.endDate)
+                        : null;
                       if (!newEnd || newEnd.getTime() <= newStart.getTime()) {
-                        const adjustedEnd = new Date(newStart.getTime() + 2 * 60 * 60 * 1000);
+                        const adjustedEnd = new Date(
+                          newStart.getTime() + 2 * 60 * 60 * 1000,
+                        );
                         setEditFormData({
                           ...editFormData,
                           startDate: val,
@@ -695,14 +749,20 @@ export default function MyRequestsPage() {
                     value={editFormData.endDate}
                     onChange={(val) => {
                       const newEnd = new Date(val);
-                      const start = editFormData.startDate ? new Date(editFormData.startDate) : null;
+                      const start = editFormData.startDate
+                        ? new Date(editFormData.startDate)
+                        : null;
                       if (start && newEnd.getTime() <= start.getTime()) {
                         toast.error("End date must occur after the start date");
                         return;
                       }
                       setEditFormData({ ...editFormData, endDate: val });
                     }}
-                    minDate={editFormData.startDate ? new Date(editFormData.startDate) : undefined}
+                    minDate={
+                      editFormData.startDate
+                        ? new Date(editFormData.startDate)
+                        : undefined
+                    }
                     placeholder="Select end date and time"
                   />
                 </div>
@@ -717,7 +777,12 @@ export default function MyRequestsPage() {
                   <input
                     type="number"
                     value={editFormData.budget}
-                    onChange={(e) => setEditFormData({ ...editFormData, budget: e.target.value })}
+                    onChange={(e) =>
+                      setEditFormData({
+                        ...editFormData,
+                        budget: e.target.value,
+                      })
+                    }
                     className="w-full h-10 rounded-lg border border-border px-3 bg-white text-foreground text-body-sm focus:ring-1 focus:ring-primary focus:border-primary transition-all"
                   />
                 </div>
@@ -730,7 +795,12 @@ export default function MyRequestsPage() {
                   <input
                     type="number"
                     value={editFormData.headcount}
-                    onChange={(e) => setEditFormData({ ...editFormData, headcount: e.target.value })}
+                    onChange={(e) =>
+                      setEditFormData({
+                        ...editFormData,
+                        headcount: e.target.value,
+                      })
+                    }
                     className="w-full h-10 rounded-lg border border-border px-3 bg-white text-foreground text-body-sm focus:ring-1 focus:ring-primary focus:border-primary transition-all"
                   />
                 </div>
@@ -743,7 +813,12 @@ export default function MyRequestsPage() {
                   <input
                     type="text"
                     value={editFormData.locationPreference}
-                    onChange={(e) => setEditFormData({ ...editFormData, locationPreference: e.target.value })}
+                    onChange={(e) =>
+                      setEditFormData({
+                        ...editFormData,
+                        locationPreference: e.target.value,
+                      })
+                    }
                     className="w-full h-10 rounded-lg border border-border px-3 bg-white text-foreground text-body-sm focus:ring-1 focus:ring-primary focus:border-primary transition-all"
                   />
                 </div>
@@ -757,7 +832,10 @@ export default function MyRequestsPage() {
                 <div className="flex flex-wrap gap-1.5 max-h-28 overflow-y-auto p-1.5 border border-border rounded-lg bg-neutral-50/50">
                   {AMENITY_OPTIONS.map((item) => {
                     const isSelected = editFormData.amenities
-                      ? editFormData.amenities.split(", ").map((a) => a.trim()).includes(item)
+                      ? editFormData.amenities
+                          .split(", ")
+                          .map((a) => a.trim())
+                          .includes(item)
                       : false;
                     return (
                       <button
@@ -785,7 +863,9 @@ export default function MyRequestsPage() {
                 <textarea
                   rows={3}
                   value={editFormData.notes}
-                  onChange={(e) => setEditFormData({ ...editFormData, notes: e.target.value })}
+                  onChange={(e) =>
+                    setEditFormData({ ...editFormData, notes: e.target.value })
+                  }
                   className="w-full rounded-lg border border-border p-3 bg-white text-foreground text-body-sm focus:ring-1 focus:ring-primary focus:border-primary transition-all"
                 />
               </div>
@@ -803,7 +883,7 @@ export default function MyRequestsPage() {
                 <button
                   type="submit"
                   disabled={updateRequest.isPending}
-                  className="inline-flex h-9 items-center justify-center px-5 rounded-lg bg-primary text-white hover:bg-primary/95 text-body-sm font-semibold transition-all cursor-pointer shadow-sm flex items-center gap-1.5"
+                  className="inline-flex h-9 items-center justify-center px-5 rounded-lg bg-primary text-white hover:bg-primary/95 text-body-sm font-semibold transition-all cursor-pointer shadow-sm gap-1.5"
                 >
                   {updateRequest.isPending ? (
                     <Loader2 className="h-3.5 w-3.5 animate-spin" />

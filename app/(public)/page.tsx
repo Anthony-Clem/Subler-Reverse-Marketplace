@@ -1,5 +1,6 @@
 "use client";
 
+import { useOpenRequests } from "@/hooks/use-requests";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -12,12 +13,11 @@ import {
   Shield,
   Sparkles,
   Users,
-  Zap,
 } from "lucide-react";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { useOpenRequests } from "@/hooks/use-requests";
-import { useSession } from "next-auth/react";
 
 const formatBudget = (budget: string | number) => {
   if (!budget) return "Flexible";
@@ -82,7 +82,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#fafafc] font-sans selection:bg-[#ffb13d]/30 selection:text-[#0e1442] text-[#0e1442]">
+    <div className="flex flex-col min-h-screen bg-[#fafafc] font-sans selection:bg-accent-peach-500/30 selection:text-[#0e1442] text-[#0e1442]">
       {/* Navigation */}
       <header className="sticky top-0 z-50 w-full bg-[#fafafc] border-b border-slate-200/60 transition-all text-[#0e1442]">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
@@ -132,7 +132,7 @@ export default function Home() {
             </Link>
             <Link
               href="/login"
-              className="inline-flex h-10 items-center justify-center px-4 rounded-lg bg-[#ffb13d] text-[#0e1442] text-xs font-bold hover:bg-[#ffb13d]/90 transition-all active:scale-[0.98] cursor-pointer shadow-xs"
+              className="inline-flex h-10 items-center justify-center px-4 rounded-lg bg-accent-peach-500 text-[#0e1442] text-xs font-bold hover:bg-accent-peach-500/90 transition-all active:scale-[0.98] cursor-pointer shadow-xs"
             >
               Post a Request
             </Link>
@@ -145,7 +145,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6 text-center relative z-10">
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 text-white backdrop-blur-xs text-xs mb-8 animate-fade-in shadow-xs">
-            <Sparkles className="h-3.5 w-3.5 text-[#ffb13d] fill-[#ffb13d]" />
+            <Sparkles className="h-3.5 w-3.5 text-accent-peach-500 fill-accent-peach-500" />
             <span className="font-semibold text-slate-300">
               The Demand-Side Matching Layer for Subler
             </span>
@@ -154,7 +154,7 @@ export default function Home() {
           {/* Heading */}
           <h1 className="max-w-4xl mx-auto font-display text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight tracking-tight mb-6">
             Tell hosts what you need. <br />
-            <span className="text-[#ffb13d]">
+            <span className="text-accent-peach-500">
               Let the perfect space find you.
             </span>
           </h1>
@@ -170,7 +170,7 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto mb-16">
             <Link
               href="/login"
-              className="inline-flex h-10 w-full sm:w-auto items-center justify-center px-6 rounded-lg bg-[#ffb13d] text-[#0e1442] text-xs font-bold hover:bg-[#ffb13d]/90 transition-all active:scale-[0.98] cursor-pointer shadow-xs"
+              className="inline-flex h-10 w-full sm:w-auto items-center justify-center px-6 rounded-lg bg-accent-peach-500 text-[#0e1442] text-xs font-bold hover:bg-accent-peach-500/90 transition-all active:scale-[0.98] cursor-pointer shadow-xs"
             >
               Post a Request <Plus className="ml-1.5 h-3.5 w-3.5" />
             </Link>
@@ -185,17 +185,17 @@ export default function Home() {
           {/* Trust Metric */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8 py-5 border-y border-white/10 max-w-3xl mx-auto text-slate-300 text-xs">
             <div className="flex items-center gap-2">
-              <CheckCircle2 className="h-4.5 w-4.5 text-[#ffb13d]" />
+              <CheckCircle2 className="h-4.5 w-4.5 text-accent-peach-500" />
               <span className="font-semibold">Free to post</span>
             </div>
             <div className="hidden sm:block h-4 w-px bg-white/10" />
             <div className="flex items-center gap-2">
-              <Shield className="h-4.5 w-4.5 text-[#ffb13d]" />
+              <Shield className="h-4.5 w-4.5 text-accent-peach-500" />
               <span className="font-semibold">100% verified hosts</span>
             </div>
             <div className="hidden sm:block h-4 w-px bg-white/10" />
             <div className="flex items-center gap-2">
-              <Clock className="h-4.5 w-4.5 text-[#ffb13d]" />
+              <Clock className="h-4.5 w-4.5 text-accent-peach-500" />
               <span className="font-semibold">
                 Avg. proposal in under 2 hrs
               </span>
@@ -219,7 +219,7 @@ export default function Home() {
 
           <div className="grid md:grid-cols-3 gap-8 md:gap-10">
             {/* Step 1 */}
-            <div className="group relative p-8 rounded-2xl bg-white border border-slate-200/60 shadow-xs flex flex-col justify-between hover:shadow-sm hover:-translate-y-0.5 transition-all duration-300 min-h-[320px]">
+            <div className="group relative p-8 rounded-2xl bg-white border border-slate-200/60 shadow-xs flex flex-col justify-between hover:shadow-sm hover:-translate-y-0.5 transition-all duration-300 min-h-80">
               <div>
                 <div className="font-display text-[#e2e8f0] group-hover:text-[#1e2d8c] text-5xl font-bold transition-colors duration-300 mb-6">
                   01
@@ -238,7 +238,7 @@ export default function Home() {
             </div>
 
             {/* Step 2 */}
-            <div className="group relative p-8 rounded-2xl bg-white border border-slate-200/60 shadow-xs flex flex-col justify-between hover:shadow-sm hover:-translate-y-0.5 transition-all duration-300 min-h-[320px]">
+            <div className="group relative p-8 rounded-2xl bg-white border border-slate-200/60 shadow-xs flex flex-col justify-between hover:shadow-sm hover:-translate-y-0.5 transition-all duration-300 min-h-80">
               <div>
                 <div className="font-display text-[#e2e8f0] group-hover:text-[#1e2d8c] text-5xl font-bold transition-colors duration-300 mb-6">
                   02
@@ -258,7 +258,7 @@ export default function Home() {
             </div>
 
             {/* Step 3 */}
-            <div className="group relative p-8 rounded-2xl bg-white border border-slate-200/60 shadow-xs flex flex-col justify-between hover:shadow-sm hover:-translate-y-0.5 transition-all duration-300 min-h-[320px]">
+            <div className="group relative p-8 rounded-2xl bg-white border border-slate-200/60 shadow-xs flex flex-col justify-between hover:shadow-sm hover:-translate-y-0.5 transition-all duration-300 min-h-80">
               <div>
                 <div className="font-display text-[#e2e8f0] group-hover:text-[#1e2d8c] text-5xl font-bold transition-colors duration-300 mb-6">
                   03
@@ -363,7 +363,7 @@ export default function Home() {
                   </p>
                   <Link
                     href="/login"
-                    className="inline-flex h-10 items-center justify-center px-6 rounded-lg bg-[#ffb13d] text-[#0e1442] text-xs font-bold hover:bg-[#ffb13d]/90 transition-all active:scale-[0.98] cursor-pointer shadow-xs"
+                    className="inline-flex h-10 items-center justify-center px-6 rounded-lg bg-accent-peach-500 text-[#0e1442] text-xs font-bold hover:bg-accent-peach-500/90 transition-all active:scale-[0.98] cursor-pointer shadow-xs"
                   >
                     Post a Request
                   </Link>
@@ -620,14 +620,14 @@ export default function Home() {
             </div>
 
             {/* Graphic Callout Card */}
-            <div className="relative bg-[#0e1442] border border-slate-200/20 rounded-2xl p-8 text-white shadow-xs transition duration-300 overflow-hidden flex flex-col justify-between min-h-[380px]">
+            <div className="relative bg-[#0e1442] border border-slate-200/20 rounded-2xl p-8 text-white shadow-xs transition duration-300 overflow-hidden flex flex-col justify-between min-h-95">
               <div className="relative z-10">
                 <span className="text-[10px] font-bold uppercase text-slate-400 tracking-wider mb-4 block">
                   Subler Core On-Ramp
                 </span>
                 <p className="font-display font-bold text-xl leading-snug mb-4 text-white">
                   “All discovery happens here. All booking details are completed
-                  on <span className="text-[#ffb13d]">Subler</span>.”
+                  on <span className="text-accent-peach-500">Subler</span>.”
                 </p>
               </div>
 
@@ -642,7 +642,7 @@ export default function Home() {
                 </div>
                 <Link
                   href="/login"
-                  className="h-10 w-10 rounded-lg bg-[#ffb13d] text-[#0e1442] flex items-center justify-center hover:bg-[#ffb13d]/90 active:scale-[0.98] transition-all shadow-xs cursor-pointer"
+                  className="h-10 w-10 rounded-lg bg-accent-peach-500 text-[#0e1442] flex items-center justify-center hover:bg-accent-peach-500/90 active:scale-[0.98] transition-all shadow-xs cursor-pointer"
                 >
                   <ArrowRight className="h-4 w-4" />
                 </Link>
@@ -666,7 +666,7 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto">
             <Link
               href="/login"
-              className="inline-flex h-10 w-full sm:w-auto items-center justify-center px-6 rounded-lg bg-[#ffb13d] text-[#0e1442] text-xs font-bold hover:bg-[#ffb13d]/90 transition-all active:scale-[0.98] cursor-pointer shadow-xs"
+              className="inline-flex h-10 w-full sm:w-auto items-center justify-center px-6 rounded-lg bg-accent-peach-500 text-[#0e1442] text-xs font-bold hover:bg-accent-peach-500/90 transition-all active:scale-[0.98] cursor-pointer shadow-xs"
             >
               Post a Request Now
             </Link>
