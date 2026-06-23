@@ -61,20 +61,20 @@ export default function Home() {
   const mockProposals = [
     {
       id: "p1",
-      requestTitle: "Film Production / Office",
-      hostName: "Sunset Studios",
+      requestTitle: "Athletic / Gym (Basketball)",
+      hostName: "Elite Hoops Gymnasium",
       pitch:
-        "Hey there! We have a gorgeous natural light studio space that matches your requirements perfectly. It includes sound dampening panels and is pre-set for video interviews. Feel free to check out the listing link and message me on Subler to schedule a quick tour!",
-      sublerLink: "https://subler.com/listings/sunset-studios-williamsburg",
+        "Hey there! We have a full-court indoor basketball gymnasium with premium hardwood floors, adjustable hoops, and digital scoreboards. Perfect for your upcoming tournament or practice. View the full details and booking calendar on Subler!",
+      sublerLink: "https://app.getsubler.com/renter/space-listing-view?spaceId=239",
       timeAgo: "5m ago",
     },
     {
       id: "p2",
-      requestTitle: "Athletic / Studio",
-      hostName: "Inner Peace Shala",
+      requestTitle: "Athletic / Outdoor (Tennis)",
+      hostName: "Grand Slam Tennis Center",
       pitch:
-        "Namaste! Our studio has heated hardwood floors, full-length mirrors, and sound systems suitable for yoga instruction. We have open slots this Saturday. Let me know if you would like to proceed on Subler.",
-      sublerLink: "https://subler.com/listings/inner-peace-shala-north-end",
+        "Hello! We have well-maintained outdoor tennis courts available, complete with lighting for evening sessions, spectator seating, and pro-grade nets. Perfect for private matches or training. Check out our official listing on Subler to secure your slot.",
+      sublerLink: "https://app.getsubler.com/renter/space-listing-view?spaceId=348",
       timeAgo: "12m ago",
     },
   ];
