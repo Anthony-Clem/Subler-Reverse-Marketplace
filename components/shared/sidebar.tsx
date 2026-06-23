@@ -20,6 +20,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useState } from "react";
 import { signOut } from "next-auth/react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface NavLink {
   name: string;
@@ -205,20 +210,34 @@ export default function Sidebar({ user, children }: SidebarProps) {
             </span>
           </div>
           <div className="flex items-center gap-1.5 shrink-0">
-            <Link
-              href="/settings"
-              className="h-8 w-8 rounded-lg border border-neutral-200/80 bg-white text-slate-600 hover:bg-neutral-50 hover:text-foreground flex items-center justify-center transition-all cursor-pointer shadow-xs"
-              title="Settings"
-            >
-              <Settings className="h-4 w-4 text-slate-400" />
-            </Link>
-            <button
-              onClick={() => signOut({ callbackUrl: "/login" })}
-              className="h-8 w-8 rounded-lg border border-neutral-200/80 bg-white text-slate-600 hover:bg-red-50 hover:text-red-600 hover:border-red-100 flex items-center justify-center transition-all cursor-pointer shadow-xs"
-              title="Sign Out"
-            >
-              <LogOut className="h-4 w-4 text-slate-400" />
-            </button>
+            <Tooltip>
+              <TooltipTrigger
+                render={
+                  <Link
+                    href="/settings"
+                    className="h-8 w-8 rounded-lg border border-neutral-200/80 bg-white text-slate-600 hover:bg-neutral-50 hover:text-foreground flex items-center justify-center transition-all cursor-pointer shadow-xs"
+                    title="Settings"
+                  >
+                    <Settings className="h-4 w-4 text-slate-400" />
+                  </Link>
+                }
+              />
+              <TooltipContent side="top">Settings</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger
+                render={
+                  <button
+                    onClick={() => signOut({ callbackUrl: "/login" })}
+                    className="h-8 w-8 rounded-lg border border-neutral-200/80 bg-white text-slate-600 hover:bg-red-50 hover:text-red-600 hover:border-red-100 flex items-center justify-center transition-all cursor-pointer shadow-xs"
+                    title="Sign Out"
+                  >
+                    <LogOut className="h-4 w-4 text-slate-400" />
+                  </button>
+                }
+              />
+              <TooltipContent side="top">Sign Out</TooltipContent>
+            </Tooltip>
           </div>
         </div>
       </aside>
@@ -249,13 +268,20 @@ export default function Sidebar({ user, children }: SidebarProps) {
             </div>
           </div>
 
-          <Link
-            href="/settings"
-            className="h-10 w-10 rounded-lg border border-border flex items-center justify-center text-foreground hover:bg-neutral-50 transition-colors"
-            title="Settings"
-          >
-            <Settings className="h-5 w-5 text-muted-foreground" />
-          </Link>
+          <Tooltip>
+            <TooltipTrigger
+              render={
+                <Link
+                  href="/settings"
+                  className="h-10 w-10 rounded-lg border border-border flex items-center justify-center text-foreground hover:bg-neutral-50 transition-colors"
+                  title="Settings"
+                >
+                  <Settings className="h-5 w-5 text-muted-foreground" />
+                </Link>
+              }
+            />
+            <TooltipContent side="bottom">Settings</TooltipContent>
+          </Tooltip>
         </header>
 
         {/* Mobile Drawer (Sliding Menu) */}
@@ -343,21 +369,35 @@ export default function Sidebar({ user, children }: SidebarProps) {
                   </span>
                 </div>
                 <div className="flex items-center gap-1.5 shrink-0">
-                  <Link
-                    href="/settings"
-                    onClick={() => setIsOpen(false)}
-                    className="h-9 w-9 rounded-lg border border-neutral-200/80 bg-white text-slate-600 hover:bg-neutral-50 hover:text-foreground flex items-center justify-center transition-all cursor-pointer shadow-xs"
-                    title="Settings"
-                  >
-                    <Settings className="h-4.5 w-4.5 text-slate-400" />
-                  </Link>
-                  <button
-                    onClick={() => signOut({ callbackUrl: "/login" })}
-                    className="h-9 w-9 rounded-lg border border-neutral-200/80 bg-white text-slate-600 hover:bg-red-50 hover:text-red-600 hover:border-red-100 flex items-center justify-center transition-all cursor-pointer shadow-xs"
-                    title="Sign Out"
-                  >
-                    <LogOut className="h-4.5 w-4.5 text-slate-400" />
-                  </button>
+                  <Tooltip>
+                    <TooltipTrigger
+                      render={
+                        <Link
+                          href="/settings"
+                          onClick={() => setIsOpen(false)}
+                          className="h-9 w-9 rounded-lg border border-neutral-200/80 bg-white text-slate-600 hover:bg-neutral-50 hover:text-foreground flex items-center justify-center transition-all cursor-pointer shadow-xs"
+                          title="Settings"
+                        >
+                          <Settings className="h-4.5 w-4.5 text-slate-400" />
+                        </Link>
+                      }
+                    />
+                    <TooltipContent side="top">Settings</TooltipContent>
+                  </Tooltip>
+                  <Tooltip>
+                    <TooltipTrigger
+                      render={
+                        <button
+                          onClick={() => signOut({ callbackUrl: "/login" })}
+                          className="h-9 w-9 rounded-lg border border-neutral-200/80 bg-white text-slate-600 hover:bg-red-50 hover:text-red-600 hover:border-red-100 flex items-center justify-center transition-all cursor-pointer shadow-xs"
+                          title="Sign Out"
+                        >
+                          <LogOut className="h-4.5 w-4.5 text-slate-400" />
+                        </button>
+                      }
+                    />
+                    <TooltipContent side="top">Sign Out</TooltipContent>
+                  </Tooltip>
                 </div>
               </div>
             </aside>
