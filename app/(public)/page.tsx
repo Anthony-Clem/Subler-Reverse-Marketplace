@@ -65,7 +65,8 @@ export default function Home() {
       hostName: "Elite Hoops Gymnasium",
       pitch:
         "Hey there! We have a full-court indoor basketball gymnasium with premium hardwood floors, adjustable hoops, and digital scoreboards. Perfect for your upcoming tournament or practice. View the full details and booking calendar on Subler!",
-      sublerLink: "https://app.getsubler.com/renter/space-listing-view?spaceId=239",
+      sublerLink:
+        "https://app.getsubler.com/renter/space-listing-view?spaceId=239",
       timeAgo: "5m ago",
     },
     {
@@ -74,15 +75,16 @@ export default function Home() {
       hostName: "Grand Slam Tennis Center",
       pitch:
         "Hello! We have well-maintained outdoor tennis courts available, complete with lighting for evening sessions, spectator seating, and pro-grade nets. Perfect for private matches or training. Check out our official listing on Subler to secure your slot.",
-      sublerLink: "https://app.getsubler.com/renter/space-listing-view?spaceId=348",
+      sublerLink:
+        "https://app.getsubler.com/renter/space-listing-view?spaceId=348",
       timeAgo: "12m ago",
     },
   ];
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#fafafc] font-sans selection:bg-accent-peach-500/30 selection:text-[#0e1442] text-[#0e1442]">
+    <div className="flex flex-col min-h-screen bg-[#fafafc] font-sans selection:bg-[#FDC800]/30 selection:text-[#1E2D8C] text-[#1E2D8C]">
       {/* Navigation */}
-      <header className="sticky top-0 z-50 w-full bg-[#fafafc] border-b border-slate-200/60 transition-all text-[#0e1442]">
+      <header className="sticky top-0 z-50 w-full bg-[#fafafc] border-b border-slate-200/60 transition-all text-[#1E2D8C]">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <img
@@ -103,25 +105,25 @@ export default function Home() {
           <nav className="hidden md:flex items-center gap-8">
             <a
               href="#how-it-works"
-              className="text-xs font-semibold text-slate-500 hover:text-[#0e1442] transition-colors"
+              className="text-xs font-semibold text-slate-500 hover:text-[#1E2D8C] transition-colors"
             >
               How it Works
             </a>
             <a
               href="#live-feed"
-              className="text-xs font-semibold text-slate-500 hover:text-[#0e1442] transition-colors"
+              className="text-xs font-semibold text-slate-500 hover:text-[#1E2D8C] transition-colors"
             >
               Live Requests
             </a>
             <a
               href="#proposal-showcase"
-              className="text-xs font-semibold text-slate-500 hover:text-[#0e1442] transition-colors"
+              className="text-xs font-semibold text-slate-500 hover:text-[#1E2D8C] transition-colors"
             >
               Sample Proposals
             </a>
             <a
               href="#features"
-              className="text-xs font-semibold text-slate-500 hover:text-[#0e1442] transition-colors"
+              className="text-xs font-semibold text-slate-500 hover:text-[#1E2D8C] transition-colors"
             >
               Platform Benefits
             </a>
@@ -130,13 +132,13 @@ export default function Home() {
           <div className="flex items-center gap-3">
             <Link
               href="/login"
-              className="text-xs font-semibold text-slate-500 hover:text-[#0e1442] px-4 py-2 rounded-lg transition-colors cursor-pointer"
+              className="text-xs font-semibold text-slate-500 hover:text-[#1E2D8C] px-4 py-2 rounded-lg transition-colors cursor-pointer"
             >
               Sign In
             </Link>
             <Link
               href="/login"
-              className="inline-flex h-10 items-center justify-center px-4 rounded-lg bg-accent-peach-500 text-[#0e1442] text-xs font-bold hover:bg-accent-peach-500/90 transition-all active:scale-[0.98] cursor-pointer shadow-xs"
+              className="inline-flex h-10 items-center justify-center px-4 rounded-lg bg-[#FDC800] text-[#1E2D8C] text-xs font-bold hover:bg-[#FDC800]/90 transition-all active:scale-[0.98] cursor-pointer shadow-xs"
             >
               Post a Request
             </Link>
@@ -145,11 +147,11 @@ export default function Home() {
       </header>
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden pt-24 pb-20 md:pt-36 md:pb-28 bg-[#0e1442] text-white">
+      <section className="relative overflow-hidden pt-24 pb-20 md:pt-36 md:pb-28 bg-[#1E2D8C] text-white">
         <div className="max-w-7xl mx-auto px-6 text-center relative z-10">
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 text-white backdrop-blur-xs text-xs mb-8 animate-fade-in shadow-xs">
-            <Sparkles className="h-3.5 w-3.5 text-accent-peach-500 fill-accent-peach-500" />
+            <Sparkles className="h-3.5 w-3.5 text-[#FDC800] fill-accent-[#fff]" />
             <span className="font-semibold text-slate-300">
               The Demand-Side Matching Layer for Subler
             </span>
@@ -158,7 +160,7 @@ export default function Home() {
           {/* Heading */}
           <h1 className="max-w-4xl mx-auto font-display text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight tracking-tight mb-6">
             Tell hosts what you need. <br />
-            <span className="text-accent-peach-500">
+            <span className="text-[#FDC800]">
               Let the perfect space find you.
             </span>
           </h1>
@@ -174,7 +176,7 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto mb-16">
             <Link
               href="/login"
-              className="inline-flex h-10 w-full sm:w-auto items-center justify-center px-6 rounded-lg bg-accent-peach-500 text-[#0e1442] text-xs font-bold hover:bg-accent-peach-500/90 transition-all active:scale-[0.98] cursor-pointer shadow-xs"
+              className="inline-flex h-10 w-full sm:w-auto items-center justify-center px-6 rounded-lg bg-[#FDC800] text-[#1E2D8C] text-xs font-bold hover:bg-[#FDC800]/90 transition-all active:scale-[0.98] cursor-pointer shadow-xs"
             >
               Post a Request <Plus className="ml-1.5 h-3.5 w-3.5" />
             </Link>
@@ -189,17 +191,17 @@ export default function Home() {
           {/* Trust Metric */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8 py-5 border-y border-white/10 max-w-3xl mx-auto text-slate-300 text-xs">
             <div className="flex items-center gap-2">
-              <CheckCircle2 className="h-4.5 w-4.5 text-accent-peach-500" />
+              <CheckCircle2 className="h-4.5 w-4.5 text-[#FDC800]" />
               <span className="font-semibold">Free to post</span>
             </div>
             <div className="hidden sm:block h-4 w-px bg-white/10" />
             <div className="flex items-center gap-2">
-              <Shield className="h-4.5 w-4.5 text-accent-peach-500" />
+              <Shield className="h-4.5 w-4.5 text-[#FDC800]" />
               <span className="font-semibold">100% verified hosts</span>
             </div>
             <div className="hidden sm:block h-4 w-px bg-white/10" />
             <div className="flex items-center gap-2">
-              <Clock className="h-4.5 w-4.5 text-accent-peach-500" />
+              <Clock className="h-4.5 w-4.5 text-[#FDC800]" />
               <span className="font-semibold">
                 Avg. proposal in under 2 hrs
               </span>
@@ -212,7 +214,7 @@ export default function Home() {
       <section id="how-it-works" className="py-20 md:py-32 bg-[#fafafc]">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center max-w-3xl mx-auto mb-20">
-            <h2 className="text-2xl md:text-3xl font-bold text-[#0e1442] font-display tracking-tight mb-3">
+            <h2 className="text-2xl md:text-3xl font-bold text-[#1E2D8C] font-display tracking-tight mb-3">
               How Reverse Matching Works
             </h2>
             <p className="text-sm text-slate-500 leading-relaxed">
@@ -225,10 +227,10 @@ export default function Home() {
             {/* Step 1 */}
             <div className="group relative p-8 rounded-2xl bg-white border border-slate-200/60 shadow-xs flex flex-col justify-between hover:shadow-sm hover:-translate-y-0.5 transition-all duration-300 min-h-80">
               <div>
-                <div className="font-display text-[#e2e8f0] group-hover:text-[#1e2d8c] text-5xl font-bold transition-colors duration-300 mb-6">
+                <div className="font-display text-[#e2e8f0] group-hover:text-[#1E2D8C] text-5xl font-bold transition-colors duration-300 mb-6">
                   01
                 </div>
-                <h3 className="text-base font-semibold text-[#0e1442] mb-3">
+                <h3 className="text-base font-semibold text-[#1E2D8C] mb-3">
                   Post space requirements
                 </h3>
                 <p className="text-xs text-slate-500 leading-relaxed">
@@ -236,7 +238,7 @@ export default function Home() {
                   desired date. It takes less than 2 minutes.
                 </p>
               </div>
-              <div className="mt-8 flex items-center text-xs text-[#1e2d8c] font-bold gap-1 uppercase tracking-wider group-hover:translate-x-0.5 transition-transform">
+              <div className="mt-8 flex items-center text-xs text-[#1E2D8C] font-bold gap-1 uppercase tracking-wider group-hover:translate-x-0.5 transition-transform">
                 Step-by-step Wizard <ArrowRight className="h-3.5 w-3.5" />
               </div>
             </div>
@@ -244,10 +246,10 @@ export default function Home() {
             {/* Step 2 */}
             <div className="group relative p-8 rounded-2xl bg-white border border-slate-200/60 shadow-xs flex flex-col justify-between hover:shadow-sm hover:-translate-y-0.5 transition-all duration-300 min-h-80">
               <div>
-                <div className="font-display text-[#e2e8f0] group-hover:text-[#1e2d8c] text-5xl font-bold transition-colors duration-300 mb-6">
+                <div className="font-display text-[#e2e8f0] group-hover:text-[#1E2D8C] text-5xl font-bold transition-colors duration-300 mb-6">
                   02
                 </div>
-                <h3 className="text-base font-semibold text-[#0e1442] mb-3">
+                <h3 className="text-base font-semibold text-[#1E2D8C] mb-3">
                   Receive custom pitches
                 </h3>
                 <p className="text-xs text-slate-500 leading-relaxed">
@@ -256,7 +258,7 @@ export default function Home() {
                   Subler listing link.
                 </p>
               </div>
-              <div className="mt-8 flex items-center text-xs text-[#1e2d8c] font-bold gap-1 uppercase tracking-wider group-hover:translate-x-0.5 transition-transform">
+              <div className="mt-8 flex items-center text-xs text-[#1E2D8C] font-bold gap-1 uppercase tracking-wider group-hover:translate-x-0.5 transition-transform">
                 Zero spam policy <ArrowRight className="h-3.5 w-3.5" />
               </div>
             </div>
@@ -264,10 +266,10 @@ export default function Home() {
             {/* Step 3 */}
             <div className="group relative p-8 rounded-2xl bg-white border border-slate-200/60 shadow-xs flex flex-col justify-between hover:shadow-sm hover:-translate-y-0.5 transition-all duration-300 min-h-80">
               <div>
-                <div className="font-display text-[#e2e8f0] group-hover:text-[#1e2d8c] text-5xl font-bold transition-colors duration-300 mb-6">
+                <div className="font-display text-[#e2e8f0] group-hover:text-[#1E2D8C] text-5xl font-bold transition-colors duration-300 mb-6">
                   03
                 </div>
-                <h3 className="text-base font-semibold text-[#0e1442] mb-3">
+                <h3 className="text-base font-semibold text-[#1E2D8C] mb-3">
                   Click through and book
                 </h3>
                 <p className="text-xs text-slate-500 leading-relaxed">
@@ -276,7 +278,7 @@ export default function Home() {
                   checkout.
                 </p>
               </div>
-              <div className="mt-8 flex items-center text-xs text-[#1e2d8c] font-bold gap-1 uppercase tracking-wider group-hover:translate-x-0.5 transition-transform">
+              <div className="mt-8 flex items-center text-xs text-[#1E2D8C] font-bold gap-1 uppercase tracking-wider group-hover:translate-x-0.5 transition-transform">
                 Transactions on Subler <ArrowRight className="h-3.5 w-3.5" />
               </div>
             </div>
@@ -291,15 +293,15 @@ export default function Home() {
       >
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="text-[10px] font-bold uppercase text-[#1e2d8c] tracking-wider mb-3 block">
+            <span className="text-[10px] font-bold uppercase text-[#1E2D8C] tracking-wider mb-3 block">
               Active Marketplace
             </span>
-            <h2 className="text-2xl md:text-3xl font-bold text-[#0e1442] font-display tracking-tight mb-3">
+            <h2 className="text-2xl md:text-3xl font-bold text-[#1E2D8C] font-display tracking-tight mb-3">
               Live space requests
             </h2>
             <p className="text-sm text-slate-500 leading-relaxed">
-              Browse the latest requirements posted by renters looking for space. 
-              Log in to pitch your venue directly.
+              Browse the latest requirements posted by renters looking for
+              space. Log in to pitch your venue directly.
             </p>
           </div>
 
@@ -336,7 +338,7 @@ export default function Home() {
             ) : !requests || requests.length === 0 ? (
               <div className="text-center bg-white border border-slate-200/60 rounded-2xl p-12 shadow-xs">
                 <Users className="h-12 w-12 text-slate-400 mx-auto mb-4" />
-                <h3 className="text-base font-semibold text-[#0e1442] mb-1">
+                <h3 className="text-base font-semibold text-[#1E2D8C] mb-1">
                   No active requests
                 </h3>
                 <p className="text-xs text-slate-500 max-w-sm mx-auto mb-6">
@@ -345,7 +347,7 @@ export default function Home() {
                 </p>
                 <Link
                   href="/login"
-                  className="inline-flex h-10 items-center justify-center px-6 rounded-lg bg-accent-peach-500 text-[#0e1442] text-xs font-bold hover:bg-accent-peach-500/90 transition-all active:scale-[0.98] cursor-pointer shadow-xs"
+                  className="inline-flex h-10 items-center justify-center px-6 rounded-lg bg-[#FDC800] text-[#1E2D8C] text-xs font-bold hover:bg-[#FDC800]/90 transition-all active:scale-[0.98] cursor-pointer shadow-xs"
                 >
                   Post a Request
                 </Link>
@@ -360,11 +362,10 @@ export default function Home() {
                     >
                       <div className="flex flex-wrap items-start justify-between gap-4 mb-5">
                         <div>
-                          <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#1e2d8c]/5 text-[#1e2d8c] border border-[#1e2d8c]/10 capitalize mb-3">
-                            {req.spaceType} •{" "}
-                            {req.eventType.replace("_", " ")}
+                          <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#1E2D8C]/5 text-[#1E2D8C] border border-[#1E2D8C]/10 capitalize mb-3">
+                            {req.spaceType} • {req.eventType.replace("_", " ")}
                           </span>
-                          <h3 className="text-sm font-semibold text-[#0e1442] group-hover:text-[#1e2d8c] transition-colors capitalize">
+                          <h3 className="text-sm font-semibold text-[#1E2D8C] group-hover:text-[#1E2D8C] transition-colors capitalize">
                             {req.eventType.replace("_", " ")} /{" "}
                             {req.spaceType === "other"
                               ? "Space"
@@ -378,53 +379,53 @@ export default function Home() {
 
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 py-4 my-2 border-y border-slate-200/60 text-xs">
                         <div className="flex items-center gap-3">
-                          <div className="p-1.5 rounded-lg bg-[#1e2d8c]/5 text-[#1e2d8c]">
+                          <div className="p-1.5 rounded-lg bg-[#1E2D8C]/5 text-[#1E2D8C]">
                             <DollarSign className="h-4 w-4" />
                           </div>
                           <div>
                             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
                               Budget
                             </p>
-                            <p className="font-semibold text-[#0e1442]">
+                            <p className="font-semibold text-[#1E2D8C]">
                               {formatBudget(req.budget)}
                             </p>
                           </div>
                         </div>
                         <div className="flex items-center gap-3">
-                          <div className="p-1.5 rounded-lg bg-[#1e2d8c]/5 text-[#1e2d8c]">
+                          <div className="p-1.5 rounded-lg bg-[#1E2D8C]/5 text-[#1E2D8C]">
                             <Users className="h-4 w-4" />
                           </div>
                           <div>
                             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
                               Headcount
                             </p>
-                            <p className="font-semibold text-[#0e1442]">
+                            <p className="font-semibold text-[#1E2D8C]">
                               {req.headcount} people
                             </p>
                           </div>
                         </div>
                         <div className="flex items-center gap-3">
-                          <div className="p-1.5 rounded-lg bg-[#1e2d8c]/5 text-[#1e2d8c]">
+                          <div className="p-1.5 rounded-lg bg-[#1E2D8C]/5 text-[#1E2D8C]">
                             <MapPin className="h-4 w-4" />
                           </div>
                           <div>
                             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
                               Location
                             </p>
-                            <p className="font-semibold text-[#0e1442] truncate max-w-37.5">
+                            <p className="font-semibold text-[#1E2D8C] truncate max-w-37.5">
                               {req.locationPreference}
                             </p>
                           </div>
                         </div>
                         <div className="flex items-center gap-3">
-                          <div className="p-1.5 rounded-lg bg-[#1e2d8c]/5 text-[#1e2d8c]">
+                          <div className="p-1.5 rounded-lg bg-[#1E2D8C]/5 text-[#1E2D8C]">
                             <Calendar className="h-4 w-4" />
                           </div>
                           <div>
                             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
                               Timeline
                             </p>
-                            <p className="font-semibold text-[#0e1442]">
+                            <p className="font-semibold text-[#1E2D8C]">
                               {formatTimeline(req.startDate)}
                             </p>
                           </div>
@@ -444,15 +445,14 @@ export default function Home() {
                               </span>
                             ) : (
                               <span>
-                                {req.proposals?.length ?? 0} proposals
-                                received
+                                {req.proposals?.length ?? 0} proposals received
                               </span>
                             )}
                           </span>
                         </div>
                         <Link
                           href="/login"
-                          className="inline-flex items-center gap-1 text-xs font-semibold text-[#1e2d8c] hover:text-[#1e2d8c]/85 transition-colors cursor-pointer group/link"
+                          className="inline-flex items-center gap-1 text-xs font-semibold text-[#1E2D8C] hover:text-[#1E2D8C]/85 transition-colors cursor-pointer group/link"
                         >
                           {req.status === "fulfilled"
                             ? "View details"
@@ -468,7 +468,7 @@ export default function Home() {
                   <div className="flex justify-center pt-8">
                     <Link
                       href={session ? "/dashboard" : "/login"}
-                      className="inline-flex h-10 items-center justify-center px-6 rounded-lg border border-[#1e2d8c] text-[#1e2d8c] hover:bg-[#1e2d8c]/5 text-xs font-bold transition active:scale-[0.98] cursor-pointer shadow-xs"
+                      className="inline-flex h-10 items-center justify-center px-6 rounded-lg border border-[#1E2D8C] text-[#1E2D8C] hover:bg-[#1E2D8C]/5 text-xs font-bold transition active:scale-[0.98] cursor-pointer shadow-xs"
                     >
                       View More Requests
                     </Link>
@@ -487,15 +487,16 @@ export default function Home() {
       >
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="text-[10px] font-bold uppercase text-[#1e2d8c] tracking-wider mb-3 block">
+            <span className="text-[10px] font-bold uppercase text-[#1E2D8C] tracking-wider mb-3 block">
               Direct & Vetted Offers
             </span>
-            <h2 className="text-2xl md:text-3xl font-bold text-[#0e1442] font-display tracking-tight mb-3">
+            <h2 className="text-2xl md:text-3xl font-bold text-[#1E2D8C] font-display tracking-tight mb-3">
               What proposals look like
             </h2>
             <p className="text-sm text-slate-500 leading-relaxed">
-              Hosts pitch their space with a customized description and a verified Subler listing. 
-              Review the details and click directly through to complete booking.
+              Hosts pitch their space with a customized description and a
+              verified Subler listing. Review the details and click directly
+              through to complete booking.
             </p>
           </div>
 
@@ -511,7 +512,7 @@ export default function Home() {
                       <p className="text-[9px] text-slate-400 mb-0.5 font-bold uppercase tracking-wider">
                         Proposal sent for
                       </p>
-                      <h4 className="font-semibold text-sm text-[#0e1442]">
+                      <h4 className="font-semibold text-sm text-[#1E2D8C]">
                         {prop.requestTitle}
                       </h4>
                     </div>
@@ -520,18 +521,18 @@ export default function Home() {
                     </span>
                   </div>
 
-                  <p className="p-4 rounded-xl bg-white border border-slate-200/50 text-xs text-[#0e1442]/90 italic mb-6 leading-relaxed">
+                  <p className="p-4 rounded-xl bg-white border border-slate-200/50 text-xs text-[#1E2D8C]/90 italic mb-6 leading-relaxed">
                     &ldquo;{prop.pitch}&rdquo;
                   </p>
                 </div>
 
                 <div className="flex flex-wrap items-center justify-between gap-4 pt-2 border-t border-slate-200/40">
                   <div className="flex items-center gap-3">
-                    <div className="h-8 w-8 rounded-lg bg-[#1e2d8c] text-white flex items-center justify-center font-bold font-display shadow-xs text-xs">
+                    <div className="h-8 w-8 rounded-lg bg-[#1E2D8C] text-white flex items-center justify-center font-bold font-display shadow-xs text-xs">
                       {prop.hostName[0]}
                     </div>
                     <div>
-                      <p className="text-xs font-bold text-[#0e1442]">
+                      <p className="text-xs font-bold text-[#1E2D8C]">
                         {prop.hostName}
                       </p>
                       <span className="inline-block mt-0.5 text-[9px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-700 border border-emerald-500/20 font-bold uppercase tracking-wider">
@@ -544,7 +545,7 @@ export default function Home() {
                     href={prop.sublerLink}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-white border border-[#1e2d8c] text-[#1e2d8c] hover:bg-[#1e2d8c]/5 text-xs font-bold transition active:scale-[0.98] cursor-pointer shadow-xs"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-white border border-[#1E2D8C] text-[#1E2D8C] hover:bg-[#1E2D8C]/5 text-xs font-bold transition active:scale-[0.98] cursor-pointer shadow-xs"
                   >
                     View on Subler <ArrowUpRight className="h-4 w-4" />
                   </a>
@@ -566,52 +567,57 @@ export default function Home() {
               <span className="text-[10px] font-bold uppercase text-slate-400 tracking-wider mb-3 block">
                 Why use Subler Reverse Marketplace?
               </span>
-              <h2 className="text-2xl md:text-3xl font-bold text-[#0e1442] font-display tracking-tight mb-4 leading-tight">
+              <h2 className="text-2xl md:text-3xl font-bold text-[#1E2D8C] font-display tracking-tight mb-4 leading-tight">
                 Simple matching. Direct bookings.
               </h2>
               <p className="text-sm text-slate-500 mb-8 leading-relaxed">
-                Renters post their exact space requirements, and verified hosts pitch their matching venues directly. Skip the endless browsing, message tagging, and long response times.
+                Renters post their exact space requirements, and verified hosts
+                pitch their matching venues directly. Skip the endless browsing,
+                message tagging, and long response times.
               </p>
 
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
-                  <div className="mt-1 h-6 w-6 rounded-lg bg-[#1e2d8c]/10 flex items-center justify-center text-[#1e2d8c] shrink-0 shadow-xs">
+                  <div className="mt-1 h-6 w-6 rounded-lg bg-[#1E2D8C]/10 flex items-center justify-center text-[#1E2D8C] shrink-0 shadow-xs">
                     <CheckCircle2 className="h-4 w-4" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-xs text-[#0e1442]">
+                    <h4 className="font-bold text-xs text-[#1E2D8C]">
                       Verified Venue Listings
                     </h4>
                     <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                      Every proposal connects directly to a verified Subler listing, ensuring secure and trusted bookings.
+                      Every proposal connects directly to a verified Subler
+                      listing, ensuring secure and trusted bookings.
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="mt-1 h-6 w-6 rounded-lg bg-[#1e2d8c]/10 flex items-center justify-center text-[#1e2d8c] shrink-0 shadow-xs">
+                  <div className="mt-1 h-6 w-6 rounded-lg bg-[#1E2D8C]/10 flex items-center justify-center text-[#1E2D8C] shrink-0 shadow-xs">
                     <CheckCircle2 className="h-4 w-4" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-xs text-[#0e1442]">
+                    <h4 className="font-bold text-xs text-[#1E2D8C]">
                       Fast & Passwordless Login
                     </h4>
                     <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                      Log in instantly with a secure magic link sent directly to your inbox. No passwords to remember.
+                      Log in instantly with a secure magic link sent directly to
+                      your inbox. No passwords to remember.
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="mt-1 h-6 w-6 rounded-lg bg-[#1e2d8c]/10 flex items-center justify-center text-[#1e2d8c] shrink-0 shadow-xs">
+                  <div className="mt-1 h-6 w-6 rounded-lg bg-[#1E2D8C]/10 flex items-center justify-center text-[#1E2D8C] shrink-0 shadow-xs">
                     <CheckCircle2 className="h-4 w-4" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-xs text-[#0e1442]">
+                    <h4 className="font-bold text-xs text-[#1E2D8C]">
                       Vetted Venue Hosts
                     </h4>
                     <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                      All hosts are vetted and approved by our team before they can send proposals, keeping matches high quality.
+                      All hosts are vetted and approved by our team before they
+                      can send proposals, keeping matches high quality.
                     </p>
                   </div>
                 </div>
@@ -619,14 +625,14 @@ export default function Home() {
             </div>
 
             {/* Graphic Callout Card */}
-            <div className="relative bg-[#0e1442] border border-slate-200/20 rounded-2xl p-8 text-white shadow-xs transition duration-300 overflow-hidden flex flex-col justify-between min-h-95">
+            <div className="relative bg-[#1E2D8C] border border-slate-200/20 rounded-2xl p-8 text-white shadow-xs transition duration-300 overflow-hidden flex flex-col justify-between min-h-95">
               <div className="relative z-10">
                 <span className="text-[10px] font-bold uppercase text-slate-400 tracking-wider mb-4 block">
                   Subler Core On-Ramp
                 </span>
                 <p className="font-display font-bold text-xl leading-snug mb-4 text-white">
                   “All discovery happens here. All booking details are completed
-                  on <span className="text-accent-peach-500">Subler</span>.”
+                  on <span className="text-[#FDC800]">Subler</span>.”
                 </p>
               </div>
 
@@ -641,7 +647,7 @@ export default function Home() {
                 </div>
                 <Link
                   href="/login"
-                  className="h-10 w-10 rounded-lg bg-accent-peach-500 text-[#0e1442] flex items-center justify-center hover:bg-accent-peach-500/90 active:scale-[0.98] transition-all shadow-xs cursor-pointer"
+                  className="h-10 w-10 rounded-lg bg-[#FDC800] text-[#1E2D8C] flex items-center justify-center hover:bg-[#FDC800]/90 active:scale-[0.98] transition-all shadow-xs cursor-pointer"
                 >
                   <ArrowRight className="h-4 w-4" />
                 </Link>
@@ -652,7 +658,7 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 md:py-32 relative overflow-hidden bg-[#0e1442] text-white text-center">
+      <section className="py-24 md:py-32 relative overflow-hidden bg-[#1E2D8C] text-white text-center">
         <div className="max-w-4xl mx-auto px-6 relative z-10">
           <h2 className="text-3xl md:text-4xl font-display font-extrabold mb-4 leading-tight tracking-tight">
             Find the perfect space for your next activity
@@ -665,7 +671,7 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto">
             <Link
               href="/login"
-              className="inline-flex h-10 w-full sm:w-auto items-center justify-center px-6 rounded-lg bg-accent-peach-500 text-[#0e1442] text-xs font-bold hover:bg-accent-peach-500/90 transition-all active:scale-[0.98] cursor-pointer shadow-xs"
+              className="inline-flex h-10 w-full sm:w-auto items-center justify-center px-6 rounded-lg bg-[#FDC800] text-[#1E2D8C] text-xs font-bold hover:bg-[#FDC800]/90 transition-all active:scale-[0.98] cursor-pointer shadow-xs"
             >
               Post a Request Now
             </Link>
@@ -707,13 +713,13 @@ export default function Home() {
           <div className="flex items-center gap-6 text-xs font-semibold">
             <Link
               href="/terms"
-              className="hover:text-[#0e1442] text-slate-500 transition-colors"
+              className="hover:text-[#1E2D8C] text-slate-500 transition-colors"
             >
               Terms of Service
             </Link>
             <Link
               href="/privacy"
-              className="hover:text-[#0e1442] text-slate-500 transition-colors"
+              className="hover:text-[#1E2D8C] text-slate-500 transition-colors"
             >
               Privacy Policy
             </Link>
@@ -721,7 +727,7 @@ export default function Home() {
               href="https://getsubler.com"
               target="_blank"
               rel="noreferrer"
-              className="hover:text-[#0e1442] text-slate-500 transition-colors"
+              className="hover:text-[#1E2D8C] text-slate-500 transition-colors"
             >
               Go to Subler
             </Link>

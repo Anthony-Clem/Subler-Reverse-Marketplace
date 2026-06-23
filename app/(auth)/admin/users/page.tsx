@@ -93,7 +93,7 @@ export default function AdminUsersPage() {
       );
     }
     return (
-      <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#1e2d8c]/5 text-[#1e2d8c] border border-[#1e2d8c]/10">
+      <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#1E2D8C]/5 text-[#1E2D8C] border border-[#1E2D8C]/10">
         Renter
       </span>
     );
@@ -139,12 +139,12 @@ export default function AdminUsersPage() {
       <div className="flex flex-col gap-2 pb-6 border-b border-slate-200/60">
         <Link
           href="/admin"
-          className="inline-flex items-center gap-2 text-xs font-semibold text-slate-500 hover:text-[#0e1442] transition-colors cursor-pointer group"
+          className="inline-flex items-center gap-2 text-xs font-semibold text-slate-500 hover:text-[#1E2D8C] transition-colors cursor-pointer group"
         >
           <ArrowLeft className="h-4 w-4 group-hover:-translate-x-0.5 transition-transform" />
           Back to Overview
         </Link>
-        <h1 className="text-h1 text-[#0e1442] font-semibold font-display">
+        <h1 className="text-h1 text-[#1E2D8C] font-semibold font-display">
           Registered Users
         </h1>
         <p className="text-xs text-slate-500 mt-0.5">
@@ -156,7 +156,7 @@ export default function AdminUsersPage() {
       {/* Loading state */}
       {isLoading && (
         <div className="flex items-center justify-center py-20 bg-white border border-slate-200/60 rounded-2xl shadow-xs">
-          <Loader2 className="h-8 w-8 text-[#1e2d8c] animate-spin" />
+          <Loader2 className="h-8 w-8 text-[#1E2D8C] animate-spin" />
         </div>
       )}
 
@@ -202,11 +202,11 @@ export default function AdminUsersPage() {
                     >
                       {/* Name / Initials Avatar */}
                       <td className="px-6 py-4 flex items-center gap-3">
-                        <div className="h-8 w-8 rounded-lg bg-[#1e2d8c]/5 text-[#1e2d8c] flex items-center justify-center font-bold text-xs border border-[#1e2d8c]/10 shrink-0">
+                        <div className="h-8 w-8 rounded-lg bg-[#1E2D8C]/5 text-[#1E2D8C] flex items-center justify-center font-bold text-xs border border-[#1E2D8C]/10 shrink-0">
                           {user.email[0].toUpperCase()}
                         </div>
                         <div
-                          className="font-semibold text-[#0e1442] truncate max-w-50"
+                          className="font-semibold text-[#1E2D8C] truncate max-w-50"
                           title={user.email}
                         >
                           {user.email}
@@ -314,11 +314,11 @@ export default function AdminUsersPage() {
                   <ShieldAlert className="h-5 w-5" />
                 </div>
               ) : (
-                <div className="h-10 w-10 rounded-lg bg-[#1e2d8c]/10 text-[#1e2d8c] flex items-center justify-center border border-[#1e2d8c]/5 shrink-0">
+                <div className="h-10 w-10 rounded-lg bg-[#1E2D8C]/10 text-[#1E2D8C] flex items-center justify-center border border-[#1E2D8C]/5 shrink-0">
                   <Shield className="h-5 w-5" />
                 </div>
               )}
-              <h3 className="font-display font-bold text-sm text-[#0e1442]">
+              <h3 className="font-display font-bold text-sm text-[#1E2D8C]">
                 {confirmModal.type === "delete"
                   ? "Delete User Account?"
                   : "Modify User Permissions?"}
@@ -377,7 +377,7 @@ export default function AdminUsersPage() {
                     )
                   }
                   disabled={isMutating}
-                  className="inline-flex h-9 items-center justify-center px-4.5 rounded-lg bg-[#1e2d8c] text-white hover:bg-[#1e2d8c]/95 text-xs font-semibold transition-all cursor-pointer shadow-xs gap-1.5"
+                  className="inline-flex h-9 items-center justify-center px-4.5 rounded-lg bg-[#1E2D8C] text-white hover:bg-[#1E2D8C]/95 text-xs font-semibold transition-all cursor-pointer shadow-xs gap-1.5"
                 >
                   {isMutating ? (
                     <Loader2 className="h-3.5 w-3.5 animate-spin" />

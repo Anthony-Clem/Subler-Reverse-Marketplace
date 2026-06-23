@@ -811,7 +811,7 @@ export default function NewRequestPage() {
             <button
               type="button"
               onClick={handleNext}
-              className="inline-flex h-10 items-center justify-center px-6 rounded-lg bg-[#1e2d8c] text-white hover:bg-[#1e2d8c]/95 text-body-sm font-semibold transition-all cursor-pointer gap-1"
+              className="inline-flex h-10 items-center justify-center px-6 rounded-lg bg-[#1E2D8C] text-white hover:bg-[#1E2D8C]/95 text-body-sm font-semibold transition-all cursor-pointer gap-1"
             >
               Continue <ArrowRight className="h-4 w-4" />
             </button>
@@ -820,7 +820,7 @@ export default function NewRequestPage() {
               type="button"
               onClick={handlePublish}
               disabled={createRequest.isPending}
-              className="inline-flex h-10 items-center justify-center px-6 rounded-lg bg-accent-peach-500 text-[#0e1442] hover:bg-accent-peach-500/90 text-body-sm font-bold transition-all active:scale-[0.98] cursor-pointer gap-1.5"
+              className="inline-flex h-10 items-center justify-center px-6 rounded-lg bg-[#FDC800] text-[#1E2D8C] hover:bg-[#FDC800]/90 text-body-sm font-bold transition-all active:scale-[0.98] cursor-pointer gap-1.5"
             >
               {createRequest.isPending ? (
                 <>

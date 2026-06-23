@@ -10,21 +10,21 @@ export const metadata = {
 
 export default function TermsPage() {
   return (
-    <div className="min-h-screen bg-[#fafafc] text-[#0e1442] font-sans py-16 px-6 sm:px-8 lg:px-12 flex flex-col items-center">
+    <div className="min-h-screen bg-[#fafafc] text-[#1E2D8C] font-sans py-16 px-6 sm:px-8 lg:px-12 flex flex-col items-center">
       <div className="w-full max-w-3xl space-y-12 animate-fade-in">
         {/* Header */}
         <div className="space-y-4">
           <Link
             href="/"
-            className="inline-flex items-center text-xs font-semibold text-slate-500 hover:text-[#0e1442] transition-colors gap-1"
+            className="inline-flex items-center text-xs font-semibold text-slate-500 hover:text-[#1E2D8C] transition-colors gap-1"
           >
             <ArrowLeft className="h-3.5 w-3.5" /> Back to Home
           </Link>
           <div className="flex items-center gap-3">
-            <div className="h-10 w-10 bg-[#1e2d8c]/5 border border-[#1e2d8c]/10 text-[#1e2d8c] flex items-center justify-center rounded-lg font-bold">
+            <div className="h-10 w-10 bg-[#1E2D8C]/5 border border-[#1E2D8C]/10 text-[#1E2D8C] flex items-center justify-center rounded-lg font-bold">
               <BookOpen className="h-5 w-5" />
             </div>
-            <h1 className="font-display text-3xl font-bold tracking-tight text-[#0e1442]">
+            <h1 className="font-display text-3xl font-bold tracking-tight text-[#1E2D8C]">
               Terms of Service
             </h1>
           </div>
@@ -35,7 +35,7 @@ export default function TermsPage() {
 
         {/* Introduction Panel */}
         <div className="p-6 rounded-2xl bg-white border border-slate-200/60 shadow-xs space-y-3">
-          <h2 className="text-sm font-bold text-[#1e2d8c]">About This App</h2>
+          <h2 className="text-sm font-bold text-[#1E2D8C]">About This App</h2>
           <p className="text-xs text-slate-600 leading-relaxed">
             Welcome to the Subler Reverse Marketplace (the &ldquo;Service&rdquo;
             or &ldquo;App&rdquo;), a subdivision web application operated by{" "}
@@ -50,7 +50,7 @@ export default function TermsPage() {
               href="https://app.getsubler.com/legal/terms"
               target="_blank"
               rel="noreferrer"
-              className="text-[#1e2d8c] hover:underline font-semibold"
+              className="text-[#1E2D8C] hover:underline font-semibold"
             >
               app.getsubler.com/legal/terms
             </Link>
@@ -67,7 +67,7 @@ export default function TermsPage() {
             <li>
               <a
                 href="#eligibility"
-                className="hover:text-[#1e2d8c] transition-colors"
+                className="hover:text-[#1E2D8C] transition-colors"
               >
                 User Eligibility
               </a>
@@ -75,7 +75,7 @@ export default function TermsPage() {
             <li>
               <a
                 href="#matching-layer"
-                className="hover:text-[#1e2d8c] transition-colors"
+                className="hover:text-[#1E2D8C] transition-colors"
               >
                 Matching Layer &amp; Booking Finalization
               </a>
@@ -83,7 +83,7 @@ export default function TermsPage() {
             <li>
               <a
                 href="#acceptable-use"
-                className="hover:text-[#1e2d8c] transition-colors"
+                className="hover:text-[#1E2D8C] transition-colors"
               >
                 Acceptable Use Guidelines
               </a>
@@ -91,7 +91,7 @@ export default function TermsPage() {
             <li>
               <a
                 href="#host-upgrade"
-                className="hover:text-[#1e2d8c] transition-colors"
+                className="hover:text-[#1E2D8C] transition-colors"
               >
                 Host Roles &amp; Approvals
               </a>
@@ -99,7 +99,7 @@ export default function TermsPage() {
             <li>
               <a
                 href="#accounts"
-                className="hover:text-[#1e2d8c] transition-colors"
+                className="hover:text-[#1E2D8C] transition-colors"
               >
                 Account Management &amp; Deletion
               </a>
@@ -107,7 +107,7 @@ export default function TermsPage() {
             <li>
               <a
                 href="#termination"
-                className="hover:text-[#1e2d8c] transition-colors"
+                className="hover:text-[#1E2D8C] transition-colors"
               >
                 Suspension &amp; Termination
               </a>
@@ -115,7 +115,7 @@ export default function TermsPage() {
             <li>
               <a
                 href="#warranties"
-                className="hover:text-[#1e2d8c] transition-colors"
+                className="hover:text-[#1E2D8C] transition-colors"
               >
                 Disclaimer of Warranties
               </a>
@@ -123,7 +123,7 @@ export default function TermsPage() {
             <li>
               <a
                 href="#governing-law"
-                className="hover:text-[#1e2d8c] transition-colors"
+                className="hover:text-[#1E2D8C] transition-colors"
               >
                 Governing Law
               </a>
@@ -138,7 +138,7 @@ export default function TermsPage() {
             id="eligibility"
             className="space-y-3 pt-6 border-t border-slate-100"
           >
-            <h2 className="font-display text-base font-bold text-[#1e2d8c]">
+            <h2 className="font-display text-base font-bold text-[#1E2D8C]">
               1. User Eligibility
             </h2>
             <p>
@@ -154,7 +154,7 @@ export default function TermsPage() {
             id="matching-layer"
             className="space-y-3 pt-6 border-t border-slate-100"
           >
-            <h2 className="font-display text-base font-bold text-[#1e2d8c]">
+            <h2 className="font-display text-base font-bold text-[#1E2D8C]">
               2. Matching Layer &amp; Booking Finalization
             </h2>
             <p>
@@ -174,7 +174,7 @@ export default function TermsPage() {
                 href="https://app.getsubler.com/legal/terms"
                 target="_blank"
                 rel="noreferrer"
-                className="text-[#1e2d8c] hover:underline font-semibold"
+                className="text-[#1E2D8C] hover:underline font-semibold"
               >
                 app.getsubler.com/legal/terms
               </a>
@@ -187,7 +187,7 @@ export default function TermsPage() {
             id="acceptable-use"
             className="space-y-3 pt-6 border-t border-slate-100"
           >
-            <h2 className="font-display text-base font-bold text-[#1e2d8c]">
+            <h2 className="font-display text-base font-bold text-[#1E2D8C]">
               3. Acceptable Use Guidelines
             </h2>
             <p>
@@ -223,7 +223,7 @@ export default function TermsPage() {
             id="host-upgrade"
             className="space-y-3 pt-6 border-t border-slate-100"
           >
-            <h2 className="font-display text-base font-bold text-[#1e2d8c]">
+            <h2 className="font-display text-base font-bold text-[#1E2D8C]">
               4. Host Roles &amp; Approvals
             </h2>
             <p>
@@ -240,7 +240,7 @@ export default function TermsPage() {
             id="accounts"
             className="space-y-3 pt-6 border-t border-slate-100"
           >
-            <h2 className="font-display text-base font-bold text-[#1e2d8c]">
+            <h2 className="font-display text-base font-bold text-[#1E2D8C]">
               5. Account Management &amp; Deletion
             </h2>
             <p>
@@ -257,7 +257,7 @@ export default function TermsPage() {
             id="termination"
             className="space-y-3 pt-6 border-t border-slate-100"
           >
-            <h2 className="font-display text-base font-bold text-[#1e2d8c]">
+            <h2 className="font-display text-base font-bold text-[#1E2D8C]">
               6. Suspension &amp; Termination
             </h2>
             <p>
@@ -273,7 +273,7 @@ export default function TermsPage() {
             id="warranties"
             className="space-y-3 pt-6 border-t border-slate-100"
           >
-            <h2 className="font-display text-base font-bold text-[#1e2d8c]">
+            <h2 className="font-display text-base font-bold text-[#1E2D8C]">
               7. Disclaimer of Warranties
             </h2>
             <p>
@@ -291,7 +291,7 @@ export default function TermsPage() {
             id="governing-law"
             className="space-y-3 pt-6 border-t border-slate-100"
           >
-            <h2 className="font-display text-base font-bold text-[#1e2d8c]">
+            <h2 className="font-display text-base font-bold text-[#1E2D8C]">
               8. Governing Law
             </h2>
             <p>
@@ -306,7 +306,7 @@ export default function TermsPage() {
         {/* Contact Info Footer Block */}
         <div className="p-6 rounded-2xl bg-slate-100/50 border border-slate-200/60 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1">
-            <h4 className="font-semibold text-xs text-[#0e1442]">
+            <h4 className="font-semibold text-xs text-[#1E2D8C]">
               Questions about our terms?
             </h4>
             <p className="text-[11px] text-slate-500">
@@ -315,7 +315,7 @@ export default function TermsPage() {
           </div>
           <a
             href="mailto:info@getsubler.com"
-            className="inline-flex h-9 items-center justify-center px-4 rounded-lg bg-[#1e2d8c] hover:bg-[#1e2d8c]/90 text-white font-semibold text-xs gap-1.5 transition-colors cursor-pointer self-start sm:self-auto shadow-xs"
+            className="inline-flex h-9 items-center justify-center px-4 rounded-lg bg-[#1E2D8C] hover:bg-[#1E2D8C]/90 text-white font-semibold text-xs gap-1.5 transition-colors cursor-pointer self-start sm:self-auto shadow-xs"
           >
             <Mail className="h-3.5 w-3.5" /> info@getsubler.com
           </a>
@@ -325,13 +325,13 @@ export default function TermsPage() {
         <div className="border-t border-slate-200/60 pt-8 flex items-center justify-between text-xs font-semibold text-slate-500">
           <span>&copy; {new Date().getFullYear()} Subler, Inc.</span>
           <div className="flex items-center gap-4">
-            <Link href="/" className="hover:text-[#1e2d8c] transition-colors">
+            <Link href="/" className="hover:text-[#1E2D8C] transition-colors">
               Home
             </Link>
             <span>•</span>
             <Link
               href="/privacy"
-              className="hover:text-[#1e2d8c] transition-colors"
+              className="hover:text-[#1E2D8C] transition-colors"
             >
               Privacy Policy
             </Link>

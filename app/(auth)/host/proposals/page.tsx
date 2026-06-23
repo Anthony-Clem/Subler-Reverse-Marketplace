@@ -82,7 +82,7 @@ export default function HostProposalsPage() {
         <div className="h-12 w-12 rounded-full bg-neutral-50 flex items-center justify-center text-slate-400 mx-auto mb-6">
           <Clock className="h-6 w-6" />
         </div>
-        <h2 className="text-lg font-bold text-[#0e1442] mb-2">
+        <h2 className="text-lg font-bold text-[#1E2D8C] mb-2">
           Host Access Restricted
         </h2>
         <p className="text-body-sm text-slate-500 leading-relaxed mb-6">
@@ -91,7 +91,7 @@ export default function HostProposalsPage() {
         </p>
         <Link
           href="/host/upgrade"
-          className="inline-flex h-10 items-center justify-center px-6 rounded-lg bg-accent-peach-500 text-[#0e1442] text-body-sm font-bold hover:bg-accent-peach-500/90 transition-all active:scale-[0.98] cursor-pointer shadow-xs"
+          className="inline-flex h-10 items-center justify-center px-6 rounded-lg bg-[#FDC800] text-[#1E2D8C] text-body-sm font-bold hover:bg-[#FDC800]/90 transition-all active:scale-[0.98] cursor-pointer shadow-xs"
         >
           Apply as Host <ArrowUpRight className="ml-1.5 h-4 w-4" />
         </Link>
@@ -104,14 +104,14 @@ export default function HostProposalsPage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6 border-b border-neutral-200/80">
         <div>
-          <h1 className="text-h1 text-[#0e1442] font-bold">My Proposals</h1>
+          <h1 className="text-h1 text-[#1E2D8C] font-bold">My Proposals</h1>
           <p className="text-body-sm text-slate-500 mt-1">
             Track pitches and Subler listings you have sent to renters.
           </p>
         </div>
         <Link
           href="/host/dashboard"
-          className="inline-flex h-10 items-center justify-center px-4 rounded-lg bg-accent-peach-500 text-[#0e1442] text-body-sm font-bold hover:bg-accent-peach-500/90 transition-all active:scale-[0.98] cursor-pointer shadow-xs"
+          className="inline-flex h-10 items-center justify-center px-4 rounded-lg bg-[#FDC800] text-[#1E2D8C] text-body-sm font-bold hover:bg-[#FDC800]/90 transition-all active:scale-[0.98] cursor-pointer shadow-xs"
         >
           <Send className="mr-1.5 h-4 w-4" /> Browse Live Requests
         </Link>
@@ -150,7 +150,7 @@ export default function HostProposalsPage() {
             <div className="h-12 w-12 rounded-full bg-neutral-50 flex items-center justify-center text-slate-400 mx-auto mb-6">
               <Send className="h-6 w-6" />
             </div>
-            <h3 className="text-lg font-bold text-[#0e1442] mb-2">
+            <h3 className="text-lg font-bold text-[#1E2D8C] mb-2">
               No proposals submitted yet
             </h3>
             <p className="text-body-sm text-slate-500 max-w-sm mx-auto mb-6 leading-relaxed">
@@ -160,7 +160,7 @@ export default function HostProposalsPage() {
             </p>
             <Link
               href="/host/dashboard"
-              className="inline-flex h-10 items-center justify-center px-6 rounded-lg bg-accent-peach-500 text-[#0e1442] text-body-sm font-bold hover:bg-accent-peach-500/90 transition-all active:scale-[0.98] cursor-pointer shadow-xs"
+              className="inline-flex h-10 items-center justify-center px-6 rounded-lg bg-[#FDC800] text-[#1E2D8C] text-body-sm font-bold hover:bg-[#FDC800]/90 transition-all active:scale-[0.98] cursor-pointer shadow-xs"
             >
               Browse Requests
             </Link>
@@ -200,14 +200,14 @@ export default function HostProposalsPage() {
                       </div>
 
                       {request ? (
-                        <h3 className="font-display text-lg font-bold text-[#0e1442] capitalize tracking-tight">
+                        <h3 className="font-display text-lg font-bold text-[#1E2D8C] capitalize tracking-tight">
                           {request.eventType.replace("_", " ")} /{" "}
                           {request.spaceType === "other"
                             ? "Space"
                             : request.spaceType}
                         </h3>
                       ) : (
-                        <h3 className="font-display text-lg font-bold text-[#0e1442] tracking-tight">
+                        <h3 className="font-display text-lg font-bold text-[#1E2D8C] tracking-tight">
                           Matched Request
                         </h3>
                       )}
@@ -222,7 +222,7 @@ export default function HostProposalsPage() {
                       href={proposal.sublerLink}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex h-9 items-center justify-center gap-1.5 px-4 rounded-lg bg-accent-peach-500 text-[#0e1442] hover:bg-accent-peach-500/90 text-body-sm font-bold transition-all cursor-pointer self-start sm:self-auto shadow-xs active:scale-[0.98]"
+                      className="inline-flex h-9 items-center justify-center gap-1.5 px-4 rounded-lg bg-[#FDC800] text-[#1E2D8C] hover:bg-[#FDC800]/90 text-body-sm font-bold transition-all cursor-pointer self-start sm:self-auto shadow-xs active:scale-[0.98]"
                     >
                       View Subler Link <ExternalLink className="h-3.5 w-3.5" />
                     </a>

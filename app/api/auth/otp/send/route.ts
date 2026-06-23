@@ -62,7 +62,7 @@ export async function POST(req: Request) {
                Please enter the following 6-digit code on the login page:
             </p>
             <div style="background-color: #fafafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; text-align: center; margin-bottom: 24px;">
-              <span style="font-size: 32px; font-weight: bold; letter-spacing: 6px; color: #1e2d8c;">${code}</span>
+              <span style="font-size: 32px; font-weight: bold; letter-spacing: 6px; color: #1E2D8C;">${code}</span>
             </div>
             <p style="font-size: 12px; color: #94a3b8; margin-bottom: 16px;">
               This code is valid for 5 minutes. If you did not request this code, you can safely ignore this email.

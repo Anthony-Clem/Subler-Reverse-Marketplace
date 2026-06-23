@@ -128,7 +128,6 @@ export default function Sidebar({ user, children }: SidebarProps) {
       : []),
   ];
 
-
   const isActive = (href: string) => {
     if (href === "/dashboard" || href === "/admin") {
       return pathname === href;
@@ -148,7 +147,9 @@ export default function Sidebar({ user, children }: SidebarProps) {
             className="h-5.5 w-auto object-contain shrink-0"
           />
           <div className="flex items-baseline gap-1">
-            <span className="text-neutral-300 font-light text-xs select-none">|</span>
+            <span className="text-neutral-300 font-light text-xs select-none">
+              |
+            </span>
             <span className="text-[10px] text-slate-400 font-medium whitespace-nowrap leading-none tracking-tight">
               Reverse Marketplace
             </span>
@@ -171,15 +172,15 @@ export default function Sidebar({ user, children }: SidebarProps) {
                         href={link.href}
                         className={`group flex items-center justify-between px-3.5 py-2.5 rounded-lg text-body-sm font-medium transition-all duration-150 cursor-pointer ${
                           active
-                            ? "bg-[#1e2d8c]/5 text-[#1e2d8c]"
-                            : "text-slate-500 hover:bg-neutral-100 hover:text-[#0e1442] border border-transparent"
+                            ? "bg-[#1E2D8C]/5 text-[#1E2D8C]"
+                            : "text-slate-500 hover:bg-neutral-100 hover:text-[#1E2D8C] border border-transparent"
                         }`}
                       >
                         <div className="flex items-center gap-3">
                           <link.icon
                             className={`h-4.5 w-4.5 transition-colors ${
                               active
-                                ? "text-[#1e2d8c]"
+                                ? "text-[#1E2D8C]"
                                 : "text-slate-400 group-hover:text-slate-600"
                             }`}
                           />
@@ -202,8 +203,8 @@ export default function Sidebar({ user, children }: SidebarProps) {
         {/* User profile info at bottom */}
         <div className="p-4 border-t border-neutral-200/80 flex items-center justify-between gap-3 mt-auto bg-[#fafafc]">
           <div className="flex items-center gap-2 min-w-0">
-            <div className="h-7 w-7 rounded-full bg-[#1e2d8c]/10 text-[#1e2d8c] flex items-center justify-center font-bold text-xs shrink-0 select-none">
-              {user.email ? user.email[0].toUpperCase() : 'U'}
+            <div className="h-7 w-7 rounded-full bg-[#1E2D8C]/10 text-[#1E2D8C] flex items-center justify-center font-bold text-xs shrink-0 select-none">
+              {user.email ? user.email[0].toUpperCase() : "U"}
             </div>
             <span className="text-xs font-medium text-slate-500 truncate select-none">
               {user.email}
@@ -260,7 +261,9 @@ export default function Sidebar({ user, children }: SidebarProps) {
                 className="h-7 w-auto object-contain shrink-0"
               />
               <div className="flex items-baseline gap-1.5">
-                <span className="text-neutral-300 font-light text-xs select-none">|</span>
+                <span className="text-neutral-300 font-light text-xs select-none">
+                  |
+                </span>
                 <span className="text-[10.5px] text-muted-foreground font-medium whitespace-nowrap leading-none">
                   Reverse Marketplace
                 </span>
@@ -294,7 +297,7 @@ export default function Sidebar({ user, children }: SidebarProps) {
             />
 
             {/* Sidebar content */}
-            <aside className="relative flex flex-col w-72 max-w-xs bg-[#fafafc] border-r border-neutral-200/80 h-full animate-slide-in p-6 text-[#0e1442] select-none">
+            <aside className="relative flex flex-col w-72 max-w-xs bg-[#fafafc] border-r border-neutral-200/80 h-full animate-slide-in p-6 text-[#1E2D8C] select-none">
               <button
                 onClick={() => setIsOpen(false)}
                 className="absolute top-4 right-4 h-8 w-8 rounded-lg border border-neutral-200/80 bg-white flex items-center justify-center text-slate-500 hover:bg-neutral-50"
@@ -310,7 +313,9 @@ export default function Sidebar({ user, children }: SidebarProps) {
                   className="h-5.5 w-auto object-contain shrink-0"
                 />
                 <div className="flex items-baseline gap-1.5">
-                  <span className="text-white/20 font-light text-sm select-none">|</span>
+                  <span className="text-white/20 font-light text-sm select-none">
+                    |
+                  </span>
                   <span className="text-[11px] text-slate-400 font-medium whitespace-nowrap leading-none tracking-tight">
                     Reverse Marketplace
                   </span>
@@ -334,13 +339,13 @@ export default function Sidebar({ user, children }: SidebarProps) {
                               onClick={() => setIsOpen(false)}
                               className={`group flex items-center justify-between px-3.5 py-2.5 rounded-lg text-body-sm font-semibold transition-all ${
                                 active
-                                  ? "bg-[#1e2d8c]/5 text-[#1e2d8c]"
+                                  ? "bg-[#1E2D8C]/5 text-[#1E2D8C]"
                                   : "text-slate-500 hover:bg-neutral-100"
                               }`}
                             >
                               <div className="flex items-center gap-2.5">
                                 <link.icon
-                                  className={`h-4.5 w-4.5 ${active ? "text-[#1e2d8c]" : "text-slate-400"}`}
+                                  className={`h-4.5 w-4.5 ${active ? "text-[#1E2D8C]" : "text-slate-400"}`}
                                 />
                                 <span>{link.name}</span>
                               </div>
@@ -361,8 +366,8 @@ export default function Sidebar({ user, children }: SidebarProps) {
               {/* User profile info for mobile at bottom */}
               <div className="mt-auto pt-6 border-t border-neutral-200/80 flex items-center justify-between gap-3 bg-[#fafafc] -mx-6 -mb-6 p-6">
                 <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="h-9 w-9 rounded-full bg-[#1e2d8c]/10 text-[#1e2d8c] flex items-center justify-center font-bold text-sm shrink-0 select-none">
-                    {user.email ? user.email[0].toUpperCase() : 'U'}
+                  <div className="h-9 w-9 rounded-full bg-[#1E2D8C]/10 text-[#1E2D8C] flex items-center justify-center font-bold text-sm shrink-0 select-none">
+                    {user.email ? user.email[0].toUpperCase() : "U"}
                   </div>
                   <span className="text-sm font-medium text-slate-500 truncate select-none">
                     {user.email}

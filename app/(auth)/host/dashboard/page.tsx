@@ -160,7 +160,7 @@ export default function HostDashboardPage() {
         <div className="h-12 w-12 rounded-full bg-neutral-50 flex items-center justify-center text-slate-400 mx-auto mb-6">
           <Clock className="h-6 w-6" />
         </div>
-        <h2 className="text-lg font-bold text-[#0e1442] mb-2">
+        <h2 className="text-lg font-bold text-[#1E2D8C] mb-2">
           Host Access Restricted
         </h2>
         <p className="text-body-sm text-slate-500 leading-relaxed mb-6">
@@ -169,7 +169,7 @@ export default function HostDashboardPage() {
         </p>
         <Link
           href="/host/upgrade"
-          className="inline-flex h-10 items-center justify-center px-6 rounded-lg bg-accent-peach-500 text-[#0e1442] text-body-sm font-bold hover:bg-accent-peach-500/90 transition-all active:scale-[0.98] cursor-pointer shadow-xs"
+          className="inline-flex h-10 items-center justify-center px-6 rounded-lg bg-[#FDC800] text-[#1E2D8C] text-body-sm font-bold hover:bg-[#FDC800]/90 transition-all active:scale-[0.98] cursor-pointer shadow-xs"
         >
           Request Host Role <ArrowUpRight className="ml-1.5 h-4 w-4" />
         </Link>
@@ -196,7 +196,7 @@ export default function HostDashboardPage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6 border-b border-neutral-200/80">
         <div>
-          <h1 className="text-h1 text-[#0e1442] font-bold">Browse Requests</h1>
+          <h1 className="text-h1 text-[#1E2D8C] font-bold">Browse Requests</h1>
           <p className="text-body-sm text-slate-500 mt-1">
             Browse open facility requirements and pitch your Subler listing
             links.
@@ -351,7 +351,7 @@ export default function HostDashboardPage() {
                         </span>
                       )}
                     </div>
-                    <h3 className="font-display text-lg font-bold text-[#0e1442] capitalize tracking-tight">
+                    <h3 className="font-display text-lg font-bold text-[#1E2D8C] capitalize tracking-tight">
                       {request.eventType.replace("_", " ")} /{" "}
                       {request.spaceType === "other"
                         ? "Space"
@@ -366,7 +366,7 @@ export default function HostDashboardPage() {
                   {!hasSentProposal && (
                     <button
                       onClick={() => handleOpenProposalModal(request)}
-                      className="inline-flex h-10 items-center justify-center px-4 rounded-lg bg-accent-peach-500 text-[#0e1442] text-body-sm font-bold hover:bg-accent-peach-500/90 transition-all active:scale-[0.98] cursor-pointer flex gap-1.5 shadow-xs"
+                      className="inline-flex h-10 items-center justify-center px-4 rounded-lg bg-[#FDC800] text-[#1E2D8C] text-body-sm font-bold hover:bg-[#FDC800]/90 transition-all active:scale-[0.98] cursor-pointer flex gap-1.5 shadow-xs"
                     >
                       <Send className="h-3.5 w-3.5" /> Pitch Space
                     </button>
@@ -459,7 +459,7 @@ export default function HostDashboardPage() {
           <div className="bg-white border border-neutral-200/60 rounded-2xl p-6 max-w-md w-full shadow-sm space-y-4 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-neutral-200 pb-3">
               <div>
-                <h3 className="font-display font-bold text-body text-[#0e1442]">
+                <h3 className="font-display font-bold text-body text-[#1E2D8C]">
                   Send Proposal Pitch
                 </h3>
                 <p className="text-[11px] text-slate-400 mt-0.5 capitalize">
@@ -469,7 +469,7 @@ export default function HostDashboardPage() {
               </div>
               <button
                 onClick={() => setActiveProposalRequest(null)}
-                className="text-slate-400 hover:text-[#0e1442] text-caption font-semibold cursor-pointer"
+                className="text-slate-400 hover:text-[#1E2D8C] text-caption font-semibold cursor-pointer"
               >
                 Close
               </button>
@@ -541,7 +541,7 @@ export default function HostDashboardPage() {
                 <Button
                   type="submit"
                   disabled={createProposal.isPending}
-                  className="inline-flex h-9 items-center justify-center px-5 rounded-lg bg-accent-peach-500 text-[#0e1442] hover:bg-accent-peach-500/90 text-body-sm font-bold transition-all cursor-pointer shadow-xs flex items-center gap-1.5 border-transparent active:scale-[0.98]"
+                  className="inline-flex h-9 items-center justify-center px-5 rounded-lg bg-[#FDC800] text-[#1E2D8C] hover:bg-[#FDC800]/90 text-body-sm font-bold transition-all cursor-pointer shadow-xs flex items-center gap-1.5 border-transparent active:scale-[0.98]"
                 >
                   {createProposal.isPending ? (
                     <>

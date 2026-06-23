@@ -262,14 +262,14 @@ export default function MyRequestsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-neutral-200/80">
         <div>
-          <h1 className="text-h1 text-[#0e1442] font-bold">My Requests</h1>
+          <h1 className="text-h1 text-[#1E2D8C] font-bold">My Requests</h1>
           <p className="text-body-sm text-slate-500 mt-1">
             Track and manage your facility requirements and close status.
           </p>
         </div>
         <Link
           href="/requests/new"
-          className="inline-flex h-10 items-center justify-center px-4 rounded-lg bg-accent-peach-500 text-[#0e1442] text-body-sm font-bold hover:bg-accent-peach-500/90 transition-all active:scale-[0.98] cursor-pointer self-start sm:self-auto"
+          className="inline-flex h-10 items-center justify-center px-4 rounded-lg bg-[#FDC800] text-[#1E2D8C] text-body-sm font-bold hover:bg-[#FDC800]/90 transition-all active:scale-[0.98] cursor-pointer self-start sm:self-auto"
         >
           <Plus className="mr-1.5 h-4 w-4" /> Post a Request
         </Link>
@@ -331,7 +331,7 @@ export default function MyRequestsPage() {
           <div className="h-12 w-12 rounded-full bg-neutral-50 flex items-center justify-center text-slate-400 mx-auto mb-6">
             <ClipboardList className="h-6 w-6" />
           </div>
-          <h3 className="text-lg font-bold text-[#0e1442] mb-2">
+          <h3 className="text-lg font-bold text-[#1E2D8C] mb-2">
             No requests created yet
           </h3>
           <p className="text-body-sm text-slate-500 max-w-sm mx-auto mb-6 leading-relaxed">
@@ -340,7 +340,7 @@ export default function MyRequestsPage() {
           </p>
           <Link
             href="/requests/new"
-            className="inline-flex h-10 items-center justify-center px-6 rounded-lg bg-accent-peach-500 text-[#0e1442] text-body-sm font-bold hover:bg-accent-peach-500/90 transition-all active:scale-[0.98] cursor-pointer"
+            className="inline-flex h-10 items-center justify-center px-6 rounded-lg bg-[#FDC800] text-[#1E2D8C] text-body-sm font-bold hover:bg-[#FDC800]/90 transition-all active:scale-[0.98] cursor-pointer"
           >
             Post a Request
           </Link>
@@ -517,7 +517,7 @@ export default function MyRequestsPage() {
                             <div className="h-5 w-5 rounded-full bg-primary text-white flex items-center justify-center text-[9px] font-bold">
                               {proposal.host?.email?.[0]?.toUpperCase() || "H"}
                             </div>
-                            <span className="text-body-sm font-semibold text-[#0e1442]">
+                            <span className="text-body-sm font-semibold text-[#1E2D8C]">
                               {proposal.host?.email || "Verified Host"}
                             </span>
                             <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200">
@@ -572,7 +572,7 @@ export default function MyRequestsPage() {
                             href={proposal.sublerLink}
                             target="_blank"
                             rel="noreferrer"
-                            className="inline-flex h-9 items-center justify-center gap-1.5 px-4 rounded-lg bg-accent-peach-500 text-[#0e1442] hover:bg-accent-peach-500/90 text-body-sm font-semibold transition-all cursor-pointer shadow-xs active:scale-[0.98]"
+                            className="inline-flex h-9 items-center justify-center gap-1.5 px-4 rounded-lg bg-[#FDC800] text-[#1E2D8C] hover:bg-[#FDC800]/90 text-body-sm font-semibold transition-all cursor-pointer shadow-xs active:scale-[0.98]"
                           >
                             View on Subler{" "}
                             <ArrowUpRight className="h-3.5 w-3.5" />

@@ -200,7 +200,7 @@ Nothing else. No profile editing, no name fields.
 - `--color-muted-foreground` — secondary text
 - `--color-border` — borders and dividers
 - `--color-card` — card backgrounds
-- `--color-accent-peach-500` — CTA accent (`#ffb13d`)
+- `--color-[#FDC800]` — CTA accent (`#ffb13d`)
 
 ### Type Scale Utilities
 

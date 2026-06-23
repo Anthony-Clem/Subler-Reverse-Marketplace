@@ -3,7 +3,14 @@
 import React, { useState } from "react";
 import { signOut } from "next-auth/react";
 import { toast } from "sonner";
-import { Trash2, LogOut, AlertTriangle, X, Loader2, Download } from "lucide-react";
+import {
+  Trash2,
+  LogOut,
+  AlertTriangle,
+  X,
+  Loader2,
+  Download,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -25,21 +32,26 @@ export default function SettingsForm({ email }: SettingsFormProps) {
         throw new Error("Failed to export data");
       }
       const data = await response.json();
-      
+
       const jsonString = `data:text/json;charset=utf-8,${encodeURIComponent(
-        JSON.stringify(data, null, 2)
+        JSON.stringify(data, null, 2),
       )}`;
       const downloadAnchor = document.createElement("a");
       downloadAnchor.setAttribute("href", jsonString);
-      downloadAnchor.setAttribute("download", `subler_user_data_${new Date().toISOString().split('T')[0]}.json`);
+      downloadAnchor.setAttribute(
+        "download",
+        `subler_user_data_${new Date().toISOString().split("T")[0]}.json`,
+      );
       document.body.appendChild(downloadAnchor);
       downloadAnchor.click();
       downloadAnchor.remove();
-      
+
       toast.success("Data exported successfully!");
     } catch (error: any) {
       console.error("Export data error:", error);
-      toast.error(error.message || "Failed to export user data. Please try again.");
+      toast.error(
+        error.message || "Failed to export user data. Please try again.",
+      );
     } finally {
       setIsExporting(false);
     }
@@ -66,7 +78,9 @@ export default function SettingsForm({ email }: SettingsFormProps) {
       await signOut({ callbackUrl: "/login" });
     } catch (error: any) {
       console.error("Account delete error:", error);
-      toast.error(error.message || "Failed to delete account. Please try again.");
+      toast.error(
+        error.message || "Failed to delete account. Please try again.",
+      );
       setIsDeleting(false);
     }
   };
@@ -84,13 +98,20 @@ export default function SettingsForm({ email }: SettingsFormProps) {
     <div className="w-full max-w-md bg-white border border-slate-200/60 rounded-2xl p-8 shadow-xs space-y-6">
       {/* Card Header */}
       <div className="space-y-1">
-        <h3 className="font-display font-semibold text-base text-[#0e1442]">Account Settings</h3>
-        <p className="text-xs text-slate-500">Manage your profile and session preferences.</p>
+        <h3 className="font-display font-semibold text-base text-[#1E2D8C]">
+          Account Settings
+        </h3>
+        <p className="text-xs text-slate-500">
+          Manage your profile and session preferences.
+        </p>
       </div>
 
       {/* Identity Input */}
       <div className="space-y-2">
-        <label htmlFor="email" className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+        <label
+          htmlFor="email"
+          className="text-xs font-bold text-slate-400 uppercase tracking-wider"
+        >
           Email Address
         </label>
         <Input
@@ -105,11 +126,12 @@ export default function SettingsForm({ email }: SettingsFormProps) {
       {/* Export Data Section */}
       <div className="space-y-3 pt-4 border-t border-slate-100">
         <div>
-          <h4 className="text-xs font-bold text-[#0e1442] uppercase tracking-wider">
+          <h4 className="text-xs font-bold text-[#1E2D8C] uppercase tracking-wider">
             Export Your Data
           </h4>
           <p className="text-[11px] text-slate-400 mt-1">
-            Download a copy of your account profile, requests, and proposals in JSON format.
+            Download a copy of your account profile, requests, and proposals in
+            JSON format.
           </p>
         </div>
         <Button
@@ -117,7 +139,7 @@ export default function SettingsForm({ email }: SettingsFormProps) {
           onClick={handleExportData}
           disabled={isExporting}
           variant="outline"
-          className="w-full h-10 border-slate-200 hover:bg-slate-50 hover:border-slate-300 text-[#0e1442] font-semibold text-xs rounded-lg transition-all cursor-pointer flex items-center justify-center gap-2"
+          className="w-full h-10 border-slate-200 hover:bg-slate-50 hover:border-slate-300 text-[#1E2D8C] font-semibold text-xs rounded-lg transition-all cursor-pointer flex items-center justify-center gap-2"
         >
           {isExporting ? (
             <>
@@ -139,7 +161,7 @@ export default function SettingsForm({ email }: SettingsFormProps) {
           type="button"
           onClick={handleSignOut}
           variant="outline"
-          className="w-full h-10 border-slate-200 hover:bg-slate-50 text-[#0e1442] font-semibold text-xs rounded-lg transition-colors cursor-pointer flex items-center justify-center gap-2"
+          className="w-full h-10 border-slate-200 hover:bg-slate-50 text-[#1E2D8C] font-semibold text-xs rounded-lg transition-colors cursor-pointer flex items-center justify-center gap-2"
         >
           <LogOut className="h-4 w-4 text-slate-400" />
           Sign Out
@@ -165,7 +187,7 @@ export default function SettingsForm({ email }: SettingsFormProps) {
                 setShowConfirm(false);
                 setConfirmEmail("");
               }}
-              className="absolute top-4 right-4 h-7 w-7 rounded-lg border border-slate-200 flex items-center justify-center text-slate-400 hover:text-[#0e1442] hover:bg-slate-50 cursor-pointer transition-colors"
+              className="absolute top-4 right-4 h-7 w-7 rounded-lg border border-slate-200 flex items-center justify-center text-slate-400 hover:text-[#1E2D8C] hover:bg-slate-50 cursor-pointer transition-colors"
             >
               <X className="h-3.5 w-3.5" />
             </button>
@@ -174,14 +196,18 @@ export default function SettingsForm({ email }: SettingsFormProps) {
               <div className="h-10 w-10 rounded-lg bg-red-50 flex items-center justify-center shrink-0">
                 <AlertTriangle className="h-5 w-5" />
               </div>
-              <h3 className="font-display text-sm font-bold text-[#0e1442]">
+              <h3 className="font-display text-sm font-bold text-[#1E2D8C]">
                 Confirm Account Deletion
               </h3>
             </div>
 
             <p className="text-xs text-slate-500 leading-relaxed">
-              This action cannot be undone. To proceed, please type your email address 
-              <strong className="text-[#0e1442] block mt-1 font-mono break-all">{email}</strong> below:
+              This action cannot be undone. To proceed, please type your email
+              address
+              <strong className="text-[#1E2D8C] block mt-1 font-mono break-all">
+                {email}
+              </strong>{" "}
+              below:
             </p>
 
             <div className="space-y-4">
@@ -209,7 +235,11 @@ export default function SettingsForm({ email }: SettingsFormProps) {
                 <Button
                   variant="destructive"
                   onClick={handleDeleteAccount}
-                  disabled={isDeleting || confirmEmail.toLowerCase().trim() !== email.toLowerCase().trim()}
+                  disabled={
+                    isDeleting ||
+                    confirmEmail.toLowerCase().trim() !==
+                      email.toLowerCase().trim()
+                  }
                   className="font-semibold text-xs h-9 px-4 bg-red-600 hover:bg-red-700 text-white disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer rounded-lg"
                 >
                   {isDeleting ? (
