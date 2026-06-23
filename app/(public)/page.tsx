@@ -560,15 +560,13 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
             <div>
               <span className="text-[10px] font-bold uppercase text-slate-400 tracking-wider mb-3 block">
-                Why use Subler Reverse?
+                Why use Subler Reverse Marketplace?
               </span>
               <h2 className="text-2xl md:text-3xl font-bold text-[#0e1442] font-display tracking-tight mb-4 leading-tight">
-                Designed for high-intent matches. Built for speed.
+                Simple matching. Direct bookings.
               </h2>
               <p className="text-sm text-slate-500 mb-8 leading-relaxed">
-                Our demand-side system matches hosts with active space requests
-                immediately. No endless browsing, message tagging, or waiting
-                weeks for listings to reply.
+                Renters post their exact space requirements, and verified hosts pitch their matching venues directly. Skip the endless browsing, message tagging, and long response times.
               </p>
 
               <div className="space-y-6">
@@ -578,11 +576,10 @@ export default function Home() {
                   </div>
                   <div>
                     <h4 className="font-bold text-xs text-[#0e1442]">
-                      Strict URL Verification
+                      Verified Venue Listings
                     </h4>
                     <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                      Non-Subler proposal links are blocked at the route handler
-                      level, keeping users safe.
+                      Every proposal connects directly to a verified Subler listing, ensuring secure and trusted bookings.
                     </p>
                   </div>
                 </div>
@@ -593,11 +590,10 @@ export default function Home() {
                   </div>
                   <div>
                     <h4 className="font-bold text-xs text-[#0e1442]">
-                      Passwordless Magic Links
+                      Fast & Passwordless Login
                     </h4>
                     <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                      Hassle-free sign-in using Auth.js email magic links.
-                      Secure, instant, and lightweight.
+                      Log in instantly with a secure magic link sent directly to your inbox. No passwords to remember.
                     </p>
                   </div>
                 </div>
@@ -608,11 +604,10 @@ export default function Home() {
                   </div>
                   <div>
                     <h4 className="font-bold text-xs text-[#0e1442]">
-                      Host Upgrades & Moderation
+                      Vetted Venue Hosts
                     </h4>
                     <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                      Host profiles go through strict admin approval before they
-                      can submit proposals.
+                      All hosts are vetted and approved by our team before they can send proposals, keeping matches high quality.
                     </p>
                   </div>
                 </div>
