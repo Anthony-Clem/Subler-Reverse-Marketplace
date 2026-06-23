@@ -138,7 +138,7 @@ export default function Home() {
             </Link>
             <Link
               href="/login"
-              className="inline-flex h-10 items-center justify-center px-4 rounded-lg bg-[#FDC800] text-[#1E2D8C] text-xs font-bold hover:bg-[#FDC800]/90 transition-all active:scale-[0.98] cursor-pointer shadow-xs"
+              className="inline-flex h-10 items-center justify-center px-4 rounded-lg bg-[#FDC800] text-black text-xs font-bold hover:bg-[#FDC800]/90 transition-all active:scale-[0.98] cursor-pointer shadow-xs"
             >
               Post a Request
             </Link>
@@ -176,7 +176,7 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto mb-16">
             <Link
               href="/login"
-              className="inline-flex h-10 w-full sm:w-auto items-center justify-center px-6 rounded-lg bg-[#FDC800] text-[#1E2D8C] text-xs font-bold hover:bg-[#FDC800]/90 transition-all active:scale-[0.98] cursor-pointer shadow-xs"
+              className="inline-flex h-10 w-full sm:w-auto items-center justify-center px-6 rounded-lg bg-[#FDC800] text-black text-xs font-bold hover:bg-[#FDC800]/90 transition-all active:scale-[0.98] cursor-pointer shadow-xs"
             >
               Post a Request <Plus className="ml-1.5 h-3.5 w-3.5" />
             </Link>
@@ -347,7 +347,7 @@ export default function Home() {
                 </p>
                 <Link
                   href="/login"
-                  className="inline-flex h-10 items-center justify-center px-6 rounded-lg bg-[#FDC800] text-[#1E2D8C] text-xs font-bold hover:bg-[#FDC800]/90 transition-all active:scale-[0.98] cursor-pointer shadow-xs"
+                  className="inline-flex h-10 items-center justify-center px-6 rounded-lg bg-[#FDC800] text-black text-xs font-bold hover:bg-[#FDC800]/90 transition-all active:scale-[0.98] cursor-pointer shadow-xs"
                 >
                   Post a Request
                 </Link>
@@ -647,7 +647,7 @@ export default function Home() {
                 </div>
                 <Link
                   href="/login"
-                  className="h-10 w-10 rounded-lg bg-[#FDC800] text-[#1E2D8C] flex items-center justify-center hover:bg-[#FDC800]/90 active:scale-[0.98] transition-all shadow-xs cursor-pointer"
+                  className="h-10 w-10 rounded-lg bg-[#FDC800] text-black flex items-center justify-center hover:bg-[#FDC800]/90 active:scale-[0.98] transition-all shadow-xs cursor-pointer"
                 >
                   <ArrowRight className="h-4 w-4" />
                 </Link>
@@ -671,7 +671,7 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto">
             <Link
               href="/login"
-              className="inline-flex h-10 w-full sm:w-auto items-center justify-center px-6 rounded-lg bg-[#FDC800] text-[#1E2D8C] text-xs font-bold hover:bg-[#FDC800]/90 transition-all active:scale-[0.98] cursor-pointer shadow-xs"
+              className="inline-flex h-10 w-full sm:w-auto items-center justify-center px-6 rounded-lg bg-[#FDC800] text-black text-xs font-bold hover:bg-[#FDC800]/90 transition-all active:scale-[0.98] cursor-pointer shadow-xs"
             >
               Post a Request Now
             </Link>

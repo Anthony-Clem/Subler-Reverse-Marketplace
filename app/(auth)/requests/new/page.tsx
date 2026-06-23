@@ -820,7 +820,7 @@ export default function NewRequestPage() {
               type="button"
               onClick={handlePublish}
               disabled={createRequest.isPending}
-              className="inline-flex h-10 items-center justify-center px-6 rounded-lg bg-[#FDC800] text-[#1E2D8C] hover:bg-[#FDC800]/90 text-body-sm font-bold transition-all active:scale-[0.98] cursor-pointer gap-1.5"
+              className="inline-flex h-10 items-center justify-center px-6 rounded-lg bg-[#FDC800] text-black hover:bg-[#FDC800]/90 text-body-sm font-bold transition-all active:scale-[0.98] cursor-pointer gap-1.5"
             >
               {createRequest.isPending ? (
                 <>

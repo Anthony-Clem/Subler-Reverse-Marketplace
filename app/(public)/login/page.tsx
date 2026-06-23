@@ -141,7 +141,7 @@ function LoginForm() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-2/3 bg-[#FDC800] hover:bg-[#FDC800]/90 text-[#1E2D8C] font-semibold transition-all rounded-lg h-10 shadow-xs text-xs active:scale-[0.98] cursor-pointer"
+              className="w-2/3 bg-[#FDC800] hover:bg-[#FDC800]/90 text-black font-semibold transition-all rounded-lg h-10 shadow-xs text-xs active:scale-[0.98] cursor-pointer"
             >
               {loading ? (
                 <>
@@ -192,7 +192,7 @@ function LoginForm() {
         <Button
           type="submit"
           disabled={loading}
-          className="w-full bg-[#FDC800] hover:bg-[#FDC800]/90 text-[#1E2D8C] font-semibold transition-all rounded-lg h-10 shadow-xs text-xs active:scale-[0.98] cursor-pointer pt-0.5"
+          className="w-full bg-[#FDC800] hover:bg-[#FDC800]/90 text-black font-semibold transition-all rounded-lg h-10 shadow-xs text-xs active:scale-[0.98] cursor-pointer pt-0.5"
         >
           {loading ? (
             <>

@@ -269,7 +269,7 @@ export default function MyRequestsPage() {
         </div>
         <Link
           href="/requests/new"
-          className="inline-flex h-10 items-center justify-center px-4 rounded-lg bg-[#FDC800] text-[#1E2D8C] text-body-sm font-bold hover:bg-[#FDC800]/90 transition-all active:scale-[0.98] cursor-pointer self-start sm:self-auto"
+          className="inline-flex h-10 items-center justify-center px-4 rounded-lg bg-[#FDC800] text-black text-body-sm font-bold hover:bg-[#FDC800]/90 transition-all active:scale-[0.98] cursor-pointer self-start sm:self-auto"
         >
           <Plus className="mr-1.5 h-4 w-4" /> Post a Request
         </Link>
@@ -340,7 +340,7 @@ export default function MyRequestsPage() {
           </p>
           <Link
             href="/requests/new"
-            className="inline-flex h-10 items-center justify-center px-6 rounded-lg bg-[#FDC800] text-[#1E2D8C] text-body-sm font-bold hover:bg-[#FDC800]/90 transition-all active:scale-[0.98] cursor-pointer"
+            className="inline-flex h-10 items-center justify-center px-6 rounded-lg bg-[#FDC800] text-black text-body-sm font-bold hover:bg-[#FDC800]/90 transition-all active:scale-[0.98] cursor-pointer"
           >
             Post a Request
           </Link>
@@ -572,7 +572,7 @@ export default function MyRequestsPage() {
                             href={proposal.sublerLink}
                             target="_blank"
                             rel="noreferrer"
-                            className="inline-flex h-9 items-center justify-center gap-1.5 px-4 rounded-lg bg-[#FDC800] text-[#1E2D8C] hover:bg-[#FDC800]/90 text-body-sm font-semibold transition-all cursor-pointer shadow-xs active:scale-[0.98]"
+                            className="inline-flex h-9 items-center justify-center gap-1.5 px-4 rounded-lg bg-[#FDC800] text-black hover:bg-[#FDC800]/90 text-body-sm font-semibold transition-all cursor-pointer shadow-xs active:scale-[0.98]"
                           >
                             View on Subler{" "}
                             <ArrowUpRight className="h-3.5 w-3.5" />

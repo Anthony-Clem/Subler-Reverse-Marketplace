@@ -102,14 +102,14 @@ export default function DashboardPage() {
             {isHost ? (
               <Link
                 href="/host/dashboard"
-                className="inline-flex h-10 items-center justify-center px-4 rounded-lg bg-[#FDC800] text-[#1E2D8C] text-body-sm font-bold hover:bg-[#FDC800]/90 transition-all active:scale-[0.98] cursor-pointer"
+                className="inline-flex h-10 items-center justify-center px-4 rounded-lg bg-[#FDC800] text-black text-body-sm font-bold hover:bg-[#FDC800]/90 transition-all active:scale-[0.98] cursor-pointer"
               >
                 Browse Open Requests
               </Link>
             ) : (
               <Link
                 href="/requests/new"
-                className="inline-flex h-10 items-center justify-center px-4 rounded-lg bg-[#FDC800] text-[#1E2D8C] text-body-sm font-bold hover:bg-[#FDC800]/90 transition-all active:scale-[0.98] cursor-pointer"
+                className="inline-flex h-10 items-center justify-center px-4 rounded-lg bg-[#FDC800] text-black text-body-sm font-bold hover:bg-[#FDC800]/90 transition-all active:scale-[0.98] cursor-pointer"
               >
                 <Plus className="mr-1.5 h-4 w-4" /> Post a Request
               </Link>
@@ -362,7 +362,7 @@ export default function DashboardPage() {
                   <div className="flex items-center justify-center gap-3">
                     <Link
                       href="/requests/new"
-                      className="inline-flex h-10 items-center justify-center px-4 rounded-lg bg-[#FDC800] text-[#1E2D8C] text-body-sm font-bold hover:bg-[#FDC800]/90 transition-all active:scale-[0.98] cursor-pointer"
+                      className="inline-flex h-10 items-center justify-center px-4 rounded-lg bg-[#FDC800] text-black text-body-sm font-bold hover:bg-[#FDC800]/90 transition-all active:scale-[0.98] cursor-pointer"
                     >
                       Create Request
                     </Link>
@@ -523,7 +523,7 @@ export default function DashboardPage() {
                                   href={proposal.sublerLink}
                                   target="_blank"
                                   rel="noreferrer"
-                                  className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg bg-[#FDC800] text-[#1E2D8C] hover:bg-[#FDC800]/90 text-body-sm font-semibold transition-all cursor-pointer self-start md:self-auto shrink-0 shadow-xs active:scale-[0.98]"
+                                  className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg bg-[#FDC800] text-black hover:bg-[#FDC800]/90 text-body-sm font-semibold transition-all cursor-pointer self-start md:self-auto shrink-0 shadow-xs active:scale-[0.98]"
                                 >
                                   View on Subler{" "}
                                   <ArrowUpRight className="h-3.5 w-3.5" />

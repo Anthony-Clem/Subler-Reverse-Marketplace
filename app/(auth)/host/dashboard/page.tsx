@@ -169,7 +169,7 @@ export default function HostDashboardPage() {
         </p>
         <Link
           href="/host/upgrade"
-          className="inline-flex h-10 items-center justify-center px-6 rounded-lg bg-[#FDC800] text-[#1E2D8C] text-body-sm font-bold hover:bg-[#FDC800]/90 transition-all active:scale-[0.98] cursor-pointer shadow-xs"
+          className="inline-flex h-10 items-center justify-center px-6 rounded-lg bg-[#FDC800] text-black text-body-sm font-bold hover:bg-[#FDC800]/90 transition-all active:scale-[0.98] cursor-pointer shadow-xs"
         >
           Request Host Role <ArrowUpRight className="ml-1.5 h-4 w-4" />
         </Link>
@@ -366,7 +366,7 @@ export default function HostDashboardPage() {
                   {!hasSentProposal && (
                     <button
                       onClick={() => handleOpenProposalModal(request)}
-                      className="inline-flex h-10 items-center justify-center px-4 rounded-lg bg-[#FDC800] text-[#1E2D8C] text-body-sm font-bold hover:bg-[#FDC800]/90 transition-all active:scale-[0.98] cursor-pointer flex gap-1.5 shadow-xs"
+                      className="inline-flex h-10 items-center justify-center px-4 rounded-lg bg-[#FDC800] text-black text-body-sm font-bold hover:bg-[#FDC800]/90 transition-all active:scale-[0.98] cursor-pointer flex gap-1.5 shadow-xs"
                     >
                       <Send className="h-3.5 w-3.5" /> Pitch Space
                     </button>
@@ -541,7 +541,7 @@ export default function HostDashboardPage() {
                 <Button
                   type="submit"
                   disabled={createProposal.isPending}
-                  className="inline-flex h-9 items-center justify-center px-5 rounded-lg bg-[#FDC800] text-[#1E2D8C] hover:bg-[#FDC800]/90 text-body-sm font-bold transition-all cursor-pointer shadow-xs flex items-center gap-1.5 border-transparent active:scale-[0.98]"
+                  className="inline-flex h-9 items-center justify-center px-5 rounded-lg bg-[#FDC800] text-black hover:bg-[#FDC800]/90 text-body-sm font-bold transition-all cursor-pointer shadow-xs flex items-center gap-1.5 border-transparent active:scale-[0.98]"
                 >
                   {createProposal.isPending ? (
                     <>
