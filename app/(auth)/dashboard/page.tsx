@@ -439,7 +439,7 @@ export default function DashboardPage() {
                               Location
                             </p>
                             <p
-                              className="font-bold text-[#0e1442] truncate max-w-[120px]"
+                              className="font-bold text-[#0e1442] truncate max-w-30"
                               title={request.locationPreference}
                             >
                               {request.locationPreference}
