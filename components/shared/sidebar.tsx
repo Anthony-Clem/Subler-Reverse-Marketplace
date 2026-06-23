@@ -195,23 +195,31 @@ export default function Sidebar({ user, children }: SidebarProps) {
         </nav>
 
         {/* User profile info at bottom */}
-        <div className="p-4 border-t border-neutral-200/80 flex items-center justify-between gap-2 mt-auto bg-[#fafafc]">
-          <Link
-            href="/settings"
-            className="flex-1 inline-flex items-center justify-center gap-1.5 h-8.5 rounded-lg border border-neutral-200/80 bg-white text-slate-600 hover:bg-neutral-50 hover:text-foreground text-caption font-semibold transition-all cursor-pointer shadow-xs"
-            title="Settings"
-          >
-            <Settings className="h-3.5 w-3.5 text-slate-400" />
-            <span>Settings</span>
-          </Link>
-          <button
-            onClick={() => signOut({ callbackUrl: "/login" })}
-            className="flex-1 inline-flex items-center justify-center gap-1.5 h-8.5 rounded-lg border border-neutral-200/80 bg-white text-slate-600 hover:bg-red-50 hover:text-red-600 hover:border-red-100 text-caption font-semibold transition-all cursor-pointer shadow-xs"
-            title="Sign Out"
-          >
-            <LogOut className="h-3.5 w-3.5 text-slate-400" />
-            <span>Sign Out</span>
-          </button>
+        <div className="p-4 border-t border-neutral-200/80 flex items-center justify-between gap-3 mt-auto bg-[#fafafc]">
+          <div className="flex items-center gap-2 min-w-0">
+            <div className="h-7 w-7 rounded-full bg-[#1e2d8c]/10 text-[#1e2d8c] flex items-center justify-center font-bold text-xs shrink-0 select-none">
+              {user.email ? user.email[0].toUpperCase() : 'U'}
+            </div>
+            <span className="text-xs font-medium text-slate-500 truncate select-none">
+              {user.email}
+            </span>
+          </div>
+          <div className="flex items-center gap-1.5 shrink-0">
+            <Link
+              href="/settings"
+              className="h-8 w-8 rounded-lg border border-neutral-200/80 bg-white text-slate-600 hover:bg-neutral-50 hover:text-foreground flex items-center justify-center transition-all cursor-pointer shadow-xs"
+              title="Settings"
+            >
+              <Settings className="h-4 w-4 text-slate-400" />
+            </Link>
+            <button
+              onClick={() => signOut({ callbackUrl: "/login" })}
+              className="h-8 w-8 rounded-lg border border-neutral-200/80 bg-white text-slate-600 hover:bg-red-50 hover:text-red-600 hover:border-red-100 flex items-center justify-center transition-all cursor-pointer shadow-xs"
+              title="Sign Out"
+            >
+              <LogOut className="h-4 w-4 text-slate-400" />
+            </button>
+          </div>
         </div>
       </aside>
 
@@ -325,24 +333,32 @@ export default function Sidebar({ user, children }: SidebarProps) {
               </nav>
 
               {/* User profile info for mobile at bottom */}
-              <div className="mt-auto pt-6 border-t border-neutral-200/80 flex items-center justify-between gap-2 bg-[#fafafc] -mx-6 -mb-6 p-6">
-                <Link
-                  href="/settings"
-                  onClick={() => setIsOpen(false)}
-                  className="flex-1 inline-flex items-center justify-center gap-1.5 h-10 rounded-lg border border-neutral-200/80 bg-white text-slate-600 hover:bg-neutral-50 hover:text-foreground text-caption font-semibold transition-all cursor-pointer shadow-xs"
-                  title="Settings"
-                >
-                  <Settings className="h-4.5 w-4.5 text-slate-400" />
-                  <span>Settings</span>
-                </Link>
-                <button
-                  onClick={() => signOut({ callbackUrl: "/login" })}
-                  className="flex-1 inline-flex items-center justify-center gap-1.5 h-10 rounded-lg border border-neutral-200/80 bg-white text-slate-600 hover:bg-red-50 hover:text-red-600 hover:border-red-100 text-caption font-semibold transition-all cursor-pointer shadow-xs"
-                  title="Sign Out"
-                >
-                  <LogOut className="h-4.5 w-4.5 text-slate-400" />
-                  <span>Sign Out</span>
-                </button>
+              <div className="mt-auto pt-6 border-t border-neutral-200/80 flex items-center justify-between gap-3 bg-[#fafafc] -mx-6 -mb-6 p-6">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="h-9 w-9 rounded-full bg-[#1e2d8c]/10 text-[#1e2d8c] flex items-center justify-center font-bold text-sm shrink-0 select-none">
+                    {user.email ? user.email[0].toUpperCase() : 'U'}
+                  </div>
+                  <span className="text-sm font-medium text-slate-500 truncate select-none">
+                    {user.email}
+                  </span>
+                </div>
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <Link
+                    href="/settings"
+                    onClick={() => setIsOpen(false)}
+                    className="h-9 w-9 rounded-lg border border-neutral-200/80 bg-white text-slate-600 hover:bg-neutral-50 hover:text-foreground flex items-center justify-center transition-all cursor-pointer shadow-xs"
+                    title="Settings"
+                  >
+                    <Settings className="h-4.5 w-4.5 text-slate-400" />
+                  </Link>
+                  <button
+                    onClick={() => signOut({ callbackUrl: "/login" })}
+                    className="h-9 w-9 rounded-lg border border-neutral-200/80 bg-white text-slate-600 hover:bg-red-50 hover:text-red-600 hover:border-red-100 flex items-center justify-center transition-all cursor-pointer shadow-xs"
+                    title="Sign Out"
+                  >
+                    <LogOut className="h-4.5 w-4.5 text-slate-400" />
+                  </button>
+                </div>
               </div>
             </aside>
           </div>
