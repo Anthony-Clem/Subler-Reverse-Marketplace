@@ -70,6 +70,21 @@ export default function DashboardPage() {
     }
   };
 
+  const getFormatDateTime = (dateStr: string) => {
+    try {
+      const d = new Date(dateStr);
+      return d.toLocaleString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+      });
+    } catch {
+      return dateStr;
+    }
+  };
+
   return (
     <div className="space-y-8 max-w-6xl text-[#1E2D8C]">
       {/* Branded Dashboard Header Banner */}
@@ -88,45 +103,35 @@ export default function DashboardPage() {
             <div className="space-y-2">
               <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-md bg-white/10 text-white/90 border border-white/5 text-caption font-semibold">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                {isHost ? "Verified Host Profile" : "Active Renter Account"}
+                Active Renter Account
               </div>
               <div>
                 <p className="text-caption text-blue-200 font-medium">
                   Welcome back,{" "}
-                  {(profile?.email || session?.user?.email)?.split("@")[0] ||
-                    "Renter"}{" "}
+                  {isProfileLoading && !session?.user?.email ? (
+                    <span className="inline-block h-3 w-16 bg-white/20 animate-pulse rounded" />
+                  ) : (
+                    (profile?.email || session?.user?.email)?.split("@")[0] || "Renter"
+                  )}{" "}
                   👋
                 </p>
                 <h1 className="font-display text-3xl font-bold tracking-tight text-white mt-1">
-                  {isHost ? "Host Matching Panel" : "Renter Dashboard"}
+                  Renter Dashboard
                 </h1>
               </div>
               <p className="text-body-sm text-white/80 max-w-xl leading-relaxed">
-                {isHost
-                  ? "Browse open renter requests, send custom proposals with listing links, and get booked."
-                  : "Manage your space requirements and track incoming proposals from verified Subler hosts."}
+                Manage your space requirements and track incoming proposals from verified Subler hosts.
               </p>
             </div>
           )}
 
           <div className="flex items-center gap-3 shrink-0 self-start md:self-auto">
-            {isProfileLoading ? (
-              <div className="h-10 w-36 bg-white/20 animate-pulse rounded-lg" />
-            ) : isHost ? (
-              <Link
-                href="/host/dashboard"
-                className="inline-flex h-10 items-center justify-center px-4 rounded-lg bg-[#FDC800] text-black text-body-sm font-bold hover:bg-[#FDC800]/90 transition-all active:scale-[0.98] cursor-pointer"
-              >
-                Browse Open Requests
-              </Link>
-            ) : (
-              <Link
-                href="/requests/new"
-                className="inline-flex h-10 items-center justify-center px-4 rounded-lg bg-[#FDC800] text-black text-body-sm font-bold hover:bg-[#FDC800]/90 transition-all active:scale-[0.98] cursor-pointer"
-              >
-                <Plus className="mr-1.5 h-4 w-4" /> Post a Request
-              </Link>
-            )}
+            <Link
+              href="/requests/new"
+              className="inline-flex h-10 items-center justify-center px-4 rounded-lg bg-[#FDC800] text-black text-body-sm font-bold hover:bg-[#FDC800]/90 transition-all active:scale-[0.98] cursor-pointer"
+            >
+              <Plus className="mr-1.5 h-4 w-4" /> Post a Request
+            </Link>
           </div>
         </div>
       </div>
@@ -355,7 +360,7 @@ export default function DashboardPage() {
                 </h2>
                 {requests && requests.length > 0 && (
                   <span className="text-[11px] text-slate-400 font-semibold">
-                    Showing {requests.length} posts
+                    {requests.length > 1 ? `Showing 1 of ${requests.length} posts` : `Showing 1 post`}
                   </span>
                 )}
               </div>
@@ -388,7 +393,7 @@ export default function DashboardPage() {
               {/* List of Requests */}
               {requests && requests.length > 0 && (
                 <div className="space-y-6">
-                  {requests.map((request) => (
+                  {requests.slice(0, 1).map((request) => (
                     <div
                       key={request.id}
                       className="bg-white border border-neutral-200/60 rounded-2xl p-6 shadow-xs flex flex-col gap-6"
@@ -398,18 +403,18 @@ export default function DashboardPage() {
                         <div>
                           <div className="flex flex-wrap items-center gap-2 mb-2">
                             <span className="inline-flex items-center text-[10px] font-bold tracking-wide px-2 py-0.5 rounded-md bg-neutral-50 text-slate-700 border border-neutral-200 capitalize">
-                              {request.spaceType}
+                              {request.spaceType.replace(/_/g, " ")}
                             </span>
                             <span className="inline-flex items-center text-[10px] font-bold tracking-wide px-2 py-0.5 rounded-md bg-neutral-50 text-slate-700 border border-neutral-200 capitalize">
-                              {request.eventType.replace("_", " ")}
+                              {request.eventType.replace(/_/g, " ")}
                             </span>
                             {getStatusBadge(request.status)}
                           </div>
                           <h3 className="font-display text-lg font-bold text-[#1E2D8C] capitalize tracking-tight">
-                            {request.eventType.replace("_", " ")} /{" "}
                             {request.spaceType === "other"
                               ? "Space"
-                              : request.spaceType}
+                              : request.spaceType.replace(/_/g, " ")}{" "}
+                            · {request.locationPreference} · {getFormatDateTime(request.startDate)}
                           </h3>
                         </div>
                         <span className="text-[11px] font-medium text-slate-400 whitespace-nowrap pt-1">
@@ -470,7 +475,7 @@ export default function DashboardPage() {
                               Dates
                             </p>
                             <p className="font-bold text-[#1E2D8C] truncate max-w-30">
-                              {getFormatDate(request.startDate)}
+                              {getFormatDateTime(request.startDate)}
                             </p>
                           </div>
                         </div>
@@ -550,6 +555,17 @@ export default function DashboardPage() {
                       </div>
                     </div>
                   ))}
+
+                  {requests.length > 1 && (
+                    <div className="flex justify-center pt-2">
+                      <Link
+                        href="/requests/my"
+                        className="inline-flex h-10 items-center justify-center px-6 rounded-lg border border-neutral-200/80 bg-white text-slate-600 hover:bg-neutral-50 hover:text-foreground transition-all duration-150 cursor-pointer shadow-xs font-bold text-body-sm active:scale-[0.98]"
+                      >
+                        View More
+                      </Link>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -596,10 +612,10 @@ export default function DashboardPage() {
                           </span>
                           <div>
                             <p className="text-[11.5px] font-semibold text-[#1E2D8C] capitalize">
-                              Request created: {req.eventType.replace("_", " ")}
+                              Request created: {req.eventType.replace(/_/g, " ")}
                             </p>
                             <p className="text-[11px] text-slate-500 mt-0.5">
-                              Seeking {req.spaceType} space for {req.headcount}{" "}
+                              Seeking {req.spaceType.replace(/_/g, " ")} space for {req.headcount}{" "}
                               people in {req.locationPreference}.
                             </p>
                             {hasProposals && (

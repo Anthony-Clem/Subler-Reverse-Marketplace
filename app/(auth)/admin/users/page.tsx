@@ -134,7 +134,7 @@ export default function AdminUsersPage() {
   const isMutating = updateUserRole.isPending || deleteUser.isPending;
 
   return (
-    <div className="space-y-8 max-w-5xl relative">
+    <div className="space-y-8 max-w-6xl relative">
       {/* Header Navigation */}
       <div className="flex flex-col gap-2 pb-6 border-b border-slate-200/60">
         <Link

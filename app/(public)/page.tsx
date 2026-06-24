@@ -27,10 +27,12 @@ const formatBudget = (budget: string | number) => {
 
 const formatTimeline = (startDate: string) => {
   try {
-    return new Date(startDate).toLocaleDateString(undefined, {
+    return new Date(startDate).toLocaleString(undefined, {
       month: "short",
       day: "numeric",
       year: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
     });
   } catch {
     return "Upcoming Month";
@@ -363,13 +365,13 @@ export default function Home() {
                       <div className="flex flex-wrap items-start justify-between gap-4 mb-5">
                         <div>
                           <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#1E2D8C]/5 text-[#1E2D8C] border border-[#1E2D8C]/10 capitalize mb-3">
-                            {req.spaceType} • {req.eventType.replace("_", " ")}
+                            {req.spaceType.replace(/_/g, " ")} • {req.eventType.replace(/_/g, " ")}
                           </span>
                           <h3 className="text-sm font-semibold text-[#1E2D8C] group-hover:text-[#1E2D8C] transition-colors capitalize">
-                            {req.eventType.replace("_", " ")} /{" "}
                             {req.spaceType === "other"
                               ? "Space"
-                              : req.spaceType}
+                              : req.spaceType.replace(/_/g, " ")}{" "}
+                            · {req.locationPreference} · {formatTimeline(req.startDate)}
                           </h3>
                         </div>
                         <span className="text-[10px] text-slate-500 bg-slate-100 px-2.5 py-0.5 rounded-full">

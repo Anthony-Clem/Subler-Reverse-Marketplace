@@ -46,7 +46,7 @@ export default function HostApprovalsPage() {
   };
 
   return (
-    <div className="space-y-8 max-w-5xl">
+    <div className="space-y-8 max-w-6xl">
       {/* Header Navigation */}
       <div className="flex flex-col gap-2 pb-6 border-b border-slate-200/60">
         <Link

@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, Suspense } from "react";
 import Link from "next/link";
+import { useQueryState } from "nuqs";
 import {
   useMyRequests,
   useUpdateRequest,
@@ -41,7 +42,321 @@ const AMENITY_OPTIONS = [
   "Wheelchair Accessible",
 ] as const;
 
-export default function MyRequestsPage() {
+interface RenterRequestCardProps {
+  request: RentalRequest;
+  handleStatusChange: (requestId: string, status: "open" | "closed" | "fulfilled") => void;
+  updateRequestPending: boolean;
+  handleEditClick: (request: RentalRequest) => void;
+  setDeleteConfirmId: (id: string | null) => void;
+  deleteRequestPending: boolean;
+  handleProposalAction: (proposalId: string, action: "accepted" | "rejected") => void;
+  updateProposalStatusPending: boolean;
+  getFormatDate: (dateStr: string) => string;
+  getFormatDateTime: (dateStr: string) => string;
+  getStatusBadge: (status: string) => React.ReactNode;
+}
+
+function RenterRequestCard({
+  request,
+  handleStatusChange,
+  updateRequestPending,
+  handleEditClick,
+  setDeleteConfirmId,
+  deleteRequestPending,
+  handleProposalAction,
+  updateProposalStatusPending,
+  getFormatDate,
+  getFormatDateTime,
+  getStatusBadge,
+}: RenterRequestCardProps) {
+  const [proposalSort, setProposalSort] = useState<"newest" | "oldest" | "status">("newest");
+  const [proposalPage, setProposalPage] = useState<number>(1);
+
+  const sortedProposals = [...(request.proposals || [])].sort((a, b) => {
+    if (proposalSort === "newest") {
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    }
+    if (proposalSort === "oldest") {
+      return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+    }
+    if (proposalSort === "status") {
+      return a.status.localeCompare(b.status);
+    }
+    return 0;
+  });
+
+  const PROPOSALS_PER_PAGE = 5;
+  const totalProposalPages = Math.ceil(sortedProposals.length / PROPOSALS_PER_PAGE);
+  const activeProposalPage = Math.min(Math.max(1, proposalPage), totalProposalPages || 1);
+  const paginatedProposals = sortedProposals.slice(
+    (activeProposalPage - 1) * PROPOSALS_PER_PAGE,
+    activeProposalPage * PROPOSALS_PER_PAGE
+  );
+
+  return (
+    <div className="bg-white border border-neutral-200/60 rounded-2xl p-6 shadow-xs flex flex-col gap-6">
+      {/* Request Header */}
+      <div className="flex flex-wrap items-start justify-between gap-4 pb-4 border-b border-border/50">
+        <div>
+          <div className="flex flex-wrap items-center gap-2 mb-2.5">
+            <span className="inline-flex items-center text-caption font-semibold px-2 py-0.5 rounded-md bg-primary/5 text-primary border border-primary/5 capitalize">
+              {request.spaceType.replace(/_/g, " ")}
+            </span>
+            <span className="inline-flex items-center text-caption font-semibold px-2 py-0.5 rounded-md bg-neutral-100 text-neutral-700 border border-neutral-200 capitalize">
+              {request.eventType.replace(/_/g, " ")}
+            </span>
+            {getStatusBadge(request.status)}
+          </div>
+          <h3 className="text-h3 text-foreground font-semibold capitalize">
+            {request.spaceType === "other"
+              ? "Space"
+              : request.spaceType.replace(/_/g, " ")}{" "}
+            · {request.locationPreference} · {getFormatDateTime(request.startDate)}
+          </h3>
+        </div>
+
+        <div className="flex items-center gap-4">
+          <span className="text-caption text-muted-foreground whitespace-nowrap hidden sm:inline">
+            Posted {getFormatDate(request.createdAt)}
+          </span>
+
+          {/* Status Dropdown */}
+          <select
+            value={request.status}
+            onChange={(e) =>
+              handleStatusChange(
+                request.id,
+                e.target.value as "open" | "closed" | "fulfilled",
+              )
+            }
+            disabled={updateRequestPending}
+            className="h-8.5 rounded-lg border border-border text-caption font-semibold px-2 focus:ring-1 focus:ring-primary focus:border-primary transition-all cursor-pointer bg-white text-foreground"
+          >
+            <option value="open">Open</option>
+            <option value="closed">Closed</option>
+            <option value="fulfilled">Fulfilled</option>
+          </select>
+
+          {/* Edit Button */}
+          <button
+            onClick={() => handleEditClick(request)}
+            disabled={updateRequestPending}
+            className="h-8.5 w-8.5 flex items-center justify-center rounded-lg border border-border text-muted-foreground hover:bg-neutral-50 hover:text-foreground transition-colors cursor-pointer"
+            title="Edit Request"
+          >
+            <Pencil className="h-4 w-4" />
+          </button>
+
+          {/* Delete Button */}
+          <button
+            onClick={() => setDeleteConfirmId(request.id)}
+            disabled={deleteRequestPending}
+            className="h-8.5 w-8.5 flex items-center justify-center rounded-lg border border-red-100 text-red-500 hover:bg-red-50 hover:border-red-200 transition-colors cursor-pointer"
+            title="Delete Request"
+          >
+            <Trash2 className="h-4 w-4" />
+          </button>
+        </div>
+      </div>
+
+      {/* Request Details Grid */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-body-sm pb-4 border-b border-border/50">
+        <div className="flex items-center gap-2">
+          <DollarSign className="h-4.5 w-4.5 text-primary/75" />
+          <div>
+            <p className="text-[10px] text-muted-foreground font-semibold">
+              Budget
+            </p>
+            <p className="font-semibold text-foreground">
+              ${request.budget}/hr
+            </p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <Users className="h-4.5 w-4.5 text-primary/75" />
+          <div>
+            <p className="text-[10px] text-muted-foreground font-semibold">
+              Headcount
+            </p>
+            <p className="font-semibold text-foreground">
+              {request.headcount} people
+            </p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <MapPin className="h-4.5 w-4.5 text-primary/75" />
+          <div>
+            <p className="text-[10px] text-muted-foreground font-semibold">
+              Location
+            </p>
+            <p className="font-semibold text-foreground truncate max-w-35">
+              {request.locationPreference}
+            </p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <Calendar className="h-4.5 w-4.5 text-primary/75" />
+          <div>
+            <p className="text-[10px] text-muted-foreground font-semibold">
+              Dates
+            </p>
+            <p className="font-semibold text-foreground truncate max-w-35">
+              {getFormatDateTime(request.startDate)}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Notes */}
+      {request.notes && (
+        <div className="text-body-sm text-muted-foreground bg-neutral-50 p-4 rounded-lg border border-neutral-100 italic">
+          &ldquo;{request.notes}&rdquo;
+        </div>
+      )}
+
+      {/* Proposals List Section */}
+      <div className="space-y-4 pt-2">
+        <div className="flex items-center justify-between flex-wrap gap-2">
+          <h4 className="text-body-sm font-bold text-foreground">
+            Proposals Received ({request.proposals?.length || 0})
+          </h4>
+          {request.proposals && request.proposals.length > 0 && (
+            <div className="flex items-center gap-2">
+              <span className="text-caption text-slate-400 font-semibold">Sort:</span>
+              <select
+                value={proposalSort}
+                onChange={(e) => {
+                  setProposalSort(e.target.value as any);
+                  setProposalPage(1);
+                }}
+                className="h-7 rounded-md border border-border text-[11px] font-semibold px-1.5 focus:ring-1 focus:ring-primary focus:border-primary transition-all cursor-pointer bg-white text-slate-600 shadow-xs"
+              >
+                <option value="newest">Newest</option>
+                <option value="oldest">Oldest</option>
+                <option value="status">Status</option>
+              </select>
+            </div>
+          )}
+        </div>
+
+        {/* Empty State proposals */}
+        {(!request.proposals || request.proposals.length === 0) && (
+          <div className="p-6 rounded-lg border border-dashed border-border bg-neutral-50/50 text-center">
+            <p className="text-body-sm text-muted-foreground">
+              No proposals received yet for this request.
+            </p>
+          </div>
+        )}
+
+        {/* List proposals */}
+        {request.proposals && request.proposals.length > 0 && (
+          <div className="space-y-3">
+            {paginatedProposals.map((proposal) => (
+              <div
+                key={proposal.id}
+                className="bg-card border border-border/80 rounded-lg p-4.5 shadow-xs hover:border-primary/30 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4"
+              >
+                <div className="space-y-2 max-w-2xl">
+                  <div className="flex items-center gap-2">
+                    <div className="h-5 w-5 rounded-full bg-primary text-white flex items-center justify-center text-[9px] font-bold">
+                      {proposal.host?.email?.[0]?.toUpperCase() || "H"}
+                    </div>
+                    <span className="text-body-sm font-semibold text-[#1E2D8C]">
+                      {proposal.host?.email || "Verified Host"}
+                    </span>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200">
+                      Verified Listing
+                    </span>
+                    {proposal.status === "pending" && (
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-700 border border-amber-500/20 animate-pulse capitalize">
+                        Pending
+                      </span>
+                    )}
+                    {proposal.status === "accepted" && (
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-700 border border-emerald-500/20 capitalize">
+                        Accepted
+                      </span>
+                    )}
+                    {proposal.status === "rejected" && (
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 border border-slate-200 capitalize">
+                        Declined
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-body-sm text-slate-500 leading-relaxed italic">
+                    &ldquo;{proposal.pitch}&rdquo;
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2 self-start md:self-auto shrink-0">
+                  {proposal.status === "pending" && (
+                    <>
+                      <button
+                        onClick={() =>
+                          handleProposalAction(proposal.id, "rejected")
+                        }
+                        disabled={updateProposalStatusPending}
+                        className="inline-flex h-9 items-center justify-center px-3.5 rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 hover:text-slate-700 text-body-sm font-semibold transition-colors cursor-pointer disabled:opacity-50"
+                      >
+                        Decline
+                      </button>
+                      <button
+                        onClick={() =>
+                          handleProposalAction(proposal.id, "accepted")
+                        }
+                        disabled={updateProposalStatusPending}
+                        className="inline-flex h-9 items-center justify-center px-4 rounded-lg bg-primary text-white hover:bg-primary/95 text-body-sm font-semibold transition-all cursor-pointer shadow-xs disabled:opacity-50 active:scale-[0.98]"
+                      >
+                        Accept Pitch
+                      </button>
+                    </>
+                  )}
+
+                  <a
+                    href={proposal.sublerLink}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex h-9 items-center justify-center gap-1.5 px-4 rounded-lg bg-[#FDC800] text-black hover:bg-[#FDC800]/90 text-body-sm font-semibold transition-all cursor-pointer shadow-xs active:scale-[0.98]"
+                  >
+                    View on Subler{" "}
+                    <ArrowUpRight className="h-3.5 w-3.5" />
+                  </a>
+                </div>
+              </div>
+            ))}
+
+            {/* Proposals Pagination */}
+            {totalProposalPages > 1 && (
+              <div className="flex items-center justify-between pt-3 mt-2 border-t border-neutral-100">
+                <span className="text-[11px] text-slate-400 font-medium">
+                  Page {activeProposalPage} of {totalProposalPages} (Showing {paginatedProposals.length} of {sortedProposals.length})
+                </span>
+                <div className="flex items-center gap-1.5">
+                  <button
+                    disabled={activeProposalPage === 1}
+                    onClick={() => setProposalPage(activeProposalPage - 1)}
+                    className="inline-flex h-7 items-center justify-center px-2.5 rounded-md border border-neutral-200 bg-white text-slate-500 hover:bg-neutral-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-semibold text-[11px] cursor-pointer"
+                  >
+                    Prev
+                  </button>
+                  <button
+                    disabled={activeProposalPage === totalProposalPages}
+                    onClick={() => setProposalPage(activeProposalPage + 1)}
+                    className="inline-flex h-7 items-center justify-center px-2.5 rounded-md border border-neutral-200 bg-white text-slate-500 hover:bg-neutral-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-semibold text-[11px] cursor-pointer"
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function MyRequestsContent() {
   const { data: requests, isLoading, error } = useMyRequests();
   const updateRequest = useUpdateRequest();
   const deleteRequest = useDeleteRequest();
@@ -66,7 +381,10 @@ export default function MyRequestsPage() {
     }
   };
 
-  const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [statusFilter, setStatusFilter] = useQueryState("status", { defaultValue: "all" });
+  const [sortBy, setSortBy] = useQueryState("sortBy", { defaultValue: "createdAt" });
+  const [sortOrder, setSortOrder] = useQueryState("sortOrder", { defaultValue: "desc" });
+  const [page, setPage] = useQueryState("page", { defaultValue: "1" });
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
   const [editingRequest, setEditingRequest] = useState<RentalRequest | null>(
     null,
@@ -223,6 +541,21 @@ export default function MyRequestsPage() {
     }
   };
 
+  const getFormatDateTime = (dateStr: string) => {
+    try {
+      const d = new Date(dateStr);
+      return d.toLocaleString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+      });
+    } catch {
+      return dateStr;
+    }
+  };
+
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "open":
@@ -255,10 +588,38 @@ export default function MyRequestsPage() {
       return r.status === statusFilter;
     }) || [];
 
+  const sortedRequests = [...filteredRequests].sort((a, b) => {
+    if (sortBy === "createdAt") {
+      const dateA = new Date(a.createdAt).getTime();
+      const dateB = new Date(b.createdAt).getTime();
+      return sortOrder === "desc" ? dateB - dateA : dateA - dateB;
+    }
+    if (sortBy === "budget") {
+      const budgetA = parseFloat(a.budget || "0");
+      const budgetB = parseFloat(b.budget || "0");
+      return sortOrder === "desc" ? budgetB - budgetA : budgetA - budgetB;
+    }
+    if (sortBy === "headcount") {
+      const hcA = a.headcount || 0;
+      const hcB = b.headcount || 0;
+      return sortOrder === "desc" ? hcB - hcA : hcA - hcB;
+    }
+    return 0;
+  });
+
+  const pageNumber = parseInt(page || "1", 10);
+  const ITEMS_PER_PAGE = 5;
+  const totalPages = Math.ceil(sortedRequests.length / ITEMS_PER_PAGE);
+  const activePage = Math.min(Math.max(1, pageNumber), totalPages || 1);
+  const paginatedRequests = sortedRequests.slice(
+    (activePage - 1) * ITEMS_PER_PAGE,
+    activePage * ITEMS_PER_PAGE
+  );
+
   const targetDeleteRequest = requests?.find((r) => r.id === deleteConfirmId);
 
   return (
-    <div className="space-y-8 max-w-5xl relative">
+    <div className="space-y-8 max-w-6xl relative">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-neutral-200/80">
         <div>
@@ -277,25 +638,51 @@ export default function MyRequestsPage() {
 
       {/* Filter Tabs & Count */}
       {!isLoading && !error && requests && requests.length > 0 && (
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="inline-flex p-1 bg-neutral-100 rounded-lg border border-border/80 self-start">
-            {["all", "open", "closed", "fulfilled"].map((status) => (
-              <button
-                key={status}
-                onClick={() => setStatusFilter(status)}
-                className={`px-4 py-1.5 rounded-md text-caption font-semibold transition-all capitalize cursor-pointer ${
-                  statusFilter === status
-                    ? "bg-white text-foreground shadow-xs border border-border/40"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 flex-wrap">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4 flex-wrap">
+            <div className="inline-flex p-1 bg-neutral-100 rounded-lg border border-border/80 self-start">
+              {["all", "open", "closed", "fulfilled"].map((status) => (
+                <button
+                  key={status}
+                  onClick={() => {
+                    setStatusFilter(status);
+                    setPage("1");
+                  }}
+                  className={`px-4 py-1.5 rounded-md text-caption font-semibold transition-all capitalize cursor-pointer ${
+                    statusFilter === status
+                      ? "bg-white text-foreground shadow-xs border border-border/40"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {status}
+                </button>
+              ))}
+            </div>
+
+            <div className="flex items-center gap-2">
+              <span className="text-body-sm text-slate-500 font-semibold">Sort:</span>
+              <select
+                value={`${sortBy}-${sortOrder}`}
+                onChange={(e) => {
+                  const [field, order] = e.target.value.split("-");
+                  setSortBy(field);
+                  setSortOrder(order);
+                  setPage("1");
+                }}
+                className="h-8.5 rounded-lg border border-border text-caption font-semibold px-2 focus:ring-1 focus:ring-primary focus:border-primary transition-all cursor-pointer bg-white text-slate-700 shadow-xs"
               >
-                {status}
-              </button>
-            ))}
+                <option value="createdAt-desc">Newest First</option>
+                <option value="createdAt-asc">Oldest First</option>
+                <option value="budget-desc">Highest Budget</option>
+                <option value="budget-asc">Lowest Budget</option>
+                <option value="headcount-desc">Highest Capacity</option>
+                <option value="headcount-asc">Lowest Capacity</option>
+              </select>
+            </div>
           </div>
 
           <span className="text-body-sm font-semibold text-muted-foreground">
-            Showing {filteredRequests.length} requests
+            Showing {paginatedRequests.length} of {filteredRequests.length} requests
           </span>
         </div>
       )}
@@ -363,228 +750,47 @@ export default function MyRequestsPage() {
       {/* Requests list */}
       {!isLoading && !error && filteredRequests.length > 0 && (
         <div className="space-y-6">
-          {filteredRequests.map((request) => (
-            <div
+          {paginatedRequests.map((request) => (
+            <RenterRequestCard
               key={request.id}
-              className="bg-white border border-neutral-200/60 rounded-2xl p-6 shadow-xs flex flex-col gap-6"
-            >
-              {/* Request Header */}
-              <div className="flex flex-wrap items-start justify-between gap-4 pb-4 border-b border-border/50">
-                <div>
-                  <div className="flex flex-wrap items-center gap-2 mb-2.5">
-                    <span className="inline-flex items-center text-caption font-semibold px-2 py-0.5 rounded-md bg-primary/5 text-primary border border-primary/5 capitalize">
-                      {request.spaceType}
-                    </span>
-                    <span className="inline-flex items-center text-caption font-semibold px-2 py-0.5 rounded-md bg-neutral-100 text-neutral-700 border border-neutral-200 capitalize">
-                      {request.eventType.replace("_", " ")}
-                    </span>
-                    {getStatusBadge(request.status)}
-                  </div>
-                  <h3 className="text-h3 text-foreground font-semibold capitalize">
-                    {request.eventType.replace("_", " ")} /{" "}
-                    {request.spaceType === "other"
-                      ? "Space"
-                      : request.spaceType}
-                  </h3>
-                </div>
+              request={request}
+              handleStatusChange={handleStatusChange}
+              updateRequestPending={updateRequest.isPending}
+              handleEditClick={handleEditClick}
+              setDeleteConfirmId={setDeleteConfirmId}
+              deleteRequestPending={deleteRequest.isPending}
+              handleProposalAction={handleProposalAction}
+              updateProposalStatusPending={updateProposalStatus.isPending}
+              getFormatDate={getFormatDate}
+              getFormatDateTime={getFormatDateTime}
+              getStatusBadge={getStatusBadge}
+            />
+          ))}
 
-                <div className="flex items-center gap-4">
-                  <span className="text-caption text-muted-foreground whitespace-nowrap hidden sm:inline">
-                    Posted {getFormatDate(request.createdAt)}
-                  </span>
-
-                  {/* Status Dropdown */}
-                  <select
-                    value={request.status}
-                    onChange={(e) =>
-                      handleStatusChange(
-                        request.id,
-                        e.target.value as "open" | "closed" | "fulfilled",
-                      )
-                    }
-                    disabled={updateRequest.isPending}
-                    className="h-8.5 rounded-lg border border-border text-caption font-semibold px-2 focus:ring-1 focus:ring-primary focus:border-primary transition-all cursor-pointer bg-white text-foreground"
-                  >
-                    <option value="open">Open</option>
-                    <option value="closed">Closed</option>
-                    <option value="fulfilled">Fulfilled</option>
-                  </select>
-
-                  {/* Edit Button */}
-                  <button
-                    onClick={() => handleEditClick(request)}
-                    disabled={updateRequest.isPending}
-                    className="h-8.5 w-8.5 flex items-center justify-center rounded-lg border border-border text-muted-foreground hover:bg-neutral-50 hover:text-foreground transition-colors cursor-pointer"
-                    title="Edit Request"
-                  >
-                    <Pencil className="h-4 w-4" />
-                  </button>
-
-                  {/* Delete Button */}
-                  <button
-                    onClick={() => setDeleteConfirmId(request.id)}
-                    disabled={deleteRequest.isPending}
-                    className="h-8.5 w-8.5 flex items-center justify-center rounded-lg border border-red-100 text-red-500 hover:bg-red-50 hover:border-red-200 transition-colors cursor-pointer"
-                    title="Delete Request"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </button>
-                </div>
-              </div>
-
-              {/* Request Details Grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-body-sm pb-4 border-b border-border/50">
-                <div className="flex items-center gap-2">
-                  <DollarSign className="h-4.5 w-4.5 text-primary/75" />
-                  <div>
-                    <p className="text-[10px] text-muted-foreground font-semibold">
-                      Budget
-                    </p>
-                    <p className="font-semibold text-foreground">
-                      ${request.budget}/hr
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Users className="h-4.5 w-4.5 text-primary/75" />
-                  <div>
-                    <p className="text-[10px] text-muted-foreground font-semibold">
-                      Headcount
-                    </p>
-                    <p className="font-semibold text-foreground">
-                      {request.headcount} people
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <MapPin className="h-4.5 w-4.5 text-primary/75" />
-                  <div>
-                    <p className="text-[10px] text-muted-foreground font-semibold">
-                      Location
-                    </p>
-                    <p className="font-semibold text-foreground truncate max-w-35">
-                      {request.locationPreference}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Calendar className="h-4.5 w-4.5 text-primary/75" />
-                  <div>
-                    <p className="text-[10px] text-muted-foreground font-semibold">
-                      Dates
-                    </p>
-                    <p className="font-semibold text-foreground truncate max-w-35">
-                      {getFormatDate(request.startDate)}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Notes */}
-              {request.notes && (
-                <div className="text-body-sm text-muted-foreground bg-neutral-50 p-4 rounded-lg border border-neutral-100 italic">
-                  &ldquo;{request.notes}&rdquo;
-                </div>
-              )}
-
-              {/* Proposals List Section */}
-              <div className="space-y-4 pt-2">
-                <div className="flex items-center justify-between">
-                  <h4 className="text-body-sm font-bold text-foreground">
-                    Proposals Received ({request.proposals?.length || 0})
-                  </h4>
-                </div>
-
-                {/* Empty State proposals */}
-                {(!request.proposals || request.proposals.length === 0) && (
-                  <div className="p-6 rounded-lg border border-dashed border-border bg-neutral-50/50 text-center">
-                    <p className="text-body-sm text-muted-foreground">
-                      No proposals received yet for this request.
-                    </p>
-                  </div>
-                )}
-
-                {/* List proposals */}
-                {request.proposals && request.proposals.length > 0 && (
-                  <div className="space-y-3">
-                    {request.proposals.map((proposal) => (
-                      <div
-                        key={proposal.id}
-                        className="bg-card border border-border/80 rounded-lg p-4.5 shadow-xs hover:border-primary/30 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4"
-                      >
-                        <div className="space-y-2 max-w-2xl">
-                          <div className="flex items-center gap-2">
-                            <div className="h-5 w-5 rounded-full bg-primary text-white flex items-center justify-center text-[9px] font-bold">
-                              {proposal.host?.email?.[0]?.toUpperCase() || "H"}
-                            </div>
-                            <span className="text-body-sm font-semibold text-[#1E2D8C]">
-                              {proposal.host?.email || "Verified Host"}
-                            </span>
-                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200">
-                              Verified Listing
-                            </span>
-                            {proposal.status === "pending" && (
-                              <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-700 border border-amber-500/20 animate-pulse capitalize">
-                                Pending
-                              </span>
-                            )}
-                            {proposal.status === "accepted" && (
-                              <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-700 border border-emerald-500/20 capitalize">
-                                Accepted
-                              </span>
-                            )}
-                            {proposal.status === "rejected" && (
-                              <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 border border-slate-200 capitalize">
-                                Declined
-                              </span>
-                            )}
-                          </div>
-                          <p className="text-body-sm text-slate-500 leading-relaxed italic">
-                            &ldquo;{proposal.pitch}&rdquo;
-                          </p>
-                        </div>
-
-                        <div className="flex flex-wrap items-center gap-2 self-start md:self-auto shrink-0">
-                          {proposal.status === "pending" && (
-                            <>
-                              <button
-                                onClick={() =>
-                                  handleProposalAction(proposal.id, "rejected")
-                                }
-                                disabled={updateProposalStatus.isPending}
-                                className="inline-flex h-9 items-center justify-center px-3.5 rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 hover:text-slate-700 text-body-sm font-semibold transition-colors cursor-pointer disabled:opacity-50"
-                              >
-                                Decline
-                              </button>
-                              <button
-                                onClick={() =>
-                                  handleProposalAction(proposal.id, "accepted")
-                                }
-                                disabled={updateProposalStatus.isPending}
-                                className="inline-flex h-9 items-center justify-center px-4 rounded-lg bg-primary text-white hover:bg-primary/95 text-body-sm font-semibold transition-all cursor-pointer shadow-xs disabled:opacity-50 active:scale-[0.98]"
-                              >
-                                Accept Pitch
-                              </button>
-                            </>
-                          )}
-
-                          <a
-                            href={proposal.sublerLink}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="inline-flex h-9 items-center justify-center gap-1.5 px-4 rounded-lg bg-[#FDC800] text-black hover:bg-[#FDC800]/90 text-body-sm font-semibold transition-all cursor-pointer shadow-xs active:scale-[0.98]"
-                          >
-                            View on Subler{" "}
-                            <ArrowUpRight className="h-3.5 w-3.5" />
-                          </a>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
+          {/* Requests Pagination */}
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between pt-4 border-t border-border/50">
+              <span className="text-caption text-slate-500 font-semibold">
+                Page {activePage} of {totalPages} (Showing {paginatedRequests.length} of {filteredRequests.length} requests)
+              </span>
+              <div className="flex items-center gap-2">
+                <button
+                  disabled={activePage === 1}
+                  onClick={() => setPage(String(activePage - 1))}
+                  className="inline-flex h-9 items-center justify-center px-4 rounded-lg border border-neutral-200/80 bg-white text-slate-600 hover:bg-neutral-50 hover:text-foreground transition-all cursor-pointer shadow-xs text-body-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Previous
+                </button>
+                <button
+                  disabled={activePage === totalPages}
+                  onClick={() => setPage(String(activePage + 1))}
+                  className="inline-flex h-9 items-center justify-center px-4 rounded-lg border border-neutral-200/80 bg-white text-slate-600 hover:bg-neutral-50 hover:text-foreground transition-all cursor-pointer shadow-xs text-body-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Next
+                </button>
               </div>
             </div>
-          ))}
+          )}
         </div>
       )}
 
@@ -606,8 +812,8 @@ export default function MyRequestsPage() {
               <p>
                 Are you sure you want to delete your request for{" "}
                 <strong className="capitalize">
-                  {targetDeleteRequest.eventType.replace("_", " ")} /{" "}
-                  {targetDeleteRequest.spaceType}
+                  {targetDeleteRequest.eventType.replace(/_/g, " ")} /{" "}
+                  {targetDeleteRequest.spaceType.replace(/_/g, " ")}
                 </strong>
                 ? This action is permanent and will remove all incoming
                 proposals for this request.
@@ -898,5 +1104,18 @@ export default function MyRequestsPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function MyRequestsPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex flex-col items-center justify-center min-h-[400px]">
+        <Loader2 className="h-8 w-8 text-primary animate-spin" />
+        <p className="text-body-sm text-muted-foreground mt-3">Loading requests...</p>
+      </div>
+    }>
+      <MyRequestsContent />
+    </Suspense>
   );
 }

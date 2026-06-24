@@ -1,7 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { Suspense } from "react";
 import Link from "next/link";
+import { useQueryState } from "nuqs";
 import { useUserProfile } from "@/hooks/use-host";
 import { useHostProposals } from "@/hooks/use-proposals";
 import {
@@ -17,13 +18,17 @@ import {
   ExternalLink,
 } from "lucide-react";
 
-export default function HostProposalsPage() {
+function HostProposalsContent() {
   const { data: user, isLoading: userLoading } = useUserProfile();
   const {
     data: proposals,
     isLoading: proposalsLoading,
     error: proposalsError,
   } = useHostProposals();
+
+  const [sortBy, setSortBy] = useQueryState("sortBy", { defaultValue: "createdAt" });
+  const [sortOrder, setSortOrder] = useQueryState("sortOrder", { defaultValue: "desc" });
+  const [page, setPage] = useQueryState("page", { defaultValue: "1" });
 
   const isApprovedHost = user?.hostStatus === "approved";
 
@@ -34,6 +39,21 @@ export default function HostProposalsPage() {
         month: "short",
         day: "numeric",
         year: "numeric",
+      });
+    } catch {
+      return dateStr;
+    }
+  };
+
+  const getFormatDateTime = (dateStr: string) => {
+    try {
+      const d = new Date(dateStr);
+      return d.toLocaleString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
       });
     } catch {
       return dateStr;
@@ -99,8 +119,31 @@ export default function HostProposalsPage() {
     );
   }
 
+  const sortedProposals = [...(proposals || [])].sort((a, b) => {
+    if (sortBy === "createdAt") {
+      const dateA = new Date(a.createdAt).getTime();
+      const dateB = new Date(b.createdAt).getTime();
+      return sortOrder === "desc" ? dateB - dateA : dateA - dateB;
+    }
+    if (sortBy === "status") {
+      return sortOrder === "desc"
+        ? b.status.localeCompare(a.status)
+        : a.status.localeCompare(b.status);
+    }
+    return 0;
+  });
+
+  const pageNumber = parseInt(page || "1", 10);
+  const ITEMS_PER_PAGE = 5;
+  const totalPages = Math.ceil(sortedProposals.length / ITEMS_PER_PAGE);
+  const activePage = Math.min(Math.max(1, pageNumber), totalPages || 1);
+  const paginatedProposals = sortedProposals.slice(
+    (activePage - 1) * ITEMS_PER_PAGE,
+    activePage * ITEMS_PER_PAGE
+  );
+
   return (
-    <div className="space-y-8 max-w-5xl">
+    <div className="space-y-8 max-w-6xl">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6 border-b border-neutral-200/80">
         <div>
@@ -173,9 +216,33 @@ export default function HostProposalsPage() {
         proposals &&
         proposals.length > 0 && (
           <div className="space-y-6">
-            {proposals.map((proposal) => {
+            <div className="flex items-center justify-between border-b border-neutral-200/60 pb-3 flex-wrap gap-4">
+              <h2 className="text-caption font-bold text-slate-500 uppercase tracking-wider">
+                Sent Proposals
+              </h2>
+              <div className="flex items-center gap-2">
+                <span className="text-body-sm text-slate-500 font-semibold">Sort by:</span>
+                <select
+                  value={`${sortBy}-${sortOrder}`}
+                  onChange={(e) => {
+                    const [field, order] = e.target.value.split("-");
+                    setSortBy(field);
+                    setSortOrder(order);
+                    setPage("1");
+                  }}
+                  className="h-8.5 rounded-lg border border-border text-caption font-semibold px-2 focus:ring-1 focus:ring-primary focus:border-primary transition-all cursor-pointer bg-white text-slate-700 shadow-xs"
+                >
+                  <option value="createdAt-desc">Newest First</option>
+                  <option value="createdAt-asc">Oldest First</option>
+                  <option value="status-desc">Status (Z-A)</option>
+                  <option value="status-asc">Status (A-Z)</option>
+                </select>
+              </div>
+            </div>
+
+            {paginatedProposals.map((proposal) => {
               const request = proposal.request;
-              const renterEmail = request?.user?.email || "Verified Renter";
+              const renterEmail = "Verified Renter";
 
               return (
                 <div
@@ -189,10 +256,10 @@ export default function HostProposalsPage() {
                         {request && (
                           <>
                             <span className="inline-flex items-center text-caption font-semibold px-2 py-0.5 rounded-md bg-neutral-50 text-slate-700 border border-neutral-200 capitalize">
-                              {request.spaceType}
+                              {request.spaceType.replace(/_/g, " ")}
                             </span>
                             <span className="inline-flex items-center text-caption font-semibold px-2 py-0.5 rounded-md bg-neutral-50 text-slate-700 border border-neutral-200 capitalize">
-                              {request.eventType.replace("_", " ")}
+                              {request.eventType.replace(/_/g, " ")}
                             </span>
                           </>
                         )}
@@ -201,10 +268,10 @@ export default function HostProposalsPage() {
 
                       {request ? (
                         <h3 className="font-display text-lg font-bold text-[#1E2D8C] capitalize tracking-tight">
-                          {request.eventType.replace("_", " ")} /{" "}
                           {request.spaceType === "other"
                             ? "Space"
-                            : request.spaceType}
+                            : request.spaceType.replace(/_/g, " ")}{" "}
+                          · {request.locationPreference} · {getFormatDateTime(request.startDate)}
                         </h3>
                       ) : (
                         <h3 className="font-display text-lg font-bold text-[#1E2D8C] tracking-tight">
@@ -271,7 +338,7 @@ export default function HostProposalsPage() {
                             Event Date
                           </p>
                           <p className="font-semibold text-foreground text-caption truncate max-w-[130px]">
-                            {getFormatDate(request.startDate)}
+                            {getFormatDateTime(request.startDate)}
                           </p>
                         </div>
                       </div>
@@ -290,8 +357,46 @@ export default function HostProposalsPage() {
                 </div>
               );
             })}
+
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-between pt-4 border-t border-border/50">
+                <span className="text-caption text-slate-500 font-semibold">
+                  Page {activePage} of {totalPages} (Showing {paginatedProposals.length} of {sortedProposals.length} proposals)
+                </span>
+                <div className="flex items-center gap-2">
+                  <button
+                    disabled={activePage === 1}
+                    onClick={() => setPage(String(activePage - 1))}
+                    className="inline-flex h-9 items-center justify-center px-4 rounded-lg border border-neutral-200/80 bg-white text-slate-600 hover:bg-neutral-50 hover:text-foreground transition-all cursor-pointer shadow-xs text-body-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    Previous
+                  </button>
+                  <button
+                    disabled={activePage === totalPages}
+                    onClick={() => setPage(String(activePage + 1))}
+                    className="inline-flex h-9 items-center justify-center px-4 rounded-lg border border-neutral-200/80 bg-white text-slate-600 hover:bg-neutral-50 hover:text-foreground transition-all cursor-pointer shadow-xs text-body-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         )}
     </div>
+  );
+}
+
+export default function HostProposalsPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex flex-col items-center justify-center min-h-[400px]">
+        <Loader2 className="h-8 w-8 text-primary animate-spin" />
+        <p className="text-body-sm text-muted-foreground mt-3">Loading proposals...</p>
+      </div>
+    }>
+      <HostProposalsContent />
+    </Suspense>
   );
 }

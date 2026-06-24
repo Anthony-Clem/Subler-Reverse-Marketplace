@@ -30,7 +30,7 @@ export default function AdminPage() {
   const isLoading = requestsLoading || upgradesLoading || usersLoading;
 
   return (
-    <div className="space-y-8 max-w-5xl text-[#1E2D8C]">
+    <div className="space-y-8 max-w-6xl text-[#1E2D8C]">
       {/* Admin Title */}
       <div className="pb-6 border-b border-neutral-200/80">
         <div className="flex items-center gap-3">

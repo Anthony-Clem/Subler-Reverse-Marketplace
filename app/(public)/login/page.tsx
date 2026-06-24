@@ -73,6 +73,20 @@ function LoginForm() {
         toast.error("Invalid or expired verification code.");
       } else {
         toast.success("Logged in successfully!");
+        if (callbackUrl === "/dashboard") {
+          try {
+            const userRes = await fetch("/api/users/me");
+            if (userRes.ok) {
+              const userData = await userRes.json();
+              if (userData?.hostStatus === "approved") {
+                window.location.replace("/host/dashboard");
+                return;
+              }
+            }
+          } catch (err) {
+            console.error("Error checking host role after login:", err);
+          }
+        }
         window.location.replace(callbackUrl);
       }
     } catch (err) {

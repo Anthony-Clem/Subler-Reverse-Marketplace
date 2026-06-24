@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, Suspense } from "react";
 import Link from "next/link";
+import { useQueryState } from "nuqs";
 import { useUserProfile } from "@/hooks/use-host";
 import { useOpenRequests, RentalRequest } from "@/hooks/use-requests";
 import { useCreateProposal } from "@/hooks/use-proposals";
@@ -24,7 +25,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-export default function HostDashboardPage() {
+function HostDashboardContent() {
   const { data: user, isLoading: userLoading } = useUserProfile();
   const {
     data: requests,
@@ -43,6 +44,11 @@ export default function HostDashboardPage() {
   // Filter states
   const [selectedEventType, setSelectedEventType] = useState<string>("all");
   const [selectedSpaceType, setSelectedSpaceType] = useState<string>("all");
+
+  // Sort and pagination states
+  const [sortBy, setSortBy] = useQueryState("sortBy", { defaultValue: "createdAt" });
+  const [sortOrder, setSortOrder] = useQueryState("sortOrder", { defaultValue: "desc" });
+  const [page, setPage] = useQueryState("page", { defaultValue: "1" });
 
   const isApprovedHost = user?.hostStatus === "approved";
 
@@ -141,6 +147,21 @@ export default function HostDashboardPage() {
     }
   };
 
+  const getFormatDateTime = (dateStr: string) => {
+    try {
+      const d = new Date(dateStr);
+      return d.toLocaleString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+      });
+    } catch {
+      return dateStr;
+    }
+  };
+
   // Loading indicator for authentication/profile loading
   if (userLoading) {
     return (
@@ -191,20 +212,56 @@ export default function HostDashboardPage() {
       return true;
     }) || [];
 
+  const sortedRequests = [...filteredRequests].sort((a, b) => {
+    if (sortBy === "createdAt") {
+      const dateA = new Date(a.createdAt).getTime();
+      const dateB = new Date(b.createdAt).getTime();
+      return sortOrder === "desc" ? dateB - dateA : dateA - dateB;
+    }
+    if (sortBy === "budget") {
+      const budgetA = parseFloat(a.budget || "0");
+      const budgetB = parseFloat(b.budget || "0");
+      return sortOrder === "desc" ? budgetB - budgetA : budgetA - budgetB;
+    }
+    if (sortBy === "headcount") {
+      const hcA = a.headcount || 0;
+      const hcB = b.headcount || 0;
+      return sortOrder === "desc" ? hcB - hcA : hcA - hcB;
+    }
+    return 0;
+  });
+
+  const pageNumber = parseInt(page || "1", 10);
+  const ITEMS_PER_PAGE = 5;
+  const totalPages = Math.ceil(sortedRequests.length / ITEMS_PER_PAGE);
+  const activePage = Math.min(Math.max(1, pageNumber), totalPages || 1);
+  const paginatedRequests = sortedRequests.slice(
+    (activePage - 1) * ITEMS_PER_PAGE,
+    activePage * ITEMS_PER_PAGE
+  );
+
   return (
-    <div className="space-y-8 max-w-5xl">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6 border-b border-neutral-200/80">
-        <div>
-          <h1 className="text-h1 text-[#1E2D8C] font-bold">Browse Requests</h1>
-          <p className="text-body-sm text-slate-500 mt-1">
-            Browse open facility requirements and pitch your Subler listing
-            links.
-          </p>
-        </div>
-        <div className="flex items-center gap-1.5 text-caption font-bold text-emerald-700 px-2.5 py-0.5 rounded-md bg-emerald-50 border border-emerald-200 self-start md:self-auto">
-          <ShieldCheck className="h-3.5 w-3.5" />
-          Verified Host Account
+    <div className="space-y-8 max-w-6xl">
+      {/* Branded Host Dashboard Header Banner */}
+      <div className="relative overflow-hidden rounded-2xl bg-[#1E2D8C] p-8 md:p-10 text-white shadow-xs border border-neutral-200/10">
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-md bg-white/10 text-white/90 border border-white/5 text-caption font-semibold">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+              Verified Host Profile
+            </div>
+            <div>
+              <p className="text-caption text-blue-200 font-medium">
+                Welcome back, {user?.email?.split("@")[0] || "Host"} 👋
+              </p>
+              <h1 className="font-display text-3xl font-bold tracking-tight text-white mt-1">
+                Host Matching Panel
+              </h1>
+            </div>
+            <p className="text-body-sm text-white/80 max-w-xl leading-relaxed">
+              Browse open renter requests, send custom proposals with listing links, and get booked.
+            </p>
+          </div>
         </div>
       </div>
 
@@ -225,7 +282,10 @@ export default function HostDashboardPage() {
               </span>
               <select
                 value={selectedEventType}
-                onChange={(e) => setSelectedEventType(e.target.value)}
+                onChange={(e) => {
+                  setSelectedEventType(e.target.value);
+                  setPage("1");
+                }}
                 className="h-8.5 rounded-lg border border-border text-caption font-semibold px-2 focus:ring-1 focus:ring-primary focus:border-primary bg-white text-foreground"
               >
                 <option value="all">All Activities</option>
@@ -246,7 +306,10 @@ export default function HostDashboardPage() {
               </span>
               <select
                 value={selectedSpaceType}
-                onChange={(e) => setSelectedSpaceType(e.target.value)}
+                onChange={(e) => {
+                  setSelectedSpaceType(e.target.value);
+                  setPage("1");
+                }}
                 className="h-8.5 rounded-lg border border-border text-caption font-semibold px-2 focus:ring-1 focus:ring-primary focus:border-primary bg-white text-foreground"
               >
                 <option value="all">All Space Layouts</option>
@@ -261,8 +324,32 @@ export default function HostDashboardPage() {
               </select>
             </div>
 
+            {/* Sort Filter */}
+            <div className="flex items-center gap-2">
+              <span className="text-caption font-semibold text-muted-foreground">
+                Sort:
+              </span>
+              <select
+                value={`${sortBy}-${sortOrder}`}
+                onChange={(e) => {
+                  const [field, order] = e.target.value.split("-");
+                  setSortBy(field);
+                  setSortOrder(order);
+                  setPage("1");
+                }}
+                className="h-8.5 rounded-lg border border-border text-caption font-semibold px-2 focus:ring-1 focus:ring-primary focus:border-primary bg-white text-slate-700 shadow-xs"
+              >
+                <option value="createdAt-desc">Newest First</option>
+                <option value="createdAt-asc">Oldest First</option>
+                <option value="budget-desc">Highest Budget</option>
+                <option value="budget-asc">Lowest Budget</option>
+                <option value="headcount-desc">Highest Capacity</option>
+                <option value="headcount-asc">Lowest Capacity</option>
+              </select>
+            </div>
+
             <span className="text-caption text-muted-foreground ml-auto font-semibold">
-              {filteredRequests.length} requests available
+              Showing {paginatedRequests.length} of {filteredRequests.length} requests
             </span>
           </div>
         )}
@@ -324,7 +411,7 @@ export default function HostDashboardPage() {
       {/* Requests Feed List */}
       {!requestsLoading && !requestsError && filteredRequests.length > 0 && (
         <div className="space-y-6">
-          {filteredRequests.map((request) => {
+          {paginatedRequests.map((request) => {
             const hasSentProposal = request.proposals?.some(
               (p) => p.hostId === user?.id,
             );
@@ -339,10 +426,10 @@ export default function HostDashboardPage() {
                   <div>
                     <div className="flex flex-wrap items-center gap-2 mb-2">
                       <span className="inline-flex items-center text-caption font-semibold px-2 py-0.5 rounded-md bg-neutral-50 text-slate-700 border border-neutral-200 capitalize">
-                        {request.spaceType}
+                        {request.spaceType.replace(/_/g, " ")}
                       </span>
                       <span className="inline-flex items-center text-caption font-semibold px-2 py-0.5 rounded-md bg-neutral-50 text-slate-700 border border-neutral-200 capitalize">
-                        {request.eventType.replace("_", " ")}
+                        {request.eventType.replace(/_/g, " ")}
                       </span>
                       {hasSentProposal && (
                         <span className="inline-flex items-center gap-1.5 text-caption font-bold px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200">
@@ -352,13 +439,14 @@ export default function HostDashboardPage() {
                       )}
                     </div>
                     <h3 className="font-display text-lg font-bold text-[#1E2D8C] capitalize tracking-tight">
-                      {request.eventType.replace("_", " ")} /{" "}
                       {request.spaceType === "other"
                         ? "Space"
-                        : request.spaceType}
+                        : request.spaceType.replace(/_/g, " ")}{" "}
+                      · {request.locationPreference} ·{" "}
+                      {getFormatDateTime(request.startDate)}
                     </h3>
                     <p className="text-caption text-slate-400 mt-1">
-                      Posted by {request.user?.email || "Verified Renter"} •{" "}
+                      Posted by Verified Renter •{" "}
                       {getFormatDate(request.createdAt)}
                     </p>
                   </div>
@@ -415,7 +503,7 @@ export default function HostDashboardPage() {
                         Start Date
                       </p>
                       <p className="font-semibold text-foreground truncate max-w-[140px]">
-                        {getFormatDate(request.startDate)}
+                        {getFormatDateTime(request.startDate)}
                       </p>
                     </div>
                   </div>
@@ -449,6 +537,31 @@ export default function HostDashboardPage() {
               </div>
             );
           })}
+
+          {/* Pagination Controls */}
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between pt-4 border-t border-border/50">
+              <span className="text-caption text-slate-500 font-semibold">
+                Page {activePage} of {totalPages} (Showing {paginatedRequests.length} of {filteredRequests.length} requests)
+              </span>
+              <div className="flex items-center gap-2">
+                <button
+                  disabled={activePage === 1}
+                  onClick={() => setPage(String(activePage - 1))}
+                  className="inline-flex h-9 items-center justify-center px-4 rounded-lg border border-neutral-200/80 bg-white text-slate-600 hover:bg-neutral-50 hover:text-foreground transition-all cursor-pointer shadow-xs text-body-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Previous
+                </button>
+                <button
+                  disabled={activePage === totalPages}
+                  onClick={() => setPage(String(activePage + 1))}
+                  className="inline-flex h-9 items-center justify-center px-4 rounded-lg border border-neutral-200/80 bg-white text-slate-600 hover:bg-neutral-50 hover:text-foreground transition-all cursor-pointer shadow-xs text-body-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
@@ -463,8 +576,8 @@ export default function HostDashboardPage() {
                   Send Proposal Pitch
                 </h3>
                 <p className="text-[11px] text-slate-400 mt-0.5 capitalize">
-                  To: {activeProposalRequest.eventType.replace("_", " ")} /{" "}
-                  {activeProposalRequest.spaceType}
+                  To: {activeProposalRequest.eventType.replace(/_/g, " ")} /{" "}
+                  {activeProposalRequest.spaceType.replace(/_/g, " ")}
                 </p>
               </div>
               <button
@@ -497,6 +610,17 @@ export default function HostDashboardPage() {
                     <AlertCircle className="h-3 w-3 shrink-0" /> {linkError}
                   </p>
                 )}
+                <p className="text-[11px] text-slate-500 mt-1">
+                  Don&apos;t have a Subler listing?{" "}
+                  <a
+                    href="https://app.getsubler.com"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-[#1E2D8C] hover:text-[#1E2D8C]/80 font-bold underline"
+                  >
+                    Get started now!
+                  </a>
+                </p>
               </div>
 
               {/* Pitch Textarea */}
@@ -560,5 +684,18 @@ export default function HostDashboardPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function HostDashboardPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex flex-col items-center justify-center min-h-[400px]">
+        <Loader2 className="h-8 w-8 text-primary animate-spin" />
+        <p className="text-body-sm text-muted-foreground mt-3">Loading open requests...</p>
+      </div>
+    }>
+      <HostDashboardContent />
+    </Suspense>
   );
 }

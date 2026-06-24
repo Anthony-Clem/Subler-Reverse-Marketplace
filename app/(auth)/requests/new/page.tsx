@@ -718,10 +718,10 @@ export default function NewRequestPage() {
                   Activity / Space
                 </p>
                 <p className="font-semibold text-foreground pt-1 capitalize">
-                  {formData.eventType.replace("_", " ")} /{" "}
+                  {formData.eventType.replace(/_/g, " ")} /{" "}
                   {formData.spaceType === "other"
                     ? "Space"
-                    : formData.spaceType}
+                    : formData.spaceType.replace(/_/g, " ")}
                 </p>
               </div>
 

@@ -144,14 +144,14 @@ function RequestsTableContent() {
                     {/* Column 2: Event Details */}
                     <td className="px-6 py-4.5">
                       <div className="font-semibold text-[#1E2D8C] capitalize mb-1.5">
-                        {req.eventType.replace("_", " ")}
+                        {req.eventType.replace(/_/g, " ")}
                       </div>
                       <div className="flex gap-1.5 flex-wrap">
                         <span className="inline-flex items-center text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#1E2D8C]/5 text-[#1E2D8C] border border-[#1E2D8C]/10 capitalize">
-                          {req.spaceType}
+                          {req.spaceType.replace(/_/g, " ")}
                         </span>
                         <span className="inline-flex items-center text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200 capitalize">
-                          {req.eventType.replace("_", " ")}
+                          {req.eventType.replace(/_/g, " ")}
                         </span>
                       </div>
 
@@ -229,7 +229,7 @@ function RequestsTableContent() {
 
 export default function RequestsPage() {
   return (
-    <div className="space-y-8 max-w-5xl">
+    <div className="space-y-8 max-w-6xl">
       {/* Breadcrumb Header */}
       <div className="flex flex-col gap-2 pb-6 border-b border-slate-200/60">
         <Link
