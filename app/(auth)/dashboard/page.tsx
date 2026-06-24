@@ -22,7 +22,7 @@ import Link from "next/link";
 
 export default function DashboardPage() {
   const { data: session } = useSession();
-  const { data: profile } = useUserProfile();
+  const { data: profile, isLoading: isProfileLoading } = useUserProfile();
   const { data: requests, isLoading, error } = useMyRequests();
 
   const isHost = profile?.hostStatus === "approved";
@@ -75,31 +75,44 @@ export default function DashboardPage() {
       {/* Branded Dashboard Header Banner */}
       <div className="relative overflow-hidden rounded-2xl bg-[#1E2D8C] p-8 md:p-10 text-white shadow-xs border border-neutral-200/10">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-md bg-white/10 text-white/90 border border-white/5 text-caption font-semibold">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-              {isHost ? "Verified Host Profile" : "Active Renter Account"}
+          {isProfileLoading ? (
+            <div className="space-y-3 flex-1">
+              <div className="h-6 w-36 bg-white/20 animate-pulse rounded-md" />
+              <div>
+                <div className="h-4 w-28 bg-white/20 animate-pulse rounded-md" />
+                <div className="h-8 w-48 bg-white/20 animate-pulse rounded-md mt-2" />
+              </div>
+              <div className="h-4 w-80 bg-white/20 animate-pulse rounded-md" />
             </div>
-            <div>
-              <p className="text-caption text-blue-200 font-medium">
-                Welcome back,{" "}
-                {(profile?.email || session?.user?.email)?.split("@")[0] ||
-                  "Renter"}{" "}
-                👋
+          ) : (
+            <div className="space-y-2">
+              <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-md bg-white/10 text-white/90 border border-white/5 text-caption font-semibold">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                {isHost ? "Verified Host Profile" : "Active Renter Account"}
+              </div>
+              <div>
+                <p className="text-caption text-blue-200 font-medium">
+                  Welcome back,{" "}
+                  {(profile?.email || session?.user?.email)?.split("@")[0] ||
+                    "Renter"}{" "}
+                  👋
+                </p>
+                <h1 className="font-display text-3xl font-bold tracking-tight text-white mt-1">
+                  {isHost ? "Host Matching Panel" : "Renter Dashboard"}
+                </h1>
+              </div>
+              <p className="text-body-sm text-white/80 max-w-xl leading-relaxed">
+                {isHost
+                  ? "Browse open renter requests, send custom proposals with listing links, and get booked."
+                  : "Manage your space requirements and track incoming proposals from verified Subler hosts."}
               </p>
-              <h1 className="font-display text-3xl font-bold tracking-tight text-white mt-1">
-                {isHost ? "Host Matching Panel" : "Renter Dashboard"}
-              </h1>
             </div>
-            <p className="text-body-sm text-white/80 max-w-xl leading-relaxed">
-              {isHost
-                ? "Browse open renter requests, send custom proposals with listing links, and get booked."
-                : "Manage your space requirements and track incoming proposals from verified Subler hosts."}
-            </p>
-          </div>
+          )}
 
           <div className="flex items-center gap-3 shrink-0 self-start md:self-auto">
-            {isHost ? (
+            {isProfileLoading ? (
+              <div className="h-10 w-36 bg-white/20 animate-pulse rounded-lg" />
+            ) : isHost ? (
               <Link
                 href="/host/dashboard"
                 className="inline-flex h-10 items-center justify-center px-4 rounded-lg bg-[#FDC800] text-black text-body-sm font-bold hover:bg-[#FDC800]/90 transition-all active:scale-[0.98] cursor-pointer"
@@ -269,7 +282,9 @@ export default function DashboardPage() {
                 </p>
               </Link>
 
-              {isHost ? (
+              {isProfileLoading ? (
+                <div className="bg-white border border-neutral-200/60 rounded-2xl p-5 h-36 animate-pulse" />
+              ) : isHost ? (
                 <Link
                   href="/host/dashboard"
                   className="group p-5 bg-white border border-neutral-200/60 rounded-2xl shadow-xs hover:border-neutral-300 transition-all duration-150"
