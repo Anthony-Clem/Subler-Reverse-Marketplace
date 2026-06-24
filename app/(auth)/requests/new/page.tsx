@@ -773,10 +773,10 @@ export default function NewRequestPage() {
               </div>
             </div>
 
-            {/* Notes / Instructions Input */}
+            {/* Describe your event Input */}
             <div className="space-y-2 pt-4 border-t border-border/60">
               <label className="text-caption font-semibold text-foreground flex items-center gap-1.5">
-                Notes & Host Instructions (Optional)
+                Describe your event (Optional)
               </label>
               <textarea
                 placeholder="Include additional context such as noise levels, rules, setup requests, or details about your activity..."
