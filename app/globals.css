@@ -8,9 +8,9 @@
   --font-sans: var(--font-sans);
   --font-display: var(--font-display);
   --font-mono: var(--font-mono);
-  
+
   /* Additional custom theme color tokens */
-  --color-accent-peach-500: #ffb13d;
+  --color-[#FDC800]: #ffb13c;
 }
 
 @theme inline {
@@ -33,7 +33,7 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  
+
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -109,7 +109,7 @@
   --secondary-foreground: #0e1442;
   --muted: #f1f5f9;
   --muted-foreground: #64748b;
-  --accent: #ffb13d;
+  --accent: #ffb13c;
   --accent-foreground: #1e2d8c;
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
@@ -126,7 +126,7 @@
   --card-foreground: #f1f5f9;
   --popover: #151518;
   --popover-foreground: #f1f5f9;
-  --primary: #ffb13d;
+  --primary: #ffb13c;
   --primary-foreground: #1e2d8c;
   --secondary: #1e293b;
   --secondary-foreground: #f1f5f9;
@@ -138,7 +138,7 @@
   --destructive-foreground: #ffffff;
   --border: #334155;
   --input: #334155;
-  --ring: #ffb13d;
+  --ring: #ffb13c;
 }
 
 @layer base {

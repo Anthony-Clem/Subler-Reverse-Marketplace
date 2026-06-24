@@ -718,10 +718,10 @@ export default function NewRequestPage() {
                   Activity / Space
                 </p>
                 <p className="font-semibold text-foreground pt-1 capitalize">
-                  {formData.eventType.replace("_", " ")} /{" "}
+                  {formData.eventType.replace(/_/g, " ")} /{" "}
                   {formData.spaceType === "other"
                     ? "Space"
-                    : formData.spaceType}
+                    : formData.spaceType.replace(/_/g, " ")}
                 </p>
               </div>
 
@@ -773,10 +773,10 @@ export default function NewRequestPage() {
               </div>
             </div>
 
-            {/* Notes / Instructions Input */}
+            {/* Describe your event Input */}
             <div className="space-y-2 pt-4 border-t border-border/60">
               <label className="text-caption font-semibold text-foreground flex items-center gap-1.5">
-                Notes & Host Instructions (Optional)
+                Describe your event (Optional)
               </label>
               <textarea
                 placeholder="Include additional context such as noise levels, rules, setup requests, or details about your activity..."
@@ -811,7 +811,7 @@ export default function NewRequestPage() {
             <button
               type="button"
               onClick={handleNext}
-              className="inline-flex h-10 items-center justify-center px-6 rounded-lg bg-[#1e2d8c] text-white hover:bg-[#1e2d8c]/95 text-body-sm font-semibold transition-all cursor-pointer gap-1"
+              className="inline-flex h-10 items-center justify-center px-6 rounded-lg bg-[#1E2D8C] text-white hover:bg-[#1E2D8C]/95 text-body-sm font-semibold transition-all cursor-pointer gap-1"
             >
               Continue <ArrowRight className="h-4 w-4" />
             </button>
@@ -820,7 +820,7 @@ export default function NewRequestPage() {
               type="button"
               onClick={handlePublish}
               disabled={createRequest.isPending}
-              className="inline-flex h-10 items-center justify-center px-6 rounded-lg bg-accent-peach-500 text-[#0e1442] hover:bg-accent-peach-500/90 text-body-sm font-bold transition-all active:scale-[0.98] cursor-pointer gap-1.5"
+              className="inline-flex h-10 items-center justify-center px-6 rounded-lg bg-[#FDC800] text-black hover:bg-[#FDC800]/90 text-body-sm font-bold transition-all active:scale-[0.98] cursor-pointer gap-1.5"
             >
               {createRequest.isPending ? (
                 <>

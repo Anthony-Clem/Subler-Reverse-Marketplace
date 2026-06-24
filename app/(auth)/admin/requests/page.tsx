@@ -18,20 +18,21 @@ import {
 function RequestsTableContent() {
   const { data: requests, isLoading, error } = useAdminRequests();
   const updateReqStatus = useUpdateReqStatus();
-  
+
   const [statusFilter, setStatusFilter] = useQueryState("status", {
     defaultValue: "all",
   });
 
   const handleStatusChange = async (
     requestId: string,
-    newStatus: "open" | "closed" | "fulfilled"
+    newStatus: "open" | "closed" | "fulfilled",
   ) => {
     try {
       await updateReqStatus.mutateAsync({ requestId, status: newStatus });
       toast.success(`Request status updated to ${newStatus}`);
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Failed to update status";
+      const message =
+        err instanceof Error ? err.message : "Failed to update status";
       toast.error(message);
     }
   };
@@ -39,7 +40,11 @@ function RequestsTableContent() {
   const getFormatDate = (dateStr: string) => {
     try {
       const d = new Date(dateStr);
-      return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+      return d.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      });
     } catch {
       return dateStr;
     }
@@ -63,7 +68,7 @@ function RequestsTableContent() {
               onClick={() => setStatusFilter(status)}
               className={`px-4.5 py-1 text-xs font-semibold rounded-full transition-all capitalize cursor-pointer ${
                 statusFilter === status
-                  ? "bg-[#1e2d8c]/5 text-[#1e2d8c]"
+                  ? "bg-[#1E2D8C]/5 text-[#1E2D8C]"
                   : "text-slate-500 hover:text-slate-800"
               }`}
             >
@@ -80,7 +85,7 @@ function RequestsTableContent() {
       {/* Loading state */}
       {isLoading && (
         <div className="flex items-center justify-center py-20 bg-white border border-slate-200/60 rounded-2xl shadow-xs">
-          <Loader2 className="h-8 w-8 text-[#1e2d8c] animate-spin" />
+          <Loader2 className="h-8 w-8 text-[#1E2D8C] animate-spin" />
         </div>
       )}
 
@@ -88,8 +93,12 @@ function RequestsTableContent() {
       {error && !isLoading && (
         <div className="p-6 rounded-2xl bg-red-500/5 border border-red-500/10 text-center">
           <AlertCircle className="h-8 w-8 text-red-600 mx-auto mb-2" />
-          <p className="text-sm text-red-600 font-semibold">Failed to fetch platform requests</p>
-          <p className="text-xs text-slate-500 mt-1">Check database connection and try again.</p>
+          <p className="text-sm text-red-600 font-semibold">
+            Failed to fetch platform requests
+          </p>
+          <p className="text-xs text-slate-500 mt-1">
+            Check database connection and try again.
+          </p>
         </div>
       )}
 
@@ -118,10 +127,13 @@ function RequestsTableContent() {
               </thead>
               <tbody className="divide-y divide-slate-100 text-xs">
                 {filteredRequests.map((req) => (
-                  <tr key={req.id} className="hover:bg-slate-50/30 transition-colors">
+                  <tr
+                    key={req.id}
+                    className="hover:bg-slate-50/30 transition-colors"
+                  >
                     {/* Column 1: Renter Details */}
                     <td className="px-6 py-4.5 max-w-[200px]">
-                      <div className="font-semibold text-[#0e1442] truncate">
+                      <div className="font-semibold text-[#1E2D8C] truncate">
                         {req.user?.email || req.userId}
                       </div>
                       <div className="text-[11px] text-slate-400 mt-1">
@@ -131,34 +143,37 @@ function RequestsTableContent() {
 
                     {/* Column 2: Event Details */}
                     <td className="px-6 py-4.5">
-                      <div className="font-semibold text-[#0e1442] capitalize mb-1.5">
-                        {req.eventType.replace("_", " ")}
+                      <div className="font-semibold text-[#1E2D8C] capitalize mb-1.5">
+                        {req.eventType.replace(/_/g, " ")}
                       </div>
                       <div className="flex gap-1.5 flex-wrap">
-                        <span className="inline-flex items-center text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#1e2d8c]/5 text-[#1e2d8c] border border-[#1e2d8c]/10 capitalize">
-                          {req.spaceType}
+                        <span className="inline-flex items-center text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#1E2D8C]/5 text-[#1E2D8C] border border-[#1E2D8C]/10 capitalize">
+                          {req.spaceType.replace(/_/g, " ")}
                         </span>
                         <span className="inline-flex items-center text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200 capitalize">
-                          {req.eventType.replace("_", " ")}
+                          {req.eventType.replace(/_/g, " ")}
                         </span>
                       </div>
-                      
+
                       <div className="grid grid-cols-2 gap-x-4 gap-y-1 mt-2 text-xs text-slate-500">
                         <span className="flex items-center gap-1.5 truncate">
-                          <DollarSign className="h-3.5 w-3.5 text-slate-400" /> ${req.budget}/hr
+                          <DollarSign className="h-3.5 w-3.5 text-slate-400" />{" "}
+                          ${req.budget}/hr
                         </span>
                         <span className="flex items-center gap-1.5 truncate">
-                          <Users className="h-3.5 w-3.5 text-slate-400" /> {req.headcount} capacity
+                          <Users className="h-3.5 w-3.5 text-slate-400" />{" "}
+                          {req.headcount} capacity
                         </span>
                         <span className="flex items-center gap-1.5 truncate col-span-2 mt-0.5 text-slate-400">
-                          <MapPin className="h-3.5 w-3.5" /> {req.locationPreference}
+                          <MapPin className="h-3.5 w-3.5" />{" "}
+                          {req.locationPreference}
                         </span>
                       </div>
                     </td>
 
                     {/* Column 3: Proposals Count */}
                     <td className="px-6 py-4.5 text-center">
-                      <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-50 border border-slate-200/60 text-xs font-semibold text-[#0e1442]">
+                      <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-50 border border-slate-200/60 text-xs font-semibold text-[#1E2D8C]">
                         <MessageSquare className="h-3.5 w-3.5 text-slate-400" />
                         <span>{req.proposals?.length || 0}</span>
                       </div>
@@ -190,11 +205,11 @@ function RequestsTableContent() {
                         onChange={(e) =>
                           handleStatusChange(
                             req.id,
-                            e.target.value as "open" | "closed" | "fulfilled"
+                            e.target.value as "open" | "closed" | "fulfilled",
                           )
                         }
                         disabled={updateReqStatus.isPending}
-                        className="h-8.5 rounded-lg border border-slate-200 text-xs font-semibold px-2 bg-white text-[#0e1442] focus:ring-1 focus:ring-[#1e2d8c] focus:border-[#1e2d8c] transition-all cursor-pointer outline-none"
+                        className="h-8.5 rounded-lg border border-slate-200 text-xs font-semibold px-2 bg-white text-[#1E2D8C] focus:ring-1 focus:ring-[#1E2D8C] focus:border-[#1E2D8C] transition-all cursor-pointer outline-none"
                       >
                         <option value="open">Mark Open</option>
                         <option value="closed">Mark Closed</option>
@@ -214,19 +229,22 @@ function RequestsTableContent() {
 
 export default function RequestsPage() {
   return (
-    <div className="space-y-8 max-w-5xl">
+    <div className="space-y-8 max-w-6xl">
       {/* Breadcrumb Header */}
       <div className="flex flex-col gap-2 pb-6 border-b border-slate-200/60">
         <Link
           href="/admin"
-          className="inline-flex items-center gap-2 text-xs font-semibold text-slate-500 hover:text-[#0e1442] transition-colors cursor-pointer group"
+          className="inline-flex items-center gap-2 text-xs font-semibold text-slate-500 hover:text-[#1E2D8C] transition-colors cursor-pointer group"
         >
           <ArrowLeft className="h-4 w-4 group-hover:-translate-x-0.5 transition-transform" />
           Back to Overview
         </Link>
-        <h1 className="text-h1 text-[#0e1442] font-semibold font-display">Manage Requests</h1>
+        <h1 className="text-h1 text-[#1E2D8C] font-semibold font-display">
+          Manage Requests
+        </h1>
         <p className="text-xs text-slate-500 mt-0.5">
-          Inspect space requirements posted by users and update their platform matching status.
+          Inspect space requirements posted by users and update their platform
+          matching status.
         </p>
       </div>
 

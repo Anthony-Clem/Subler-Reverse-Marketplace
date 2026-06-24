@@ -73,6 +73,20 @@ function LoginForm() {
         toast.error("Invalid or expired verification code.");
       } else {
         toast.success("Logged in successfully!");
+        if (callbackUrl === "/dashboard") {
+          try {
+            const userRes = await fetch("/api/users/me");
+            if (userRes.ok) {
+              const userData = await userRes.json();
+              if (userData?.hostStatus === "approved") {
+                window.location.replace("/host/dashboard");
+                return;
+              }
+            }
+          } catch (err) {
+            console.error("Error checking host role after login:", err);
+          }
+        }
         window.location.replace(callbackUrl);
       }
     } catch (err) {
@@ -87,15 +101,15 @@ function LoginForm() {
     return (
       <div className="w-full max-w-md bg-white border border-slate-200/60 rounded-2xl p-8 shadow-xs space-y-6 animate-fade-in">
         <div className="space-y-2">
-          <div className="h-10 w-10 rounded-lg bg-[#1e2d8c]/5 flex items-center justify-center text-[#1e2d8c]">
+          <div className="h-10 w-10 rounded-lg bg-[#1E2D8C]/5 flex items-center justify-center text-[#1E2D8C]">
             <KeyRound className="h-5 w-5" />
           </div>
-          <h2 className="font-display text-lg font-semibold text-[#0e1442] tracking-tight">
+          <h2 className="font-display text-lg font-semibold text-[#1E2D8C] tracking-tight">
             Verify Your Email
           </h2>
           <p className="text-xs text-slate-500 leading-relaxed">
             We sent a 6-digit code to{" "}
-            <strong className="text-[#0e1442]">{email}</strong>. Enter it below
+            <strong className="text-[#1E2D8C]">{email}</strong>. Enter it below
             to sign in.
           </p>
         </div>
@@ -121,7 +135,7 @@ function LoginForm() {
               }
               disabled={loading}
               required
-              className="h-11 rounded-lg border border-slate-200 focus:border-[#1e2d8c] px-3.5 text-center font-mono text-lg tracking-widest focus-visible:ring-[#1e2d8c]/10 bg-white text-[#0e1442] outline-none"
+              className="h-11 rounded-lg border border-slate-200 focus:border-[#1E2D8C] px-3.5 text-center font-mono text-lg tracking-widest focus-visible:ring-[#1E2D8C]/10 bg-white text-[#1E2D8C] outline-none"
             />
           </div>
 
@@ -141,7 +155,7 @@ function LoginForm() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-2/3 bg-accent-peach-500 hover:bg-accent-peach-500/90 text-[#0e1442] font-semibold transition-all rounded-lg h-10 shadow-xs text-xs active:scale-[0.98] cursor-pointer"
+              className="w-2/3 bg-[#FDC800] hover:bg-[#FDC800]/90 text-black font-semibold transition-all rounded-lg h-10 shadow-xs text-xs active:scale-[0.98] cursor-pointer"
             >
               {loading ? (
                 <>
@@ -161,7 +175,7 @@ function LoginForm() {
   return (
     <div className="w-full max-w-md bg-white border border-slate-200/60 rounded-2xl p-8 shadow-xs space-y-6 animate-fade-in">
       <div className="space-y-2">
-        <h2 className="font-display text-lg font-semibold text-[#0e1442] tracking-tight">
+        <h2 className="font-display text-lg font-semibold text-[#1E2D8C] tracking-tight">
           Sign In
         </h2>
         <p className="text-xs text-slate-500">
@@ -185,14 +199,14 @@ function LoginForm() {
             onChange={(e) => setEmail(e.target.value)}
             disabled={loading}
             required
-            className="h-10 rounded-lg border border-slate-200 focus:border-[#1e2d8c] px-3 text-xs focus-visible:ring-[#1e2d8c]/10 bg-white text-[#0e1442] outline-none"
+            className="h-10 rounded-lg border border-slate-200 focus:border-[#1E2D8C] px-3 text-xs focus-visible:ring-[#1E2D8C]/10 bg-white text-[#1E2D8C] outline-none"
           />
         </div>
 
         <Button
           type="submit"
           disabled={loading}
-          className="w-full bg-accent-peach-500 hover:bg-accent-peach-500/90 text-[#0e1442] font-semibold transition-all rounded-lg h-10 shadow-xs text-xs active:scale-[0.98] cursor-pointer pt-0.5"
+          className="w-full bg-[#FDC800] hover:bg-[#FDC800]/90 text-black font-semibold transition-all rounded-lg h-10 shadow-xs text-xs active:scale-[0.98] cursor-pointer pt-0.5"
         >
           {loading ? (
             <>
@@ -215,7 +229,7 @@ export default function LoginPage() {
       <div className="absolute top-8 left-8">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-xs font-semibold text-slate-500 hover:text-[#0e1442] transition-colors cursor-pointer group"
+          className="inline-flex items-center gap-2 text-xs font-semibold text-slate-500 hover:text-[#1E2D8C] transition-colors cursor-pointer group"
         >
           <ArrowLeft className="h-4 w-4 group-hover:-translate-x-0.5 transition-transform" />
           Back to Home
