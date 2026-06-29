@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { useOpenRequests } from "@/hooks/use-requests";
 import {
   ArrowRight,
@@ -13,6 +14,17 @@ import {
   Shield,
   Sparkles,
   Users,
+  Camera,
+  Mic,
+  Dumbbell,
+  Box,
+  PartyPopper,
+  Briefcase,
+  CloudSun,
+  Store,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -55,9 +67,76 @@ const formatTimeAgo = (dateStr: string) => {
   }
 };
 
+const spaceCategories = [
+  {
+    icon: Camera,
+    label: "Photography Studio",
+    description: "For shoots & content creation",
+  },
+  {
+    icon: Mic,
+    label: "Recording Studio",
+    description: "For music & voiceovers",
+  },
+  {
+    icon: Dumbbell,
+    label: "Gym / Fitness",
+    description: "For training & wellness classes",
+  },
+  {
+    icon: Box,
+    label: "Warehouse",
+    description: "For storage, builds & filming",
+  },
+  {
+    icon: PartyPopper,
+    label: "Event Hall",
+    description: "For celebrations & gatherings",
+  },
+  {
+    icon: Briefcase,
+    label: "Office / Conference Room",
+    description: "For teams & workshops",
+  },
+  {
+    icon: CloudSun,
+    label: "Outdoor / Rooftop",
+    description: "For scenic events & shoots",
+  },
+  {
+    icon: Store,
+    label: "Retail Pop-Up",
+    description: "For physical launches & showcases",
+  },
+];
+
+const faqs = [
+  {
+    q: "Is it free to post a request as a renter?",
+    a: "Yes, posting a request is completely free. You only pay when you book through Subler.",
+  },
+  {
+    q: "What if no hosts respond to my request?",
+    a: "Most requests receive proposals within 3 hours. If you don't hear back, you can repost or adjust your requirements.",
+  },
+  {
+    q: "How are hosts verified?",
+    a: "Every host on the platform is manually reviewed and approved by the Subler team before they can send proposals.",
+  },
+  {
+    q: "How is this different from browsing listings on Subler?",
+    a: "Instead of searching through hundreds of listings, you post your needs once and only verified hosts who match pitch you directly.",
+  },
+  {
+    q: "What happens after I receive a proposal?",
+    a: "You review the host's space details and click through to complete the booking directly on Subler.",
+  },
+];
+
 export default function Home() {
   const { data: requests, isLoading } = useOpenRequests();
   const { data: session } = useSession();
+  const [openFaqIdx, setOpenFaqIdx] = useState<number | null>(null);
 
   // Simulated pitches/proposals for Host view
   const mockProposals = [
@@ -67,8 +146,7 @@ export default function Home() {
       hostName: "Elite Hoops Gymnasium",
       pitch:
         "Hey there! We have a full-court indoor basketball gymnasium with premium hardwood floors, adjustable hoops, and digital scoreboards. Perfect for your upcoming tournament or practice. View the full details and booking calendar on Subler!",
-      sublerLink:
-        "https://app.getsubler.com/renter/space-listing-view?spaceId=239",
+      sublerLink: "https://app.getsubler.com",
       timeAgo: "5m ago",
     },
     {
@@ -77,11 +155,39 @@ export default function Home() {
       hostName: "Grand Slam Tennis Center",
       pitch:
         "Hello! We have well-maintained outdoor tennis courts available, complete with lighting for evening sessions, spectator seating, and pro-grade nets. Perfect for private matches or training. Check out our official listing on Subler to secure your slot.",
-      sublerLink:
-        "https://app.getsubler.com/renter/space-listing-view?spaceId=348",
+      sublerLink: "https://app.getsubler.com",
       timeAgo: "12m ago",
     },
+    {
+      id: "p3",
+      requestTitle: "Creative / Studio (Photography)",
+      hostName: "Aura Daylight Studios",
+      pitch:
+        "Hi! We have a gorgeous 1,500 sq ft industrial loft studio with giant south-facing windows, cyclorama wall, and a full suite of studio lighting equipment. Perfect for editorial shoots and brand campaigns. View listing details on Subler!",
+      sublerLink: "https://app.getsubler.com",
+      timeAgo: "18m ago",
+    },
+    {
+      id: "p4",
+      requestTitle: "Meeting / Workshop (Conference Room)",
+      hostName: "Focus Point Meeting Spaces",
+      pitch:
+        "Hello! Our executive boardroom is fully equipped with high-speed Wi-Fi, 4K display, writable whiteboard wall, and complimentary coffee service. Ideal for workshops and strategy sessions. Check out our calendar on Subler to book.",
+      sublerLink: "https://app.getsubler.com",
+      timeAgo: "25m ago",
+    },
   ];
+
+  const [activeSlide, setActiveSlide] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+
+  useEffect(() => {
+    if (isHovered) return;
+    const interval = setInterval(() => {
+      setActiveSlide((prev) => (prev + 1) % mockProposals.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [isHovered, mockProposals.length]);
 
   return (
     <div className="flex flex-col min-h-screen bg-[#fafafc] font-sans selection:bg-[#FDC800]/30 selection:text-[#1E2D8C] text-[#1E2D8C]">
@@ -482,6 +588,46 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Space Categories Section */}
+      <section className="py-20 md:py-32 bg-white">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <span className="text-[10px] font-bold uppercase text-[#1E2D8C] tracking-wider mb-3 block">
+              Browsable Venues
+            </span>
+            <h2 className="text-2xl md:text-3xl font-bold text-[#1E2D8C] font-display tracking-tight mb-3">
+              Explore Space Categories
+            </h2>
+            <p className="text-sm text-slate-500 leading-relaxed">
+              Find exactly what you need. Renters can request bookings across a wide variety of space types.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+            {spaceCategories.map((cat, idx) => {
+              const Icon = cat.icon;
+              return (
+                <div
+                  key={idx}
+                  className="group bg-[#fafafc] border border-slate-200/60 rounded-2xl p-6 shadow-xs hover:shadow-sm hover:border-[#FDC800] hover:-translate-y-0.5 transition-all duration-300 flex flex-col items-center text-center cursor-pointer"
+                  onClick={() => {}}
+                >
+                  <div className="h-12 w-12 rounded-full bg-[#1E2D8C]/5 group-hover:bg-[#1E2D8C] text-[#1E2D8C] group-hover:text-[#FDC800] flex items-center justify-center transition-all duration-300 mb-4 shadow-inner">
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <h4 className="font-semibold text-sm text-[#1E2D8C] mb-1.5 font-display">
+                    {cat.label}
+                  </h4>
+                  <p className="text-[11px] text-slate-400 leading-normal max-w-[150px]">
+                    {cat.description}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
       {/* Sample Proposals Showcase */}
       <section
         id="proposal-showcase"
@@ -502,58 +648,94 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {mockProposals.map((prop) => (
-              <div
-                key={prop.id}
-                className="bg-[#fafafc] border border-slate-200/60 rounded-2xl p-6 shadow-xs hover:shadow-sm transition-all duration-300 flex flex-col justify-between"
-              >
-                <div>
-                  <div className="flex items-start justify-between gap-4 mb-4">
-                    <div>
-                      <p className="text-[9px] text-slate-400 mb-0.5 font-bold uppercase tracking-wider">
-                        Proposal sent for
+          <div 
+            className="relative max-w-3xl mx-auto"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            {/* Carousel Container */}
+            <div className="overflow-hidden rounded-2xl border border-slate-200/60 bg-white p-8 md:p-10 shadow-xs relative min-h-72 flex flex-col justify-between">
+              <div className="transition-all duration-500 ease-in-out">
+                {mockProposals.map((prop, idx) => {
+                  const isActive = idx === activeSlide;
+                  if (!isActive) return null;
+                  return (
+                    <div key={prop.id} className="animate-fade-in space-y-6">
+                      <div className="flex items-start justify-between gap-4">
+                        <div>
+                          <p className="text-[9px] text-slate-400 mb-0.5 font-bold uppercase tracking-wider">
+                            Proposal sent for
+                          </p>
+                          <h4 className="font-semibold text-sm text-[#1E2D8C]">
+                            {prop.requestTitle}
+                          </h4>
+                        </div>
+                        <span className="text-[9px] text-slate-500 bg-slate-100 px-2.5 py-0.5 rounded-full shrink-0">
+                          {prop.timeAgo}
+                        </span>
+                      </div>
+
+                      <p className="p-5 rounded-xl bg-slate-50 border border-slate-200/50 text-xs text-[#1E2D8C]/90 italic leading-relaxed">
+                        &ldquo;{prop.pitch}&rdquo;
                       </p>
-                      <h4 className="font-semibold text-sm text-[#1E2D8C]">
-                        {prop.requestTitle}
-                      </h4>
-                    </div>
-                    <span className="text-[9px] text-slate-500 bg-slate-200/50 px-2 py-0.5 rounded-full">
-                      {prop.timeAgo}
-                    </span>
-                  </div>
 
-                  <p className="p-4 rounded-xl bg-white border border-slate-200/50 text-xs text-[#1E2D8C]/90 italic mb-6 leading-relaxed">
-                    &ldquo;{prop.pitch}&rdquo;
-                  </p>
-                </div>
+                      <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-slate-200/40">
+                        <div className="flex items-center gap-3">
+                          <div className="h-9 w-9 rounded-lg bg-[#1E2D8C] text-white flex items-center justify-center font-bold font-display shadow-xs text-xs">
+                            {prop.hostName[0]}
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold text-[#1E2D8C]">
+                              {prop.hostName}
+                            </p>
+                            <span className="inline-block mt-0.5 text-[9px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-700 border border-emerald-500/20 font-bold uppercase tracking-wider">
+                              Verified Host
+                            </span>
+                          </div>
+                        </div>
 
-                <div className="flex flex-wrap items-center justify-between gap-4 pt-2 border-t border-slate-200/40">
-                  <div className="flex items-center gap-3">
-                    <div className="h-8 w-8 rounded-lg bg-[#1E2D8C] text-white flex items-center justify-center font-bold font-display shadow-xs text-xs">
-                      {prop.hostName[0]}
+                        <a
+                          href={prop.sublerLink}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-white border border-[#1E2D8C] text-[#1E2D8C] hover:bg-[#1E2D8C]/5 text-xs font-bold transition active:scale-[0.98] cursor-pointer shadow-xs"
+                        >
+                          View on Subler <ArrowUpRight className="h-4 w-4" />
+                        </a>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-xs font-bold text-[#1E2D8C]">
-                        {prop.hostName}
-                      </p>
-                      <span className="inline-block mt-0.5 text-[9px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-700 border border-emerald-500/20 font-bold uppercase tracking-wider">
-                        Verified Host
-                      </span>
-                    </div>
-                  </div>
-
-                  <a
-                    href={prop.sublerLink}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-white border border-[#1E2D8C] text-[#1E2D8C] hover:bg-[#1E2D8C]/5 text-xs font-bold transition active:scale-[0.98] cursor-pointer shadow-xs"
-                  >
-                    View on Subler <ArrowUpRight className="h-4 w-4" />
-                  </a>
-                </div>
+                  );
+                })}
               </div>
-            ))}
+            </div>
+
+            {/* Navigation Arrows */}
+            <button
+              onClick={() => setActiveSlide((prev) => (prev - 1 + mockProposals.length) % mockProposals.length)}
+              className="absolute left-[-20px] md:left-[-50px] top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-white border border-slate-200/80 shadow-xs text-[#1E2D8C] hover:text-[#1E2D8C]/80 hover:bg-slate-50 flex items-center justify-center cursor-pointer transition active:scale-90"
+              aria-label="Previous proposal"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </button>
+            <button
+              onClick={() => setActiveSlide((prev) => (prev + 1) % mockProposals.length)}
+              className="absolute right-[-20px] md:right-[-50px] top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-white border border-slate-200/80 shadow-xs text-[#1E2D8C] hover:text-[#1E2D8C]/80 hover:bg-slate-50 flex items-center justify-center cursor-pointer transition active:scale-90"
+              aria-label="Next proposal"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </button>
+
+            {/* Dots Indicator */}
+            <div className="flex justify-center gap-2 mt-6">
+              {mockProposals.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setActiveSlide(idx)}
+                  className={`h-2 rounded-full transition-all duration-300 ${idx === activeSlide ? "w-6 bg-[#1E2D8C]" : "w-2 bg-slate-300"}`}
+                  aria-label={`Go to slide ${idx + 1}`}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -623,6 +805,20 @@ export default function Home() {
                     </p>
                   </div>
                 </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="mt-1 h-6 w-6 rounded-lg bg-[#1E2D8C]/10 flex items-center justify-center text-[#1E2D8C] shrink-0 shadow-xs">
+                    <CheckCircle2 className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-xs text-[#1E2D8C]">
+                      One-Time Host Activation Fee
+                    </h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Hosts pay a one-time $5 fee securely via Stripe to unlock unlimited proposal sending. This ensures all proposals are high intent.
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -655,6 +851,52 @@ export default function Home() {
                 </Link>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-20 md:py-32 bg-white">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <span className="text-[10px] font-bold uppercase text-[#1E2D8C] tracking-wider mb-3 block">
+              Got Questions?
+            </span>
+            <h2 className="text-2xl md:text-3xl font-bold text-[#1E2D8C] font-display tracking-tight mb-3">
+              Frequently Asked Questions
+            </h2>
+            <p className="text-sm text-slate-500 leading-relaxed">
+              Everything you need to know about the Subler Reverse Matching process.
+            </p>
+          </div>
+
+          <div className="space-y-4 max-w-3xl mx-auto">
+            {faqs.map((faq, idx) => {
+              const isOpen = openFaqIdx === idx;
+              return (
+                <div
+                  key={idx}
+                  className="border border-slate-200/60 rounded-2xl overflow-hidden transition-all bg-[#fafafc]"
+                >
+                  <button
+                    onClick={() => setOpenFaqIdx(isOpen ? null : idx)}
+                    className="w-full flex items-center justify-between p-5 text-left font-semibold text-[#1E2D8C] hover:bg-slate-50/50 transition-colors cursor-pointer focus:outline-hidden"
+                  >
+                    <span className="text-sm leading-normal">{faq.q}</span>
+                    <span className={`transition-transform duration-300 text-slate-400 shrink-0 ml-4 ${isOpen ? "rotate-180 text-[#FDC800]" : ""}`}>
+                      <ChevronDown className="h-4 w-4" />
+                    </span>
+                  </button>
+                  <div
+                    className={`transition-all duration-300 ease-in-out overflow-hidden ${isOpen ? "max-h-60 border-t border-slate-200/40" : "max-h-0"}`}
+                  >
+                    <p className="p-5 text-xs text-slate-500 leading-relaxed bg-white/70">
+                      {faq.a}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
