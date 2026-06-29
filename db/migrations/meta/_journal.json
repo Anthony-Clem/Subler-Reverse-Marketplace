@@ -8,6 +8,13 @@
       "when": 1782143086774,
       "tag": "0000_crazy_ken_ellis",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1782749422616,
+      "tag": "0001_giant_christian_walker",
+      "breakpoints": true
     }
   ]
 }

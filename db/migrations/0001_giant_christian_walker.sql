@@ -1,0 +1,1 @@
+ALTER TABLE "users" ADD COLUMN "has_paid_fee" boolean DEFAULT false NOT NULL;

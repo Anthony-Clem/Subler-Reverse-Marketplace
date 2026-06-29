@@ -5,7 +5,8 @@ export default auth((req) => {
   const isLoggedIn = !!req.auth;
   const isApiRoute = req.nextUrl.pathname.startsWith("/api");
   const isAuthApiRoute = req.nextUrl.pathname.startsWith("/api/auth");
-  
+  const isStripeWebhook = req.nextUrl.pathname === "/api/stripe/webhook";
+
   // Public GET endpoints for requests, excluding renter's own requests query
   const isPublicApiRoute =
     (req.nextUrl.pathname === "/api/requests" && req.method === "GET") ||
@@ -13,8 +14,8 @@ export default auth((req) => {
       req.nextUrl.pathname !== "/api/requests/my" &&
       req.method === "GET");
 
-  // Skip auth api endpoints
-  if (isAuthApiRoute) return NextResponse.next();
+  // Skip auth api endpoints and Stripe webhooks
+  if (isAuthApiRoute || isStripeWebhook) return NextResponse.next();
 
   // If authenticated user tries to access /login, redirect to /dashboard
   if (isLoggedIn && req.nextUrl.pathname.startsWith("/login")) {

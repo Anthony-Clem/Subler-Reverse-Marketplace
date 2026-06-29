@@ -21,9 +21,12 @@ import {
   ShieldCheck,
   CheckCircle,
   Filter,
+  CreditCard,
+  Check,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useQueryClient } from "@tanstack/react-query";
 
 function HostDashboardContent() {
   const { data: user, isLoading: userLoading } = useUserProfile();
@@ -33,6 +36,55 @@ function HostDashboardContent() {
     error: requestsError,
   } = useOpenRequests();
   const createProposal = useCreateProposal();
+
+  const queryClient = useQueryClient();
+  const [successParam, setSuccessParam] = useQueryState("success");
+  const [canceledParam, setCanceledParam] = useQueryState("canceled");
+  const [isRedirectingPayment, setIsRedirectingPayment] = useState(false);
+
+  React.useEffect(() => {
+    if (successParam === "true") {
+      toast.success(
+        "Payment successful! Your proposal access has been activated.",
+      );
+      queryClient.invalidateQueries({ queryKey: ["user-profile"] });
+      setSuccessParam(null);
+    }
+    if (canceledParam === "true") {
+      toast.error(
+        "Payment canceled. You must activate proposal access to send pitches.",
+      );
+      setCanceledParam(null);
+    }
+  }, [
+    successParam,
+    canceledParam,
+    setSuccessParam,
+    setCanceledParam,
+    queryClient,
+  ]);
+
+  const handleActivateAccess = async () => {
+    setIsRedirectingPayment(true);
+    try {
+      const res = await fetch("/api/stripe/checkout-session", {
+        method: "POST",
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.error || "Failed to create checkout session");
+      }
+
+      const { url } = await res.json();
+      window.location.href = url;
+    } catch (err: unknown) {
+      const message =
+        err instanceof Error ? err.message : "Failed to redirect to Stripe";
+      toast.error(message);
+      setIsRedirectingPayment(false);
+    }
+  };
 
   const [activeProposalRequest, setActiveProposalRequest] =
     useState<RentalRequest | null>(null);
@@ -46,8 +98,12 @@ function HostDashboardContent() {
   const [selectedSpaceType, setSelectedSpaceType] = useState<string>("all");
 
   // Sort and pagination states
-  const [sortBy, setSortBy] = useQueryState("sortBy", { defaultValue: "createdAt" });
-  const [sortOrder, setSortOrder] = useQueryState("sortOrder", { defaultValue: "desc" });
+  const [sortBy, setSortBy] = useQueryState("sortBy", {
+    defaultValue: "createdAt",
+  });
+  const [sortOrder, setSortOrder] = useQueryState("sortOrder", {
+    defaultValue: "desc",
+  });
   const [page, setPage] = useQueryState("page", { defaultValue: "1" });
 
   const isApprovedHost = user?.hostStatus === "approved";
@@ -237,7 +293,7 @@ function HostDashboardContent() {
   const activePage = Math.min(Math.max(1, pageNumber), totalPages || 1);
   const paginatedRequests = sortedRequests.slice(
     (activePage - 1) * ITEMS_PER_PAGE,
-    activePage * ITEMS_PER_PAGE
+    activePage * ITEMS_PER_PAGE,
   );
 
   return (
@@ -259,7 +315,8 @@ function HostDashboardContent() {
               </h1>
             </div>
             <p className="text-body-sm text-white/80 max-w-xl leading-relaxed">
-              Browse open renter requests, send custom proposals with listing links, and get booked.
+              Browse open renter requests, send custom proposals with listing
+              links, and get booked.
             </p>
           </div>
         </div>
@@ -349,7 +406,8 @@ function HostDashboardContent() {
             </div>
 
             <span className="text-caption text-muted-foreground ml-auto font-semibold">
-              Showing {paginatedRequests.length} of {filteredRequests.length} requests
+              Showing {paginatedRequests.length} of {filteredRequests.length}{" "}
+              requests
             </span>
           </div>
         )}
@@ -542,7 +600,9 @@ function HostDashboardContent() {
           {totalPages > 1 && (
             <div className="flex items-center justify-between pt-4 border-t border-border/50">
               <span className="text-caption text-slate-500 font-semibold">
-                Page {activePage} of {totalPages} (Showing {paginatedRequests.length} of {filteredRequests.length} requests)
+                Page {activePage} of {totalPages} (Showing{" "}
+                {paginatedRequests.length} of {filteredRequests.length}{" "}
+                requests)
               </span>
               <div className="flex items-center gap-2">
                 <button
@@ -568,119 +628,222 @@ function HostDashboardContent() {
       {/* Send Proposal Dialog Modal Overlay */}
       {activeProposalRequest && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4 overflow-y-auto">
-          {/* Modal Container */}
-          <div className="bg-white border border-neutral-200/60 rounded-2xl p-6 max-w-md w-full shadow-sm space-y-4 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-neutral-200 pb-3">
-              <div>
-                <h3 className="font-display font-bold text-body text-[#1E2D8C]">
-                  Send Proposal Pitch
+          {!user?.hasPaidFee ? (
+            /* Paywall Modal Container */
+            <div className="bg-white border border-neutral-200/60 rounded-2xl p-8 max-w-md w-full shadow-lg relative overflow-hidden space-y-6">
+              <div className="text-center space-y-3">
+                <div className="h-14 w-14 rounded-full bg-blue-50 border border-blue-100 flex items-center justify-center text-primary mx-auto shadow-xs">
+                  <CreditCard className="h-6 w-6 text-[#1E2D8C]" />
+                </div>
+                <h3 className="font-display font-extrabold text-xl text-[#1E2D8C] tracking-tight">
+                  Unlock Renter Feed & Proposals
                 </h3>
-                <p className="text-[11px] text-slate-400 mt-0.5 capitalize">
-                  To: {activeProposalRequest.eventType.replace(/_/g, " ")} /{" "}
-                  {activeProposalRequest.spaceType.replace(/_/g, " ")}
+                <p className="text-body-sm text-slate-500 max-w-xs mx-auto">
+                  To keep proposals high quality, hosts pay a one-time
+                  activation fee to submit proposals on Subler.
                 </p>
               </div>
-              <button
-                onClick={() => setActiveProposalRequest(null)}
-                className="text-slate-400 hover:text-[#1E2D8C] text-caption font-semibold cursor-pointer"
-              >
-                Close
-              </button>
+
+              {/* Benefits Checklist */}
+              <div className="bg-slate-50 border border-slate-100 rounded-xl p-4.5 space-y-3">
+                <div className="flex gap-3 text-body-sm text-slate-700">
+                  <div className="mt-0.5 h-4.5 w-4.5 rounded-full bg-[#1E2D8C]/10 flex items-center justify-center shrink-0">
+                    <Check className="h-3 w-3 text-[#1E2D8C] stroke-[3]" />
+                  </div>
+                  <div>
+                    <span className="font-bold text-slate-900 block text-left">
+                      Unlimited Proposals
+                    </span>
+                    <span className="text-[11px] text-slate-500 block text-left">
+                      Pitch your space to every single renter that matches your
+                      facility.
+                    </span>
+                  </div>
+                </div>
+                <div className="flex gap-3 text-body-sm text-slate-700">
+                  <div className="mt-0.5 h-4.5 w-4.5 rounded-full bg-[#1E2D8C]/10 flex items-center justify-center shrink-0">
+                    <Check className="h-3 w-3 text-[#1E2D8C] stroke-[3]" />
+                  </div>
+                  <div>
+                    <span className="font-bold text-slate-900 block text-left">
+                      One-time Activation Fee
+                    </span>
+                    <span className="text-[11px] text-slate-500 block text-left">
+                      Pay only $5.00 once. No monthly subscriptions, no ongoing
+                      cut or fees.
+                    </span>
+                  </div>
+                </div>
+                <div className="flex gap-3 text-body-sm text-slate-700">
+                  <div className="mt-0.5 h-4.5 w-4.5 rounded-full bg-[#1E2D8C]/10 flex items-center justify-center shrink-0">
+                    <Check className="h-3 w-3 text-[#1E2D8C] stroke-[3]" />
+                  </div>
+                  <div>
+                    <span className="font-bold text-slate-900 block text-left">
+                      Direct Renter Pitching
+                    </span>
+                    <span className="text-[11px] text-slate-500 block text-left">
+                      Renters receive notification instantly and click-through
+                      to your listing.
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Price Tag & CTA */}
+              <div className="space-y-4 pt-2">
+                <div className="flex items-center justify-between px-2 text-body-sm">
+                  <span className="text-slate-500 font-semibold">
+                    Activation Fee:
+                  </span>
+                  <span className="font-display font-extrabold text-lg text-slate-900">
+                    $5.00 USD
+                  </span>
+                </div>
+
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => setActiveProposalRequest(null)}
+                    disabled={isRedirectingPayment}
+                    className="flex-1 inline-flex h-11 items-center justify-center px-4 rounded-xl border border-neutral-200 bg-white text-slate-600 hover:bg-neutral-50 text-body-sm font-bold transition-all cursor-pointer disabled:opacity-50"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleActivateAccess}
+                    disabled={isRedirectingPayment}
+                    className="flex-1 inline-flex h-11 items-center justify-center px-4 rounded-xl bg-[#FDC800] text-black hover:bg-[#FDC800]/90 text-body-sm font-bold transition-all cursor-pointer disabled:opacity-50 shadow-xs border-transparent active:scale-[0.98] flex items-center justify-center gap-1.5"
+                  >
+                    {isRedirectingPayment ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        Connecting...
+                      </>
+                    ) : (
+                      <>Activate Now</>
+                    )}
+                  </button>
+                </div>
+                <p className="text-[10px] text-center text-slate-400">
+                  Secure checkout powered by Stripe. You will be redirected.
+                </p>
+              </div>
             </div>
-
-            <form onSubmit={handleProposalSubmit} className="space-y-4">
-              {/* Subler Link Input */}
-              <div className="space-y-1.5">
-                <label className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center justify-between">
-                  <span>Subler Listing URL</span>
-                  <span className="text-[10px] text-primary lowercase">
-                    Must be app.getsubler.com
-                  </span>
-                </label>
-                <Input
-                  type="text"
-                  placeholder="https://app.getsubler.com/listings/your-facility-slug"
-                  value={sublerLink}
-                  onChange={(e) => handleSublerLinkChange(e.target.value)}
-                  disabled={createProposal.isPending}
-                  className="h-10 rounded-lg bg-white text-foreground"
-                />
-                {linkError && (
-                  <p className="text-[11px] text-red-600 flex items-center gap-1 font-semibold">
-                    <AlertCircle className="h-3 w-3 shrink-0" /> {linkError}
+          ) : (
+            /* Modal Container */
+            <div className="bg-white border border-neutral-200/60 rounded-2xl p-6 max-w-md w-full shadow-sm space-y-4 max-h-[90vh] overflow-y-auto">
+              <div className="flex items-center justify-between border-b border-neutral-200 pb-3">
+                <div>
+                  <h3 className="font-display font-bold text-body text-[#1E2D8C]">
+                    Send Proposal Pitch
+                  </h3>
+                  <p className="text-[11px] text-slate-400 mt-0.5 capitalize">
+                    To: {activeProposalRequest.eventType.replace(/_/g, " ")} /{" "}
+                    {activeProposalRequest.spaceType.replace(/_/g, " ")}
                   </p>
-                )}
-                <p className="text-[11px] text-slate-500 mt-1">
-                  Don&apos;t have a Subler listing?{" "}
-                  <a
-                    href="https://app.getsubler.com"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-[#1E2D8C] hover:text-[#1E2D8C]/80 font-bold underline"
-                  >
-                    Get started now!
-                  </a>
-                </p>
-              </div>
-
-              {/* Pitch Textarea */}
-              <div className="space-y-1.5">
-                <label className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center justify-between">
-                  <span>Your Pitch Message</span>
-                  <span
-                    className={`text-[10px] font-semibold ${pitch.length > 500 ? "text-red-500" : "text-muted-foreground"}`}
-                  >
-                    {pitch.length} / 500 chars
-                  </span>
-                </label>
-                <textarea
-                  rows={4}
-                  placeholder="Describe your space facilities, verify that you match their budget, calendar schedules, and headcount needs..."
-                  value={pitch}
-                  onChange={(e) => handlePitchChange(e.target.value)}
-                  disabled={createProposal.isPending}
-                  className="w-full rounded-lg border border-border p-3 bg-white text-foreground text-body-sm focus:ring-1 focus:ring-primary focus:border-primary transition-all"
-                />
-                {pitchError && (
-                  <p className="text-[11px] text-red-600 flex items-center gap-1 font-semibold">
-                    <AlertCircle className="h-3 w-3 shrink-0" /> {pitchError}
-                  </p>
-                )}
-                <p className="text-[10px] text-muted-foreground leading-relaxed">
-                  Provide a brief, compelling pitch. Minimum 10 characters,
-                  maximum 500 characters.
-                </p>
-              </div>
-
-              {/* Actions */}
-              <div className="flex items-center justify-end gap-3 pt-3 border-t border-neutral-200 mt-5">
+                </div>
                 <button
-                  type="button"
                   onClick={() => setActiveProposalRequest(null)}
-                  disabled={createProposal.isPending}
-                  className="inline-flex h-9 items-center justify-center px-4 rounded-lg border border-neutral-200 bg-white text-slate-600 hover:bg-neutral-50 text-body-sm font-semibold transition-all cursor-pointer"
+                  className="text-slate-400 hover:text-[#1E2D8C] text-caption font-semibold cursor-pointer"
                 >
-                  Cancel
+                  Close
                 </button>
-                <Button
-                  type="submit"
-                  disabled={createProposal.isPending}
-                  className="inline-flex h-9 items-center justify-center px-5 rounded-lg bg-[#FDC800] text-black hover:bg-[#FDC800]/90 text-body-sm font-bold transition-all cursor-pointer shadow-xs flex items-center gap-1.5 border-transparent active:scale-[0.98]"
-                >
-                  {createProposal.isPending ? (
-                    <>
-                      <Loader2 className="h-3.5 w-3.5 animate-spin" />{" "}
-                      Sending...
-                    </>
-                  ) : (
-                    <>
-                      <Send className="h-3.5 w-3.5" /> Send Proposal
-                    </>
-                  )}
-                </Button>
               </div>
-            </form>
-          </div>
+
+              <form onSubmit={handleProposalSubmit} className="space-y-4">
+                {/* Subler Link Input */}
+                <div className="space-y-1.5">
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center justify-between">
+                    <span>Subler Listing URL</span>
+                    <span className="text-[10px] text-primary lowercase">
+                      Must be app.getsubler.com
+                    </span>
+                  </label>
+                  <Input
+                    type="text"
+                    placeholder="https://app.getsubler.com/listings/your-facility-slug"
+                    value={sublerLink}
+                    onChange={(e) => handleSublerLinkChange(e.target.value)}
+                    disabled={createProposal.isPending}
+                    className="h-10 rounded-lg bg-white text-foreground"
+                  />
+                  {linkError && (
+                    <p className="text-[11px] text-red-600 flex items-center gap-1 font-semibold">
+                      <AlertCircle className="h-3 w-3 shrink-0" /> {linkError}
+                    </p>
+                  )}
+                  <p className="text-[11px] text-slate-500 mt-1">
+                    Don&apos;t have a Subler listing?{" "}
+                    <a
+                      href="https://app.getsubler.com"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-[#1E2D8C] hover:text-[#1E2D8C]/80 font-bold underline"
+                    >
+                      Get started now!
+                    </a>
+                  </p>
+                </div>
+
+                {/* Pitch Textarea */}
+                <div className="space-y-1.5">
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center justify-between">
+                    <span>Your Pitch Message</span>
+                    <span
+                      className={`text-[10px] font-semibold ${pitch.length > 500 ? "text-red-500" : "text-muted-foreground"}`}
+                    >
+                      {pitch.length} / 500 chars
+                    </span>
+                  </label>
+                  <textarea
+                    rows={4}
+                    placeholder="Describe your space facilities, verify that you match their budget, calendar schedules, and headcount needs..."
+                    value={pitch}
+                    onChange={(e) => handlePitchChange(e.target.value)}
+                    disabled={createProposal.isPending}
+                    className="w-full rounded-lg border border-border p-3 bg-white text-foreground text-body-sm focus:ring-1 focus:ring-primary focus:border-primary transition-all"
+                  />
+                  {pitchError && (
+                    <p className="text-[11px] text-red-600 flex items-center gap-1 font-semibold">
+                      <AlertCircle className="h-3 w-3 shrink-0" /> {pitchError}
+                    </p>
+                  )}
+                  <p className="text-[10px] text-muted-foreground leading-relaxed">
+                    Provide a brief, compelling pitch. Minimum 10 characters,
+                    maximum 500 characters.
+                  </p>
+                </div>
+
+                {/* Actions */}
+                <div className="flex items-center justify-end gap-3 pt-3 border-t border-neutral-200 mt-5">
+                  <button
+                    type="button"
+                    onClick={() => setActiveProposalRequest(null)}
+                    disabled={createProposal.isPending}
+                    className="inline-flex h-9 items-center justify-center px-4 rounded-lg border border-neutral-200 bg-white text-slate-600 hover:bg-neutral-50 text-body-sm font-semibold transition-all cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                  <Button
+                    type="submit"
+                    disabled={createProposal.isPending}
+                    className="inline-flex h-9 items-center justify-center px-5 rounded-lg bg-[#FDC800] text-black hover:bg-[#FDC800]/90 text-body-sm font-bold transition-all cursor-pointer shadow-xs flex items-center gap-1.5 border-transparent active:scale-[0.98]"
+                  >
+                    {createProposal.isPending ? (
+                      <>
+                        <Loader2 className="h-3.5 w-3.5 animate-spin" />{" "}
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="h-3.5 w-3.5" /> Send Proposal
+                      </>
+                    )}
+                  </Button>
+                </div>
+              </form>
+            </div>
+          )}
         </div>
       )}
     </div>
@@ -689,12 +852,16 @@ function HostDashboardContent() {
 
 export default function HostDashboardPage() {
   return (
-    <Suspense fallback={
-      <div className="flex flex-col items-center justify-center min-h-[400px]">
-        <Loader2 className="h-8 w-8 text-primary animate-spin" />
-        <p className="text-body-sm text-muted-foreground mt-3">Loading open requests...</p>
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="flex flex-col items-center justify-center min-h-[400px]">
+          <Loader2 className="h-8 w-8 text-primary animate-spin" />
+          <p className="text-body-sm text-muted-foreground mt-3">
+            Loading open requests...
+          </p>
+        </div>
+      }
+    >
       <HostDashboardContent />
     </Suspense>
   );

@@ -5,6 +5,7 @@ export interface UserProfile {
   email: string;
   role: string;
   hostStatus: "pending" | "approved" | "rejected" | null;
+  hasPaidFee: boolean;
   createdAt: string;
 }
 

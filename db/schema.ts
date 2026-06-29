@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, uuid, integer, numeric, primaryKey } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, uuid, integer, numeric, primaryKey, boolean } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 import { AdapterAccountType } from "next-auth/adapters";
 
@@ -7,9 +7,12 @@ export const users = pgTable("users", {
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
   email: text("email").notNull().unique(),
+  name: text("name"),
   emailVerified: timestamp("emailVerified", { mode: "date" }),
+  image: text("image"),
   role: text("role").default("renter").notNull(), // renter | admin
   hostStatus: text("host_status"), // null | pending | approved | rejected
+  hasPaidFee: boolean("has_paid_fee").default(false).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 

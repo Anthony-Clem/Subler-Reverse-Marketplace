@@ -30,6 +30,13 @@ export async function POST(req: Request) {
       );
     }
 
+    if (!user.hasPaidFee) {
+      return NextResponse.json(
+        { error: "Payment required: You must complete the one-time $5 fee to submit proposals" },
+        { status: 402 }
+      );
+    }
+
     const body = await req.json();
     const parsed = createProposalSchema.safeParse(body);
 
