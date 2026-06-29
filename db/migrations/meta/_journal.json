@@ -15,6 +15,13 @@
       "when": 1782749422616,
       "tag": "0001_giant_christian_walker",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1782770813542,
+      "tag": "0002_curved_grey_gargoyle",
+      "breakpoints": true
     }
   ]
 }

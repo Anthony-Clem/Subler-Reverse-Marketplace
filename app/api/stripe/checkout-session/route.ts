@@ -4,8 +4,21 @@ import { db } from "@/lib/db";
 import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { stripe } from "@/lib/stripe";
+import { rateLimit } from "@/lib/rate-limit";
 
-export async function POST() {
+export async function POST(req: Request) {
+  // Rate Limiting: 5 checkout sessions per 15 minutes per IP address
+  const ip = req.headers.get("x-forwarded-for") || "127.0.0.1";
+  const limiterKey = `rate:stripe-checkout:${ip}`;
+  const limitResult = await rateLimit(limiterKey, { limit: 5, windowMs: 15 * 60 * 1000 });
+
+  if (!limitResult.success) {
+    return NextResponse.json(
+      { error: "Too many checkout session requests. Please try again in 15 minutes." },
+      { status: 429 }
+    );
+  }
+
   const session = await auth();
   const userId = session?.user?.id;
 

@@ -94,6 +94,12 @@ export const proposals = pgTable("proposals", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+export const rateLimits = pgTable("rate_limits", {
+  key: text("key").primaryKey(),
+  count: integer("count").notNull(),
+  resetTime: timestamp("reset_time", { mode: "date" }).notNull(),
+});
+
 // Relationships
 export const usersRelations = relations(users, ({ many }) => ({
   rentalRequests: many(rentalRequests),

@@ -3,8 +3,21 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { verificationTokens } from "@/db/schema";
 import { eq } from "drizzle-orm";
+import { rateLimit } from "@/lib/rate-limit";
 
 export async function POST(req: Request) {
+  // Rate Limiting: 5 attempts per 5 minutes per IP address
+  const ip = req.headers.get("x-forwarded-for") || "127.0.0.1";
+  const limiterKey = `rate:otp:${ip}`;
+  const limitResult = await rateLimit(limiterKey, { limit: 5, windowMs: 5 * 60 * 1000 });
+
+  if (!limitResult.success) {
+    return NextResponse.json(
+      { error: "Too many login attempts. Please try again in 5 minutes." },
+      { status: 429 }
+    );
+  }
+
   try {
     const { email } = await req.json();
     if (!email) {
