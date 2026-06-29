@@ -244,9 +244,8 @@ export default function PrivacyPage() {
                 stored.
               </li>
               <li>
-                <strong>Arcjet:</strong> Inspects traffic requests to prevent
-                malicious bot activity, detect intrusion attempts, and enforce
-                application-level rate limits.
+                <strong>Stripe:</strong> Processes secure payments and activation
+                credentials for host proposal access.
               </li>
               <li>
                 <strong>Vercel:</strong> Hosts our application servers, APIs,

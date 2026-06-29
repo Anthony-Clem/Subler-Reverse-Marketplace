@@ -14,7 +14,7 @@ All actual transactions, final bookings, tours, security deposits, and contracts
 *   **Authentication**: [Auth.js (NextAuth v5)](https://authjs.dev/) with passwordless Magic Links via [Resend](https://resend.com/)
 *   **Database**: Serverless PostgreSQL via [Neon](https://neon.tech/)
 *   **ORM**: [Drizzle ORM](https://orm.drizzle.team/)
-*   **Security & Protection**: [Arcjet](https://arcjet.com/) (Intrusion prevention, rate limiting, and bot protection)
+*   **Payments**: [Stripe](https://stripe.com/) (Secure host paywall activation)
 *   **Styling**: [Tailwind CSS](https://tailwindcss.com/)
 *   **Icons**: [Lucide React](https://lucide.dev/)
 
@@ -62,7 +62,7 @@ Make sure to specify:
 *   `AUTH_SECRET` (Secret generated for NextAuth, e.g. via `npx auth secret`)
 *   `RESEND_API_KEY` (Your Resend API Key)
 *   `NEXT_PUBLIC_APP_URL` (Local development URL, e.g., `http://localhost:3000`)
-*   `ARCJET_KEY` (Arcjet license key for protection)
+*   `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET` (Stripe API credentials)
 
 ### 3. Install Dependencies
 

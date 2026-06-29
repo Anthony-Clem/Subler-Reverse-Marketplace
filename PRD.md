@@ -161,11 +161,12 @@ Nothing else. No profile editing, no name fields.
 - Never use raw SQL with user input — always use the Drizzle query builder
 - Migrations managed via `drizzle-kit`
 
-### Rate Limiting
+### Host Paywall & Payments
 
-- **Arcjet** for rate limiting and bot protection
-- Applied on the magic link send endpoint and all mutation route handlers
-- Keeps database load and Resend usage cheap under abuse
+- **Stripe** is used to process a one-time $5.00 host activation fee.
+- Once a user becomes an approved host, they must complete this payment to unlock the ability to submit proposals on renter requests.
+- Access activation is processed asynchronously via a Stripe Webhook listening for `checkout.session.completed`.
+- Activation status is stored on the User model and enforced in both the frontend UI and the proposals API route.
 
 ### URL / Filter State
 
@@ -448,7 +449,7 @@ const { data } = useRequests(status);
 ## Security Requirements
 
 - **Auth.js middleware** protects all authenticated routes
-- **Arcjet** rate limiting on the magic link send endpoint and all mutation route handlers — keeps Resend usage and DB load cheap under abuse
+- **Stripe verification**: Proposal creation API endpoint verifies `user.hasPaidFee` is `true` before recording proposals, returning a `402 Payment Required` response otherwise.
 - **Subler URL validation** server-side: parse URL, check `hostname === 'app.getsubler.com' || hostname.endsWith('.subler.com')` — not a string match
 - **Self-proposal block** server-side: compare `request.userId === session.user.id` before allowing proposal creation
 - **Ownership checks** on every mutation: fetch the record, verify ownership, then mutate
@@ -472,8 +473,9 @@ AUTH_RESEND_KEY=
 # Resend
 RESEND_FROM=onboarding@resend.dev
 
-# Arcjet
-ARCJET_KEY=
+# Stripe
+STRIPE_SECRET_KEY=
+STRIPE_WEBHOOK_SECRET=
 
 # App
 NEXT_PUBLIC_APP_URL=http://localhost:3000
@@ -485,7 +487,7 @@ AUTH_URL=http://localhost:3000
 ## What This App Is NOT
 
 - Not a messaging platform — there is no in-app chat
-- Not a payment platform — all payments happen on Subler
+- Not a general payment platform for rentals — all facility booking transactions, tours, and contracts happen directly on Subler. This app only collects a one-time host activation fee.
 - Not a contract platform — agreements happen on Subler
 - Not a calendar or scheduling tool
 - Not a profile platform — no user profiles, no names, no public identity
